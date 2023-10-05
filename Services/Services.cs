@@ -46,6 +46,19 @@ namespace Community_House_Management.Services
                 }
             }
         }
-
+        public async Task CreateAccountAsync(int personId, AccountModel accountCreated)
+        {
+            using (var _context = new AppDbContext())
+            {
+                _context.OfficialAccounts.Add(new OfficialAccount
+                {
+                    Username = accountCreated.Username,
+                    Password = accountCreated.Password,
+                    PersonId = personId,
+                    CitizenId = accountCreated.CitizenId
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

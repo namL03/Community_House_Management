@@ -14,6 +14,7 @@ namespace Community_House_Management.Models
         private string _citizenId;
         private string _address;
         private string _name;
+        private bool _isOfficial;
         public string Name
         {
             get { return _name; }
@@ -39,6 +40,15 @@ namespace Community_House_Management.Models
             {
                 _address = value;
                 OnPropertyChanged(nameof(Address));
+            }
+        }
+        public bool IsOfficial
+        {
+            get { return IsOfficial; }
+            set
+            {
+                _isOfficial = value;
+                OnPropertyChanged(nameof(IsOfficial));
             }
         }
     }
