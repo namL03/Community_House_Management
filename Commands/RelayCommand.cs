@@ -3,32 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Community_House_Management.Commands
 {
-    public class RelayCommand : CommandBase
+    public class RelayCommand : ICommand
     {
-        private readonly Action<object> _execute;
-        private readonly Func<object, bool> _canExecute;
+        private readonly Action<object> _executeAction;
+        private readonly Predicate<object> _canexecuteAction;
 
-        public RelayCommand(Action<object> execute) : this(execute, null)
+        public RelayCommand(Action<object> executeAction)
         {
+            _executeAction = executeAction;
+            _canexecuteAction = null;
         }
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute)
+        public RelayCommand(Action<object> executeAction, Predicate<object> canexecuteAction) : this(executeAction)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
+            _executeAction = executeAction;
+            _canexecuteAction = canexecuteAction;
         }
-
-        public override bool CanExecute(object parameter)
+        public event EventHandler CanExecuteChanged
         {
-            return _canExecute?.Invoke(parameter) ?? true;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
-
-        public override void Execute(object parameter)
+        public bool CanExecute(object parameter)
         {
-            _execute(parameter);
+            return _canexecuteAction == null ? true : _canexecuteAction(parameter);
+        }
+        public void Execute(object parameter)
+        {
+            _executeAction(parameter);
         }
     }
 }
