@@ -59,7 +59,7 @@
                             </StackPanel>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <Button Content="Sign In" FontSize="30" FontWeight="Heavy" Foreground="White" Background="#368C9B" VerticalAlignment="Bottom" Height="100" Command="{Binding LoginCommand}"/>
+                            <Button Content="Sign In" FontSize="30" FontWeight="Heavy" Foreground="White" Background="#368C9B" VerticalAlignment="Bottom" Height="100" Command="{Binding LoginCommand}" IsDefault="True"/>
                         </Grid>
                     </Grid>
 

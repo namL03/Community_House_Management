@@ -1,4 +1,6 @@
 ﻿using Community_House_Management.Commands;
+using Community_House_Management.Stores;
+using Community_House_Management.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +17,7 @@ namespace Community_House_Management.ViewModels
         private string _password;
         private string _errorMessage;
         private bool _isViewVisible;
+        private readonly NavigationStore _navigationStore;
         
         public bool IsViewVisible
         {
@@ -38,7 +41,7 @@ namespace Community_House_Management.ViewModels
             { 
                 _userName = value; 
                 OnPropertyChanged(nameof(UserName));
-                Console.WriteLine($"UserName changed: {_userName}");
+                //Console.WriteLine($"UserName changed: {_userName}");
             } 
         }
 
@@ -52,7 +55,7 @@ namespace Community_House_Management.ViewModels
             { 
                 _password = value; 
                 OnPropertyChanged(nameof(Password));
-                Console.WriteLine($"Password changed: {_password}");
+                //Console.WriteLine($"Password changed: {_password}");
             }
         }
 
@@ -76,6 +79,7 @@ namespace Community_House_Management.ViewModels
         {
             LoginCommand = new RelayCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
             RecoverPasswordCommand = new RelayCommand(p => ExecuteRecoverPasswordCommand("", ""));
+            _navigationStore = new NavigationStore();
         }
 
         private bool CanExecuteLoginCommand(object parameter)
@@ -84,19 +88,35 @@ namespace Community_House_Management.ViewModels
             if (string.IsNullOrWhiteSpace(UserName) || UserName.Length < 3 || Password == null || Password.Length < 3)
             {             
                 validData = false;
-                Console.WriteLine(validData);
+                //Console.WriteLine(validData);
             }
 
             else
             {                
                 validData = true;
-                Console.WriteLine(validData);
+                //Console.WriteLine(validData);
             }
             return validData;
         }
         private void ExecuteLoginCommand(object parameter)
         {
-            throw new NotImplementedException();
+            if(UserName == "admin" && Password == "password")
+            {
+                _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore);
+                MainWindow mainWindow = new MainWindow()
+                {
+                    DataContext = new MainViewModel(_navigationStore)
+                };
+               
+                mainWindow.Show();
+                IsViewVisible = false;
+            }
+            else
+            {
+                ErrorMessage = "Invalid Username or Password";
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+            
         }
         private void ExecuteRecoverPasswordCommand(string username, string email)
         {
