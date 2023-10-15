@@ -10,9 +10,8 @@ namespace Community_House_Management.ModelsDb
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }   
-        public string CitizenId { get; set; }
-        public int PersonId { get; set; }
-        public Person Person { get; set; }
+        public string Password { get; set; }
+        public int OfficialId { get; set; }
+        public Official Official { get; set; }
     }
 }

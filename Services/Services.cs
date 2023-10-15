@@ -46,7 +46,34 @@ namespace Community_House_Management.Services
                 }
             }
         }
-        public async Task CreateAccountAsync(int personId, AccountModel accountCreated)
+        public async Task CreatePropertyAsync(PropertyModel property)
+        {
+            using (var _context = new AppDbContext())
+            {
+                _context.Properties.Add(new Property
+                {
+                    Type = property.Type,
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task<List<PropertyType>> GetPropertiesType()
+        {
+            using (var _context = new AppDbContext ())
+            {
+                var result = await _context.Properties
+                .GroupBy(p => p.Type)
+                .Select(g => new PropertyType
+                {
+                    Type = g.Key,
+                    Count = g.Count()
+                })
+                .ToListAsync();
+                return result;
+            }
+        }
+        
+        /*public async Task CreateAccountAsync(int personId, AccountModel accountCreated)
         {
             using (var _context = new AppDbContext())
             {
@@ -59,6 +86,6 @@ namespace Community_House_Management.Services
                 });
                 await _context.SaveChangesAsync();
             }
-        }
+        }*/
     }
 }

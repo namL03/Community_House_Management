@@ -12,17 +12,7 @@ namespace Community_House_Management.Models
         public int Id { get; set; }
         private string _username;
         private string _password;
-        private string _citizenId;
-        public int PersonId { get; set; }
-        public string CitizenId
-        {
-            get { return _citizenId; }
-            set
-            {
-                _citizenId = value;
-                OnPropertyChanged(nameof(CitizenId));
-            }
-        }
+        public int OfficialId { get; set; }
         public string Username
         {
             get { return _username; }
