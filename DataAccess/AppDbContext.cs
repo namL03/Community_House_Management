@@ -44,10 +44,10 @@ namespace Community_House_Management.DataAccess
                 .HasOne(e => e.Person)
                 .WithMany(p => p.Events)
                 .HasForeignKey(e => e.PersonId);
-            modelBuilder.Entity<OfficialAccount>()
-                .HasOne(a => a.Person)
-                .WithOne(p => p.Account)
-                .HasForeignKey<OfficialAccount>(a => a.PersonId);
+            modelBuilder.Entity<Official>()
+                .HasOne(o => o.OfficialAccount)
+                .WithOne(oc => oc.Official)
+                .HasForeignKey<OfficialAccount>(oc => oc.OfficialId);
         }
     }
 }
