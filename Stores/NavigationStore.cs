@@ -8,6 +8,7 @@ namespace Community_House_Management.Stores
 {
     public class NavigationStore
     {
+        public List<ViewModelBase> ViewModels { get; } = new List<ViewModelBase>();
         private ViewModelBase _currentViewModel;
         public ViewModelBase CurrentViewModel
         {

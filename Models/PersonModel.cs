@@ -44,7 +44,7 @@ namespace Community_House_Management.Models
         }
         public bool IsOfficial
         {
-            get { return IsOfficial; }
+            get { return _isOfficial; }
             set
             {
                 _isOfficial = value;
