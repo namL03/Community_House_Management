@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            
+            <TextBlock Text="THIS IS STARTUPVIEW"/>
         </Grid>
         
         <Grid Grid.Row="1" Grid.Column="1">

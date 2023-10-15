@@ -16,7 +16,9 @@ namespace Community_House_Management.ViewModels
         public ViewModelBase CurrentViewModel => _ownNavigationStore.CurrentViewModel;
         public StartupViewModel(NavigationStore navigationStore)
         {
-            
+            _navigationStore = navigationStore;
+            _ownNavigationStore = new NavigationStore();
+            _ownNavigationStore.CurrentViewModelChanged += OnCurrentChildViewModelChanged;
         }
         public void OnCurrentChildViewModelChanged()
         {
