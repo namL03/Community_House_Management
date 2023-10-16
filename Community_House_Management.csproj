@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\category.png" />
     <None Remove="Resources\Images\menuicon.png" />
+    <None Remove="Resources\Images\plusicon.png" />
     <None Remove="Resources\Images\usericon.png" />
   </ItemGroup>
 
@@ -22,7 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\category.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\menuicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\plusicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\usericon.png">

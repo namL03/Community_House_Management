@@ -58,10 +58,9 @@ namespace Community_House_Management
             {
                 DataContext = new MainViewModel(_navigationStore)
             };
-            //MainWindow.Show();
+            MainWindow.Show();
             base.OnStartup(e);
             ConsoleHelper.Initialize();
-
         }
     }
 }
