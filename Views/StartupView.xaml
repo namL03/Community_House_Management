@@ -28,8 +28,8 @@
             </Grid>
             <Grid Grid.Column="1" Background="#EDEDFC">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="Community House Management" FontWeight="Light" HorizontalAlignment="Left" FontSize="30" Margin="10 0 0 0"/>
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="Community House Management" FontWeight="Light" HorizontalAlignment="Left" FontSize="30" Margin="30 0 0 0"/>
+                    
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="2" Background="#EDEDFC">
@@ -52,7 +52,51 @@
             <StackPanel Orientation="Horizontal">
                 <Grid Background="#7D7D8A" Width="200" Height="800" HorizontalAlignment="Left">
                     <StackPanel>
-                        
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="pack://application:,,,/Resources/Images/category.png"/>
+                                    <TextBlock Text="Category" FontSize="22" Margin="10 0 0 0"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="5">
+                                <Button Content="Facilities" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToFacilityManagementViewCommand}"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="5">
+                                <Button Content="Events" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToEventManagementViewCommand}"/>
+                            </Grid>
+                            <Grid Grid.Row="4" Margin="5">
+                                <Button Content="Items" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToItemManagementViewCommand}"/>
+                            </Grid>
+                            <Grid Grid.Row="5" Margin="5">
+                                <Button Content="Activities" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToActivityManagementViewCommand}"/>
+                            </Grid>
+                            <Grid Grid.Row="6" Margin="5 20 5 5">
+                                
+                                <Grid>
+                                    <Button Content="Login" FontSize="19" Background="#3FCFF6" VerticalAlignment="Bottom" BorderThickness="0" Command="{Binding OpenLoginWindowCommand}"/>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers >
+                                                <DataTrigger Binding="{Binding IsLogggedIn}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers >
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </StackPanel>
                     <Grid.Style>
                         <Style TargetType="Grid">
@@ -72,6 +116,18 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type vms:AccountManagementViewModel}">
                             <views:AccountManagementView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vms:FacilityManagementViewModel}">
+                            <views:FacilityManagementView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vms:EventManagementViewModel}">
+                            <views:EventManagementView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vms:ItemManagementViewModel}">
+                            <views:ItemManagementView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vms:ActivityManagementViewModel}">
+                            <views:ActivityManagementView/>
                         </DataTemplate>
                     </Grid.Resources>
                     <ContentControl Content="{Binding CurrentViewModel}"/>

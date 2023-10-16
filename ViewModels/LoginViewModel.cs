@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels
@@ -71,6 +72,19 @@ namespace Community_House_Management.ViewModels
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
+        private bool isLoggedIn;
+        private bool IsLoggedIn
+        {
+            get { return isLoggedIn; }
+            set
+            {
+                if (value != isLoggedIn)
+                {
+                    isLoggedIn = value;
+                    OnPropertyChanged(nameof(IsLoggedIn));
+                }
+            }
+        }
 
         public ICommand LoginCommand { get; }
         public ICommand RecoverPasswordCommand { get; }
@@ -98,16 +112,17 @@ namespace Community_House_Management.ViewModels
             }
             return validData;
         }
+
         private void ExecuteLoginCommand(object parameter)
         {
             if(UserName == "admin" && Password == "password")
             {
+                Application.Current.MainWindow.Close();
                 _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore);
                 MainWindow mainWindow = new MainWindow()
                 {
                     DataContext = new MainViewModel(_navigationStore)
                 };
-               
                 mainWindow.Show();
                 IsViewVisible = false;
             }
