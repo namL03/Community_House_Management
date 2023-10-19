@@ -52,15 +52,15 @@ namespace Community_House_Management
             {
                 Directory.CreateDirectory(dataDirectory);
             }
-
-            _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore);
+            ConsoleHelper.Initialize();
+            _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, false);
             MainWindow = new MainWindow()
             {
                 DataContext = new MainViewModel(_navigationStore)
             };
             MainWindow.Show();
             base.OnStartup(e);
-            ConsoleHelper.Initialize();
+            
         }
     }
 }

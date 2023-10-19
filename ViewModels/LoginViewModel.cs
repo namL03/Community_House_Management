@@ -32,6 +32,17 @@ namespace Community_House_Management.ViewModels
                 OnPropertyChanged(nameof(IsViewVisible));
             }
         }
+        private bool _isLoginButtonVisible = true;
+
+        public bool IsLoginButtonVisible
+        {
+            get { return _isLoginButtonVisible; }
+            set
+            {
+                _isLoginButtonVisible = value;
+                OnPropertyChanged(nameof(IsLoginButtonVisible));
+            }
+        }
         public string UserName 
         { 
             get 
@@ -72,19 +83,7 @@ namespace Community_House_Management.ViewModels
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
-        private bool isLoggedIn;
-        private bool IsLoggedIn
-        {
-            get { return isLoggedIn; }
-            set
-            {
-                if (value != isLoggedIn)
-                {
-                    isLoggedIn = value;
-                    OnPropertyChanged(nameof(IsLoggedIn));
-                }
-            }
-        }
+        
 
         public ICommand LoginCommand { get; }
         public ICommand RecoverPasswordCommand { get; }
@@ -117,13 +116,13 @@ namespace Community_House_Management.ViewModels
         {
             if(UserName == "admin" && Password == "password")
             {
-                Application.Current.MainWindow.Close();
-                _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore);
-                MainWindow mainWindow = new MainWindow()
-                {
-                    DataContext = new MainViewModel(_navigationStore)
-                };
-                mainWindow.Show();
+
+                Application.Current.MainWindow.DataContext = new MainViewModel(_navigationStore);
+
+                // Switch to the StartupViewModel
+                _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, true);
+
+                // Hide the login view
                 IsViewVisible = false;
             }
             else

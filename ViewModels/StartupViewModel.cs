@@ -31,7 +31,19 @@ namespace Community_House_Management.ViewModels
                 }
             }
         }
-
+        private bool isLoggedIn;
+        public bool IsLoggedIn
+        {
+            get { return isLoggedIn; }
+            set
+            {
+                if (value != isLoggedIn)
+                {
+                    isLoggedIn = value;
+                    OnPropertyChanged(nameof(IsLoggedIn));
+                }
+            }
+        }
         private bool isMenuButtonClicked;
         public bool IsMenuButtonClicked
         {
@@ -54,19 +66,20 @@ namespace Community_House_Management.ViewModels
         public ICommand ToItemManagementViewCommand { get; }
         public ICommand ToActivityManagementViewCommand { get; }
         public ICommand OpenLoginWindowCommand { get; }
-        public StartupViewModel(NavigationStore navigationStore)
+        public StartupViewModel(NavigationStore navigationStore, bool isLoggedIn)
         {
-            
+            this.isLoggedIn = isLoggedIn;
+            Console.WriteLine(IsLoggedIn);
             _navigationStore = navigationStore;
             _ownNavigationStore = new NavigationStore();
-            OpenPopupCommand = new RelayCommand(ExecuteOpenPopupCommand);
+            OpenPopupCommand = new RelayCommand(ExecuteOpenPopupCommand, CanExecuteOpenPopupCommand);
             OpenMenuCommand = new RelayCommand(ExecuteOpenMenuCommand);
             ToAccountManagementViewCommand = new RelayCommand(ExecuteToAccountManagementViewCommand);
             ToFacilityManagementViewCommand = new RelayCommand(ExecuteToFacilityManagementViewCommand);
             ToEventManagementViewCommand = new RelayCommand(ExecuteToEventManagementViewCommand);
             ToItemManagementViewCommand = new RelayCommand(ExecuteToItemManagementViewCommand);
             ToActivityManagementViewCommand = new RelayCommand(ExecuteToActivityManagementViewCommand);
-            OpenLoginWindowCommand = new RelayCommand(ExecuteOpenLoginWindowCommand);
+            OpenLoginWindowCommand = new RelayCommand(ExecuteOpenLoginWindowCommand, CanExecuteOpenLoginWindowCommand);
 
             if (!_ownNavigationStore.ViewModels.Any())
             {
@@ -126,6 +139,16 @@ namespace Community_House_Management.ViewModels
             LoginView loginView = new LoginView();
             loginView.DataContext = loginViewModel;
             loginView.Show();
+        }
+        private bool CanExecuteOpenLoginWindowCommand(object parameter)
+        {
+            if (IsLoggedIn == false) return true;
+            else return false;
+        }
+        private bool CanExecuteOpenPopupCommand(object parameter)
+        {
+            if (IsLoggedIn == false) return false;
+            else return true;
         }
     }
 }
