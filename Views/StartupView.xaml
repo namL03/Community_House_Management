@@ -81,20 +81,23 @@
                                 <Button Content="Activities" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToActivityManagementViewCommand}"/>
                             </Grid>
                             <Grid Grid.Row="6" Margin="5 20 5 5">
-                                
                                 <Grid>
-                                    <Button Content="Login" FontSize="19" Background="#3FCFF6" VerticalAlignment="Bottom" BorderThickness="0" Command="{Binding OpenLoginWindowCommand}"/>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers >
-                                                <DataTrigger Binding="{Binding IsLogggedIn}" Value="True">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers >
-                                        </Style>
-                                    </Grid.Style>
+                                    <Button Content="Login" FontSize="19" Background="#3FCFF6" VerticalAlignment="Bottom" BorderThickness="0" Command="{Binding OpenLoginWindowCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsLoggedIn}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsLoggedIn}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </Grid>
+
                             </Grid>
                         </Grid>
                     </StackPanel>
