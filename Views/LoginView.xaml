@@ -7,7 +7,7 @@
         xmlns:vms="clr-namespace:Community_House_Management.ViewModels"
         xmlns:customcontrols="clr-namespace:Community_House_Management.CustomControl"
         mc:Ignorable="d"
-        Title="LoginView" Height="400" Width="400"
+        Title="LoginView" Height="490" Width="400"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -44,7 +44,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="250"/>
-                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <StackPanel Margin="20">
@@ -59,7 +59,10 @@
                             </StackPanel>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <Button Content="Sign In" FontSize="30" FontWeight="Heavy" Foreground="White" Background="#368C9B" VerticalAlignment="Bottom" Height="100" Command="{Binding LoginCommand}" IsDefault="True"/>
+                            <StackPanel>
+                                <Button Content="Sign In" FontSize="30" FontWeight="Heavy" Foreground="White" Background="#368C9B" VerticalAlignment="Bottom" Height="80" Command="{Binding LoginCommand}" IsDefault="True"/>
+                                <Button Content="Or continue as Guest" FontSize="25" FontWeight="Light" VerticalAlignment="Bottom" Height="75" Background="#C2C2C2" Command="{Binding CloseLoginWindowCommand}"/>
+                            </StackPanel>
                         </Grid>
                     </Grid>
 

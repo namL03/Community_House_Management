@@ -11,8 +11,8 @@ using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels.StartupViewModels
 {
-    public class ActivityManagementViewModel : ViewModelBase
+    public class ResidentManagementViewModel : ViewModelBase
     {
-        public ActivityManagementViewModel(NavigationStore navigationStore) { }
+        public ResidentManagementViewModel(NavigationStore navigationStore) { }
     }
 }

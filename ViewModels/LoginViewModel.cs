@@ -87,11 +87,12 @@ namespace Community_House_Management.ViewModels
 
         public ICommand LoginCommand { get; }
         public ICommand RecoverPasswordCommand { get; }
-
+        public ICommand CloseLoginWindowCommand { get; }
         public LoginViewModel()
         {
             LoginCommand = new RelayCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
             RecoverPasswordCommand = new RelayCommand(p => ExecuteRecoverPasswordCommand("", ""));
+            CloseLoginWindowCommand = new RelayCommand(ExecuteCloseLoginWindowCommand);
             _navigationStore = new NavigationStore();
         }
 
@@ -131,6 +132,18 @@ namespace Community_House_Management.ViewModels
                 OnPropertyChanged(nameof(ErrorMessage));
             }
             
+        }
+        private void ExecuteCloseLoginWindowCommand(object parameter)
+        {
+            Console.WriteLine("executed close login window");
+            foreach (var window in Application.Current.Windows)
+            {
+                if (window is LoginView loginView)
+                {
+                    loginView.Close();
+                    break;
+                }
+            }
         }
         private void ExecuteRecoverPasswordCommand(string username, string email)
         {
