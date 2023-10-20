@@ -8,6 +8,7 @@ using Community_House_Management.Views.StartupViews;
 using Community_House_Management.ViewModels.StartupViewModels;
 using System.CodeDom.Compiler;
 using Community_House_Management.Views;
+using System.Windows;
 
 namespace Community_House_Management.ViewModels
 {
@@ -57,15 +58,15 @@ namespace Community_House_Management.ViewModels
                 }
             }
         }
-
         public ICommand OpenPopupCommand { get; }
         public ICommand ToAccountManagementViewCommand { get;}
         public ICommand OpenMenuCommand { get; }
         public ICommand ToFacilityManagementViewCommand { get; }
         public ICommand ToEventManagementViewCommand { get; }
-        public ICommand ToItemManagementViewCommand { get; }
-        public ICommand ToActivityManagementViewCommand { get; }
+        public ICommand ToResidentManagementViewCommand { get; }
+        public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand OpenLoginWindowCommand { get; }
+        
         public StartupViewModel(NavigationStore navigationStore, bool isLoggedIn)
         {
             this.isLoggedIn = isLoggedIn;
@@ -77,9 +78,10 @@ namespace Community_House_Management.ViewModels
             ToAccountManagementViewCommand = new RelayCommand(ExecuteToAccountManagementViewCommand);
             ToFacilityManagementViewCommand = new RelayCommand(ExecuteToFacilityManagementViewCommand);
             ToEventManagementViewCommand = new RelayCommand(ExecuteToEventManagementViewCommand);
-            ToItemManagementViewCommand = new RelayCommand(ExecuteToItemManagementViewCommand);
-            ToActivityManagementViewCommand = new RelayCommand(ExecuteToActivityManagementViewCommand);
+            ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
+            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
             OpenLoginWindowCommand = new RelayCommand(ExecuteOpenLoginWindowCommand, CanExecuteOpenLoginWindowCommand);
+            
 
             if (!_ownNavigationStore.ViewModels.Any())
             {
@@ -123,15 +125,15 @@ namespace Community_House_Management.ViewModels
             _ownNavigationStore.CurrentViewModel = eventManagementViewModel;
 
         }
-        private void ExecuteToItemManagementViewCommand(Object parameter)
+        private void ExecuteToHouseholdManagementViewCommand(Object parameter)
         {
-            ItemManagementViewModel itemManagementViewModel = new ItemManagementViewModel(_ownNavigationStore);
-            _ownNavigationStore.CurrentViewModel = itemManagementViewModel;
+            HouseholdManagementViewModel householdManagementViewModel = new HouseholdManagementViewModel(_ownNavigationStore);
+            _ownNavigationStore.CurrentViewModel = householdManagementViewModel;
         }
-        private void ExecuteToActivityManagementViewCommand(Object parameter)
+        private void ExecuteToResidentManagementViewCommand(Object parameter)
         {
-            ActivityManagementViewModel activityManagementViewModel = new ActivityManagementViewModel(_ownNavigationStore);
-            _ownNavigationStore.CurrentViewModel = activityManagementViewModel;
+            ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_ownNavigationStore);
+            _ownNavigationStore.CurrentViewModel = residentManagementViewModel;
         }
         private void ExecuteOpenLoginWindowCommand(Object parameter)
         {
@@ -140,6 +142,7 @@ namespace Community_House_Management.ViewModels
             loginView.DataContext = loginViewModel;
             loginView.Show();
         }
+        
         private bool CanExecuteOpenLoginWindowCommand(object parameter)
         {
             if (IsLoggedIn == false) return true;

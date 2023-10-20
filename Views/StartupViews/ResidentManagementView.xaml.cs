@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Community_House_Management.Views.StartupViews
 {
     /// <summary>
-    /// Interaction logic for ActivityManagementView.xaml
+    /// Interaction logic for ResidentManagementView.xaml
     /// </summary>
-    public partial class ActivityManagementView : UserControl
+    public partial class ResidentManagementView : UserControl
     {
-        public ActivityManagementView()
+        public ResidentManagementView()
         {
             InitializeComponent();
         }
