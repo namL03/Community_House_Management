@@ -15,12 +15,13 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <Button BorderThickness="0" Background="White" HorizontalAlignment="Left" Margin="5 0 0 0">
+                <Button BorderThickness="0" Background="White" HorizontalAlignment="Left" Margin="5 0 0 0" Command="{Binding OpenAddEventCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/plusicon.png" Margin="10"/>
                         <TextBlock Text="Add Event" FontSize="18" FontWeight="Bold"  Foreground="#4B87C8" HorizontalAlignment="Left" Margin="0 5 0 5"/>
@@ -29,9 +30,56 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="Recent Events" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <StackPanel>
+                    <TextBlock Text="Event Name" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                    <TextBlock Text="ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                    <TextBlock Text="Time Start" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                    <TextBlock Text="Time End" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                    <TextBlock Text="Event Organizer ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                </StackPanel>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers >
+                            <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers >
+                    </Style>
+                </Grid.Style>
+            </Grid>
+            <Grid Grid.Column="1">
+                <StackPanel>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold">
+                        <TextBlock Text="Add new Event" TextWrapping="WrapWithOverflow"/>
+                    </Button>
+                </StackPanel>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers >
+                            <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers >
+                    </Style>
+                </Grid.Style>
+            </Grid>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="Recent Events" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1">
             <Border BorderBrush="Gray">
 
             </Border>
