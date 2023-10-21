@@ -100,7 +100,7 @@ namespace Community_House_Management.ViewModels
         private void ExecuteOpenPopupCommand(object parameter)
         {
             IsPopupOpen = !IsPopupOpen;
-            Console.WriteLine("executed");
+            //Console.WriteLine("executed");
         }
 
         private void ExecuteOpenMenuCommand(object parameter)
@@ -116,23 +116,23 @@ namespace Community_House_Management.ViewModels
         
         private void ExecuteToFacilityManagementViewCommand(Object parameter)
         {
-            FacilityManagementViewModel facilityManagementViewModel = new FacilityManagementViewModel(_ownNavigationStore);
+            FacilityManagementViewModel facilityManagementViewModel = new FacilityManagementViewModel(_ownNavigationStore, isLoggedIn);
             _ownNavigationStore.CurrentViewModel = facilityManagementViewModel;
         }
         private void ExecuteToEventManagementViewCommand(Object parameter)
         {
-            EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_ownNavigationStore);
+            EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_ownNavigationStore, isLoggedIn);
             _ownNavigationStore.CurrentViewModel = eventManagementViewModel;
 
         }
         private void ExecuteToHouseholdManagementViewCommand(Object parameter)
         {
-            HouseholdManagementViewModel householdManagementViewModel = new HouseholdManagementViewModel(_ownNavigationStore);
+            HouseholdManagementViewModel householdManagementViewModel = new HouseholdManagementViewModel(_ownNavigationStore, isLoggedIn);
             _ownNavigationStore.CurrentViewModel = householdManagementViewModel;
         }
         private void ExecuteToResidentManagementViewCommand(Object parameter)
         {
-            ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_ownNavigationStore);
+            ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_ownNavigationStore, isLoggedIn);
             _ownNavigationStore.CurrentViewModel = residentManagementViewModel;
         }
         private void ExecuteOpenLoginWindowCommand(Object parameter)
