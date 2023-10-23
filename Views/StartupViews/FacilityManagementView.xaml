@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
@@ -36,9 +36,7 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <StackPanel>
-                    <TextBlock Text="Name" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                     <TextBlock Text="Type" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
-                    <TextBlock Text="ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                     <TextBlock Text="Count" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                 </StackPanel>
                 <Grid.Style>
@@ -54,11 +52,9 @@
             </Grid>
             <Grid Grid.Column="1">
                 <StackPanel>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold">
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left" Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left" Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold" Command="{Binding AddPropertyCommand}">
                         <TextBlock Text="Add new Facility" TextWrapping="WrapWithOverflow"/>
                     </Button>
                 </StackPanel>
@@ -78,8 +74,27 @@
             <TextBlock Text="Recent Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
-            <Border BorderBrush="Gray">
-                
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="179*"/>
+                <ColumnDefinition Width="601*"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding PropertyTypes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Type}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Count}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

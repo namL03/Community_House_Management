@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Community_House_Management.Services
 {
-    class Services
+    class Service
     {
         public async Task CreateEventAsync(int creatorId, EventModel eventcreated)
         {
@@ -57,7 +57,7 @@ namespace Community_House_Management.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<PropertyType>> GetPropertiesType()
+        public async Task<List<PropertyType>> GetPropertiesTypeAsync()
         {
             using (var _context = new AppDbContext ())
             {
