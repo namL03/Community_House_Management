@@ -13,20 +13,22 @@ using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Reflection.Metadata;
+using System.Collections.ObjectModel;
 
 namespace Community_House_Management.ViewModels.StartupViewModels
 {
     public class FacilityManagementViewModel : ViewModelBase
     {
         private Service service = new Service();
-        private List<PropertyType> propertyTypes;
-        public List<PropertyType> PropertyTypes
+        private List<PropertyType> propertyTypesList;
+        public List<PropertyType> PropertyTypesList
         {
-            get { return propertyTypes; }
+            get { return propertyTypesList; }
             set
             {
-                propertyTypes = value;
-                OnPropertyChanged(nameof(PropertyTypes));
+                propertyTypesList = value;
+                OnPropertyChanged(nameof(PropertyTypesList));
             }
         }
         private readonly NavigationStore _navigationStore;
@@ -74,21 +76,93 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(IsAddFacilityClicked));
             }
         }
-        
+        private int _selectedNumber;
+        public int SelectedNumber
+        {
+            get
+            {
+                return _selectedNumber;
+            }
+            set
+            {
+                _selectedNumber = value;
+                OnPropertyChanged(nameof(SelectedNumber));
+            }
+        }
+        private List<PropertyType> pagedPropertyTypesList;
+        public List<PropertyType> PagedPropertyTypesList
+        {
+            get { return pagedPropertyTypesList; }
+            set
+            {
+                pagedPropertyTypesList = value;
+                OnPropertyChanged(nameof(PagedPropertyTypesList));
+            }
+        }
+        private List<int> _pageNumbers;
+        public List<int> PageNumbers
+        {
+            get { return _pageNumbers; }
+            set
+            {
+                _pageNumbers = value;
+                OnPropertyChanged(nameof(PageNumbers));
+            }
+        }
+
+        private int _currentPage;
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        public List<int> NumberOfPropertyTypes
+        {
+            get
+            {
+                List<int> numberOfPropertyTypes = new List<int>();
+                if (PropertyTypesList != null)
+                {
+                    for (int i = 0; i <= PropertyTypesList.Count(); i++)
+                    {
+                        numberOfPropertyTypes.Add(i);
+                    }
+                }
+                return numberOfPropertyTypes;
+            }
+        }
+
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
+        public ICommand NextPageCommand { get; }
+        public ICommand PreviousPageCommand { get; }
+        public ICommand ChangePageCommand { get; }
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
-        {
-            _ = LoadProperties();
+        {          
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
             OpenAddFacilityCommand = new RelayCommand(ExecuteOpenAddFacilityCommand, CanExecuteOpenAddFacilityCommand);
+            NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
+            PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
+            ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             AddPropertyCommand = new AsyncRelayCommand(ExecuteAddPropertyCommand, CanExecuteAddPropertyCommand);
+            _ = LoadProperties();
         }
         private async Task LoadProperties()
         {
-            PropertyTypes = await service.GetPropertiesTypeAsync();
-            OnPropertyChanged(nameof(PropertyTypes));
+            PropertyTypesList = await service.GetPropertiesTypeAsync();
+            OnPropertyChanged(nameof(PropertyTypesList));
+            CurrentPage = 1;
+            UpdatePagedPropertyTypesList();
+            UpdatePageNumbers();
+            OnPropertyChanged(nameof(PropertyTypesList));
+            OnPropertyChanged(nameof(NumberOfPropertyTypes));
+            OnPropertyChanged(nameof(CurrentPage));
         }
         private async Task ExecuteAddPropertyCommand(object parameter)
         {
@@ -102,7 +176,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
             await LoadProperties();
         }
-        private bool canAddProperty => (Count != null && Type != string.Empty);
+        
         private bool CanExecuteAddPropertyCommand(object parameter)
         {
             return Count != null && Type != string.Empty;
@@ -115,6 +189,59 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             if (isLoggedIn == true) return true;
             else return false;
-        }     
+        }
+        private void UpdatePagedPropertyTypesList()
+        {
+            int startIndex = (CurrentPage - 1) * 10;
+            PagedPropertyTypesList = new List<PropertyType>(PropertyTypesList.Skip(startIndex).Take(10));
+        }
+
+        private void UpdatePageNumbers()
+        {
+            if (PropertyTypesList != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)PropertyTypesList.Count() / 10);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>(); // Khởi tạo PageNumbers thành một danh sách rỗng
+            }
+        }
+        private void ExecuteChangePageCommand(object parameter)
+        {
+            if (parameter is int page)
+            {
+                CurrentPage = page;
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private void ExecutePreviousPageCommand(object parameter)
+        {
+            if (CanExecutePreviousPageCommand(parameter))
+            {
+                CurrentPage--;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private void ExecuteNextPageCommand(object parameter)
+        {
+            if (CanExecuteNextPageCommand(parameter))
+            {
+                CurrentPage++;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private bool CanExecutePreviousPageCommand(object parameter)
+        {
+            return CurrentPage > 1;
+        }
+
+        private bool CanExecuteNextPageCommand(object parameter)
+        {
+            return CurrentPage < PageNumbers.Count;
+        }
     }
 }
