@@ -16,6 +16,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="27"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -73,13 +74,55 @@
         <Grid Grid.Row="2" Grid.Column="1">
             <TextBlock Text="Recent Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
+        <Grid Grid.Row="3" Grid.Column="1" Margin="15 0 0 0">
+            <WrapPanel Orientation="Horizontal">
+                <Button Margin="0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
+                    <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+                <ItemsControl ItemsSource="{Binding PageNumbers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="30" Height="30" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="LightGray" />
+                                            </Trigger>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <Binding Path="Content" RelativeSource="{RelativeSource Self}" />
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Background" Value="Yellow" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Content>
+                                    <TextBlock Text="{Binding}" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Width="30" Height="30" Command="{Binding NextPageCommand}">
+                    <TextBlock Text="&gt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+            </WrapPanel>
+        </Grid>
 
-
-        <Grid Grid.Row="3" Grid.Column="1">
+        <Grid Grid.Row="4" Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Button Background="#3681D2">
@@ -92,12 +135,12 @@
                     </Button>
                 </Grid>
             </Grid>
-            
+
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="1">
-            
+        <Grid Grid.Row="5" Grid.Column="1">
+
             <StackPanel>
-                <ItemsControl ItemsSource="{Binding PropertyTypes}">
+                <ItemsControl ItemsSource="{Binding PagedPropertyTypesList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -120,8 +163,8 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                
             </StackPanel>
         </Grid>
+
     </Grid>
 </UserControl>
