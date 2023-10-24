@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Runtime.CompilerServices;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace Community_House_Management.ViewModels.StartupViewModels
 {
@@ -72,6 +74,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(IsAddFacilityClicked));
             }
         }
+        
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
@@ -86,11 +89,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             PropertyTypes = await service.GetPropertiesTypeAsync();
             OnPropertyChanged(nameof(PropertyTypes));
-            foreach (var propertyType in PropertyTypes)
-            {
-                Console.WriteLine(propertyType.Type);
-                Console.WriteLine(propertyType.Count);
-            }
         }
         private async Task ExecuteAddPropertyCommand(object parameter)
         {
@@ -117,6 +115,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             if (isLoggedIn == true) return true;
             else return false;
-        }
+        }     
     }
 }

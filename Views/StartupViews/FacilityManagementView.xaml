@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
@@ -17,6 +16,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="27"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.Column="1">
@@ -73,29 +73,55 @@
         <Grid Grid.Row="2" Grid.Column="1">
             <TextBlock Text="Recent Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
+
+
         <Grid Grid.Row="3" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="179*"/>
-                <ColumnDefinition Width="601*"/>
-            </Grid.ColumnDefinitions>
-            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding PropertyTypes}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Type}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Count}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Button Background="#3681D2">
+                        <TextBlock Text="Type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Button Background="#3681D2">
+                        <TextBlock Text="Count" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Button>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="1">
+            
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding PropertyTypes}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                        <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
+                                    </Border>
                                 </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
+                                <Grid Grid.Column="1" >
+                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                        <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

@@ -18,6 +18,7 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="40"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Grid.Column="1">
@@ -80,7 +81,7 @@
             <Grid Grid.Row="2" Grid.Column="1">
                 <TextBlock Text="Recent Residents" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
             </Grid>
-            <Grid Grid.Row="3" Grid.Column="1">
+            <Grid Grid.Row="4" Grid.Column="1">
                 <Border BorderBrush="Gray">
 
                 </Border>
