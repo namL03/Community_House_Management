@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Reflection.Metadata;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Community_House_Management.ViewModels.StartupViewModels
 {
@@ -89,8 +90,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(SelectedNumber));
             }
         }
-        private List<PropertyType> pagedPropertyTypesList;
-        public List<PropertyType> PagedPropertyTypesList
+        private ObservableCollection<PropertyType> pagedPropertyTypesList;
+        public ObservableCollection<PropertyType> PagedPropertyTypesList
         {
             get { return pagedPropertyTypesList; }
             set
@@ -136,12 +137,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 return numberOfPropertyTypes;
             }
         }
-
+        private string searchText;
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+                UpdatePagedPropertyTypesList();
+            }
+        }
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
+        public ICommand SearchByTypeCommand { get; }
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         {          
             _navigationStore = navigationStore;
@@ -151,6 +163,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             AddPropertyCommand = new AsyncRelayCommand(ExecuteAddPropertyCommand, CanExecuteAddPropertyCommand);
+            SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             _ = LoadProperties();
         }
         private async Task LoadProperties()
@@ -190,22 +203,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (isLoggedIn == true) return true;
             else return false;
         }
+        int elementsPerPage = 5;
         private void UpdatePagedPropertyTypesList()
         {
-            int startIndex = (CurrentPage - 1) * 10;
-            PagedPropertyTypesList = new List<PropertyType>(PropertyTypesList.Skip(startIndex).Take(10));
+            int startIndex = (CurrentPage - 1) * elementsPerPage;
+            PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Skip(startIndex).Take(elementsPerPage));
         }
 
         private void UpdatePageNumbers()
         {
             if (PropertyTypesList != null)
             {
-                int totalPages = (int)Math.Ceiling((double)PropertyTypesList.Count() / 10);
+                int totalPages = (int)Math.Ceiling((double)PropertyTypesList.Count() / elementsPerPage);
                 PageNumbers = Enumerable.Range(1, totalPages).ToList();
             }
             else
             {
-                PageNumbers = new List<int>(); // Khởi tạo PageNumbers thành một danh sách rỗng
+                PageNumbers = new List<int>();
             }
         }
         private void ExecuteChangePageCommand(object parameter)
@@ -242,6 +256,33 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private bool CanExecuteNextPageCommand(object parameter)
         {
             return CurrentPage < PageNumbers.Count;
+        }
+        private void ExecuteSearchByTypeCommand(object parameter)
+        {
+            Console.WriteLine($"SearchText: {SearchText}");
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                
+                IEnumerable<PropertyType> filteredList = PropertyTypesList
+                    .Where(item => item.Type.ToLower().Contains(SearchText.ToLower()));
+                Console.WriteLine($"Filtered Count: {filteredList.Count()}");
+                //PagedPropertyTypesList = new ObservableCollection<PropertyType>(filteredList.Take(elementsPerPage));
+                PagedPropertyTypesList = new ObservableCollection<PropertyType>();
+                
+                foreach(var e in PagedPropertyTypesList)
+                {
+                    Console.WriteLine(e.Type + " " + e.Count);
+                }
+                Console.WriteLine($"PagedPropertyTypesList Count: {PagedPropertyTypesList.Count}");
+                CurrentPage = 1;
+                UpdatePageNumbers();
+                UpdatePagedPropertyTypesList();
+                OnPropertyChanged(nameof(PagedPropertyTypesList));
+            }
+            else
+            {                
+                UpdatePagedPropertyTypesList();
+            }
         }
     }
 }
