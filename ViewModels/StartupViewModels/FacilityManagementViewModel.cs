@@ -148,6 +148,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedPropertyTypesList();
             }
         }
+        private IEnumerable<PropertyType> _filteredList;
+        public IEnumerable<PropertyType> FilteredList
+        {
+            get { return _filteredList; }
+            set
+            {
+                _filteredList = value;
+                OnPropertyChanged(nameof(FilteredList));
+            }
+        }
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
         public ICommand NextPageCommand { get; }
@@ -168,8 +178,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private async Task LoadProperties()
         {
-            PropertyTypesList = await service.GetPropertiesTypeAsync();
-            OnPropertyChanged(nameof(PropertyTypesList));
+            PropertyTypesList = await service.GetPropertiesTypeAsync();           
             CurrentPage = 1;
             UpdatePagedPropertyTypesList();
             UpdatePageNumbers();
@@ -222,6 +231,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 PageNumbers = new List<int>();
             }
         }
+        private void UpdatePageNumbersAfterSearch()
+        {
+            if(FilteredList != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)FilteredList.Count() / elementsPerPage);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>();
+            }
+        }
+        
         private void ExecuteChangePageCommand(object parameter)
         {
             if (parameter is int page)
@@ -259,29 +281,30 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private void ExecuteSearchByTypeCommand(object parameter)
         {
-            Console.WriteLine($"SearchText: {SearchText}");
             if (!string.IsNullOrEmpty(SearchText))
             {
-                
-                IEnumerable<PropertyType> filteredList = PropertyTypesList
-                    .Where(item => item.Type.ToLower().Contains(SearchText.ToLower()));
-                Console.WriteLine($"Filtered Count: {filteredList.Count()}");
-                //PagedPropertyTypesList = new ObservableCollection<PropertyType>(filteredList.Take(elementsPerPage));
-                PagedPropertyTypesList = new ObservableCollection<PropertyType>();
-                
-                foreach(var e in PagedPropertyTypesList)
+                FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+                Console.WriteLine("filterdList count " + FilteredList.Count());
+                foreach (var e in FilteredList)
                 {
                     Console.WriteLine(e.Type + " " + e.Count);
-                }
-                Console.WriteLine($"PagedPropertyTypesList Count: {PagedPropertyTypesList.Count}");
-                CurrentPage = 1;
-                UpdatePageNumbers();
-                UpdatePagedPropertyTypesList();
+                }                        
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Take(elementsPerPage));
+                    UpdatePageNumbersAfterSearch();
+                });
                 OnPropertyChanged(nameof(PagedPropertyTypesList));
+                CurrentPage = 1;               
+                UpdatePagedPropertyTypesList();
             }
             else
-            {                
-                UpdatePagedPropertyTypesList();
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Take(elementsPerPage));
+                    UpdatePageNumbers();
+                });
             }
         }
     }
