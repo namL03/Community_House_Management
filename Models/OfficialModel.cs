@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.Models
 {
-    class OfficialModel : PersonModel
+    public class OfficialModel : PersonModel
     {
         
     }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.Models
 {
-    class PersonModel : ViewModelBase
+    public class PersonModel : ViewModelBase
     {
         public int Id { get; set; }
-        public int HouseholdId { get; set; }
+        public int? HouseholdId { get; set; }
         private string _citizenId;
         private string _address;
         private string _name;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.Models
 {
-    class AccountModel : ViewModelBase
+    public class AccountModel : ViewModelBase
     {
         public int Id { get; set; }
         private string _username;

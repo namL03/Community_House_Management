@@ -8,13 +8,23 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.Models
 {
-    class EventModel : ViewModelBase
+    public class EventModel : ViewModelBase
     {
         public int Id { get; set; }
         public int PersonId { get; set; }
         private string _name;
         private DateTime _timeStart;
         private DateTime _timeEnd;
+        private List<PropertyType> propertyTypes;
+        public List<PropertyType> PropertyTypes
+        {
+            get => propertyTypes;
+            set
+            {
+                propertyTypes = value;
+                OnPropertyChanged(nameof(PropertyTypes));
+            }
+        }
         public string Name
         {
             get { return _name; }

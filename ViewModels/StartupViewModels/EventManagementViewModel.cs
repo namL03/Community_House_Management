@@ -1,4 +1,6 @@
 ﻿using Community_House_Management.Commands;
+using Community_House_Management.Models;
+using Community_House_Management.Services;
 using Community_House_Management.Stores;
 using Community_House_Management.Views;
 using System;
@@ -57,6 +59,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
         }
 
+        private Service services = new Service();
+        private IEnumerable<EventModel> events;
+        public IEnumerable<EventModel> Events
+        {
+            get => events;
+            set
+            {
+                events = value;
+                OnPropertyChanged(nameof(Events));
+            }
+        }
 
         private readonly NavigationStore _navigationStore;
         private bool isLoggedIn;
@@ -83,11 +96,48 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
         }
         public ICommand OpenAddEventCommand { get; }
+        public ICommand AddEventCommand { get; }
         public EventManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         { 
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
+            DateStart = DateTime.Now;
+            DateEnd = DateTime.Now;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
+            AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
+            _ = LoadEvents();
+        }
+        private async Task LoadEvents()
+        {
+            Events = await services.GetEventsAsync();
+        }
+        private async Task ExecuteAddEventCommand(object parameter)
+        {
+            PersonModel creator = await services.GetPersonByCitizenIdAsync(OrganizerCitizenId);
+            if(creator == null)
+            {
+                System.Windows.MessageBox.Show("Error. The CitizenId doesn't exist");
+            }
+            else
+            {
+                EventModel eventcreated = new EventModel
+                {
+                    Name = this.Name,
+                    TimeStart = DateStart,
+                    TimeEnd = DateEnd,
+                    PersonId = creator.Id,
+                };
+                await services.CreateEventAsync(eventcreated);
+                await LoadEvents();
+                System.Windows.MessageBox.Show("Event created successfully!");
+                DateStart = DateTime.Now;
+                DateEnd = DateTime.Now;
+                Name = string.Empty;
+            }
+        }
+        private bool CanExecuteAddEventCommand(object parameter)
+        {
+            return Name != null && DateStart < DateEnd && DateStart > DateTime.Now;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
         {         

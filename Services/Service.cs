@@ -12,7 +12,7 @@ namespace Community_House_Management.Services
 {
     class Service
     {
-        public async Task CreateEventAsync(int creatorId, EventModel eventcreated)
+        public async Task CreateEventAsync(EventModel eventcreated)
         {
             using (var _context = new AppDbContext())
             {
@@ -21,7 +21,7 @@ namespace Community_House_Management.Services
                     Name = eventcreated.Name,
                     timeEnd = eventcreated.TimeEnd,
                     timeStart = eventcreated.TimeStart,
-                    PersonId = creatorId
+                    PersonId = eventcreated.PersonId
                 });
                 await _context.SaveChangesAsync();
             }
@@ -72,7 +72,52 @@ namespace Community_House_Management.Services
                 return result;
             }
         }
-        
+
+        public async Task<List<EventModel>> GetEventsAsync()
+        {
+            using (var _context = new AppDbContext())
+            {
+                var result = await _context.Events
+                    .Include(e => e.EventProperties)
+                    .ThenInclude(ep => ep.Property)
+                    .Select(e => new EventModel
+                    {
+                        Id = e.Id,
+                        PersonId = e.PersonId,
+                        TimeEnd = e.timeEnd,
+                        TimeStart = e.timeStart,
+                        Name = e.Name,
+                        PropertyTypes = e.EventProperties
+                            .GroupBy(ep => ep.Property.Type)
+                            .Select(g => new PropertyType 
+                            {
+                                Type = g.Key,
+                                Count = g.Count()
+                            })
+                            .ToList()
+                    })
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+        public async Task<PersonModel> GetPersonByCitizenIdAsync(string citizenid)
+        {
+            using (var _context = new AppDbContext())
+            {
+                return await _context.Persons
+                    .Where(p => p.CitizenId == citizenid)
+                    .Select(p => new PersonModel
+                    {
+                        Id = p.Id,
+                        CitizenId = p.CitizenId,
+                        HouseholdId = p.HouseholdId,
+                        Address = p.Address,
+                        Name = p.Name
+                    })
+                    .SingleOrDefaultAsync();
+            }
+        }
         /*public async Task CreateAccountAsync(int personId, AccountModel accountCreated)
         {
             using (var _context = new AppDbContext())
