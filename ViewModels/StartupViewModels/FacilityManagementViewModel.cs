@@ -144,6 +144,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             set
             {
                 searchText = value;
+                while (searchText != string.Empty && searchText.EndsWith(' '))
+                {
+                    searchText = searchText.Remove(searchText.Length - 1);
+                }
                 OnPropertyChanged(nameof(SearchText));
                 UpdatePagedPropertyTypesList();
             }
@@ -178,7 +182,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private async Task LoadProperties()
         {
-            PropertyTypesList = await service.GetPropertiesTypeAsync();           
+            PropertyTypesList = await service.GetPropertiesTypeAsync();
+            FilteredList = PropertyTypesList;
             CurrentPage = 1;
             UpdatePagedPropertyTypesList();
             UpdatePageNumbers();
@@ -196,6 +201,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 };
                 await service.CreatePropertyAsync(propertyModel);
             }
+            Type = string.Empty;
+            Count = null;
             await LoadProperties();
         }
         
@@ -216,7 +223,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private void UpdatePagedPropertyTypesList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;
-            PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Skip(startIndex).Take(elementsPerPage));
+            PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Skip(startIndex).Take(elementsPerPage));
         }
 
         private void UpdatePageNumbers()
@@ -302,6 +309,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             {
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
+                    FilteredList = PropertyTypesList;
                     PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Take(elementsPerPage));
                     UpdatePageNumbers();
                 });

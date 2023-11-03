@@ -13,6 +13,51 @@ namespace Community_House_Management.ViewModels.StartupViewModels
 {
     public class EventManagementViewModel : ViewModelBase
     {
+        private string name;
+        public string Name
+        {
+            get { return name; } 
+            set
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        private string organizerCitizenId;
+        public string OrganizerCitizenId
+        {
+            get { return organizerCitizenId; }
+            set
+            {
+                organizerCitizenId = value;
+                OnPropertyChanged(nameof(OrganizerCitizenId));
+            }
+        }
+
+        private DateTime dateStart;
+        public DateTime DateStart
+        {
+            get { return dateStart; }
+            set
+            {
+                dateStart = value;
+                OnPropertyChanged(nameof(DateStart));
+            }
+        }
+
+        private DateTime dateEnd;
+        public DateTime DateEnd
+        {
+            get { return dateEnd; }
+            set
+            {
+                dateEnd = value;
+                OnPropertyChanged(nameof(DateEnd));
+            }
+        }
+
+
         private readonly NavigationStore _navigationStore;
         private bool isLoggedIn;
         public bool IsLoggedIn
@@ -53,5 +98,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (IsLoggedIn == true) return true;
             else return false;
         }
+
     }
 }

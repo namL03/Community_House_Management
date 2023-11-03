@@ -38,10 +38,9 @@
             <Grid Grid.Column="0">
                 <StackPanel>
                     <TextBlock Text="Event Name" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
-                    <TextBlock Text="ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                     <TextBlock Text="Time Start" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                     <TextBlock Text="Time End" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
-                    <TextBlock Text="Event Organizer ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                    <TextBlock Text="Event Organizer CitizenID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                 </StackPanel>
                 <Grid.Style>
                     <Style TargetType="Grid">
