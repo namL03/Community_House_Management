@@ -59,7 +59,6 @@
                     <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
                     <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
                     <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
                     <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold">
                         <TextBlock Text="Add new Event" TextWrapping="WrapWithOverflow"/>
                     </Button>
@@ -80,7 +79,11 @@
             <TextBlock Text="Recent Events" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
-            <Border BorderBrush="Gray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="31*"/>
+                <ColumnDefinition Width="229*"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
 
             </Border>
         </Grid>
