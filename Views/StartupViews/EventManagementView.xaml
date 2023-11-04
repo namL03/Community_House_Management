@@ -44,7 +44,7 @@
                 </StackPanel>
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers >
                             <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -56,8 +56,16 @@
             <Grid Grid.Column="1">
                 <StackPanel>
                     <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                    <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox SelectedItem="{Binding SelectedStartDay}" ItemsSource="{Binding Days}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                        <ComboBox SelectedItem="{Binding SelectedStartMonth}" ItemsSource="{Binding Months}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                        <ComboBox SelectedItem="{Binding SelectedStartYear}" ItemsSource="{Binding Years}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox SelectedItem="{Binding SelectedEndDay}" ItemsSource="{Binding Days}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                        <ComboBox SelectedItem="{Binding SelectedEndMonth}" ItemsSource="{Binding Months}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                        <ComboBox SelectedItem="{Binding SelectedEndYear}" ItemsSource="{Binding Years}" FontSize="16" Height="25" Padding="3 3 0 0" Margin="4" Width="80" HorizontalAlignment="Left"/>
+                    </StackPanel>
                     <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
                     <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold">
                         <TextBlock Text="Add new Event" TextWrapping="WrapWithOverflow"/>
@@ -65,7 +73,7 @@
                 </StackPanel>
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers >
                             <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
