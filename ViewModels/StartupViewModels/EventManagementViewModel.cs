@@ -36,11 +36,75 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(OrganizerCitizenId));
             }
         }
+        private int selectedStartDay;
+        public int SelectedStartDay
+        {
+            get { return selectedStartDay; }
+            set
+            {
+                selectedStartDay = value;
+                OnPropertyChanged(nameof(SelectedStartDay));
+            }
+        }
 
+        private int selectedStartMonth;
+        public int SelectedStartMonth
+        {
+            get { return selectedStartMonth; }
+            set
+            {
+                selectedStartMonth = value;
+                OnPropertyChanged(nameof(SelectedStartMonth));
+            }
+        }
+        private int selectedStartYear;
+        public int SelectedStartYear
+        {
+            get { return selectedStartYear; }
+            set
+            {
+                selectedStartYear = value;
+                OnPropertyChanged(nameof(SelectedStartYear));
+            }
+        }
+        private int selectedEndDay;
+        public int SelectedEndDay
+        {
+            get { return selectedEndDay; }
+            set
+            {
+                selectedEndDay = value;
+                OnPropertyChanged(nameof(SelectedEndDay));
+            }
+        }
+
+        private int selectedEndMonth;
+        public int SelectedEndMonth
+        {
+            get { return selectedEndMonth; }
+            set
+            {
+                selectedEndMonth = value;
+                OnPropertyChanged(nameof(SelectedEndMonth));
+            }
+        }
+        private int selectedEndYear;
+        public int SelectedEndYear
+        {
+            get { return selectedEndYear; }
+            set
+            {
+                selectedEndYear = value;
+                OnPropertyChanged(nameof(SelectedEndYear));
+            }
+        }
+        public IEnumerable<int> Days { get; } = Enumerable.Range(1, 31);
+        public IEnumerable<int> Months { get; } = Enumerable.Range(1, 12);
+        public IEnumerable<int> Years { get; } = Enumerable.Range(2000, 100);
         private DateTime dateStart;
         public DateTime DateStart
         {
-            get { return dateStart; }
+            get { return new DateTime(SelectedStartYear, SelectedStartMonth, SelectedStartDay); }
             set
             {
                 dateStart = value;
@@ -51,7 +115,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private DateTime dateEnd;
         public DateTime DateEnd
         {
-            get { return dateEnd; }
+            get { return new DateTime(SelectedEndYear, SelectedEndMonth, SelectedEndDay); ; }
             set
             {
                 dateEnd = value;
