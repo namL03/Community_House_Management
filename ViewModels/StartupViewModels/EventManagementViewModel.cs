@@ -55,6 +55,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             {
                 selectedStartMonth = value;
                 OnPropertyChanged(nameof(SelectedStartMonth));
+                UpdateDays();
             }
         }
         private int selectedStartYear;
@@ -86,6 +87,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             {
                 selectedEndMonth = value;
                 OnPropertyChanged(nameof(SelectedEndMonth));
+                UpdateDays();
             }
         }
         private int selectedEndYear;
@@ -98,7 +100,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(SelectedEndYear));
             }
         }
-        public IEnumerable<int> Days { get; } = Enumerable.Range(1, 31);
+        private List<int> days;
+        public List<int> Days
+        {
+            get { return days; }
+            set
+            {
+                days = value;
+                OnPropertyChanged(nameof(Days));
+            }
+        }
         public IEnumerable<int> Months { get; } = Enumerable.Range(1, 12);
         public IEnumerable<int> Years { get; } = Enumerable.Range(2000, 100);
         private DateTime dateStart;
@@ -212,6 +223,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (IsLoggedIn == true) return true;
             else return false;
         }
-
+        private void UpdateDays()
+        {
+            int daysInMonth = DateTime.DaysInMonth(SelectedStartYear, SelectedStartMonth);
+            Days = Enumerable.Range(1, daysInMonth).ToList();
+            OnPropertyChanged(nameof(Days));
+        }
     }
 }
