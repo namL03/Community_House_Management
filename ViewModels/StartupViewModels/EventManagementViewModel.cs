@@ -111,27 +111,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
         }
         public IEnumerable<int> Months { get; } = Enumerable.Range(1, 12);
-        public IEnumerable<int> Years { get; } = Enumerable.Range(2000, 100);
+        public IEnumerable<int> Years { get; } = Enumerable.Range((int)DateTime.Now.Year, 100);
         private DateTime dateStart;
         public DateTime DateStart
         {
             get { return new DateTime(SelectedStartYear, SelectedStartMonth, SelectedStartDay); }
-            set
-            {
-                dateStart = value;
-                OnPropertyChanged(nameof(DateStart));
-            }
         }
 
         private DateTime dateEnd;
         public DateTime DateEnd
         {
             get { return new DateTime(SelectedEndYear, SelectedEndMonth, SelectedEndDay); ; }
-            set
-            {
-                dateEnd = value;
-                OnPropertyChanged(nameof(DateEnd));
-            }
         }
 
         private Service services = new Service();
@@ -176,8 +166,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         { 
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
-            DateStart = DateTime.Now;
-            DateEnd = DateTime.Now;
+            SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
+            SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
+            SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
             _ = LoadEvents();
@@ -205,8 +196,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
                 System.Windows.MessageBox.Show("Event created successfully!");
-                DateStart = DateTime.Now;
-                DateEnd = DateTime.Now;
+                SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
+                SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
+                SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
                 Name = string.Empty;
             }
         }
