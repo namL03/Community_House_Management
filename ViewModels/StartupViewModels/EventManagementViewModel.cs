@@ -36,92 +36,98 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(OrganizerCitizenId));
             }
         }
-        private int selectedStartDay;
-        public int SelectedStartDay
-        {
-            get { return selectedStartDay; }
-            set
-            {
-                selectedStartDay = value;
-                OnPropertyChanged(nameof(SelectedStartDay));
-            }
-        }
 
-        private int selectedStartMonth;
-        public int SelectedStartMonth
+        private int startHour;
+        public int StartHour
         {
-            get { return selectedStartMonth; }
+            get { return startHour; }
             set
             {
-                selectedStartMonth = value;
-                OnPropertyChanged(nameof(SelectedStartMonth));
-                UpdateDays();
+                startHour = value;
+                OnPropertyChanged(nameof(StartHour));
             }
         }
-        private int selectedStartYear;
-        public int SelectedStartYear
+        private int startMinute;
+        public int StartMinute
         {
-            get { return selectedStartYear; }
+            get { return startMinute; }
             set
             {
-                selectedStartYear = value;
-                OnPropertyChanged(nameof(SelectedStartYear));
+                startMinute = value;
+                OnPropertyChanged(nameof(StartMinute));
             }
         }
-        private int selectedEndDay;
-        public int SelectedEndDay
+        private int startSecond;
+        public int StartSecond
         {
-            get { return selectedEndDay; }
+            get { return startSecond; }
             set
             {
-                selectedEndDay = value;
-                OnPropertyChanged(nameof(SelectedEndDay));
+                startSecond = value;
+                OnPropertyChanged(nameof(StartSecond));
             }
         }
-
-        private int selectedEndMonth;
-        public int SelectedEndMonth
+        private int endHour;
+        public int EndHour
         {
-            get { return selectedEndMonth; }
+            get { return endHour; }
             set
             {
-                selectedEndMonth = value;
-                OnPropertyChanged(nameof(SelectedEndMonth));
-                UpdateDays();
+                endHour = value;
+                OnPropertyChanged(nameof(EndHour));
             }
         }
-        private int selectedEndYear;
-        public int SelectedEndYear
+        private int endMinute;
+        public int EndMinute
         {
-            get { return selectedEndYear; }
+            get { return endMinute; }
             set
             {
-                selectedEndYear = value;
-                OnPropertyChanged(nameof(SelectedEndYear));
+                endMinute = value;
+                OnPropertyChanged(nameof(EndMinute));
             }
         }
-        private List<int> days;
-        public List<int> Days
+        private int endSecond;
+        public int EndSecond
         {
-            get { return days; }
+            get { return endSecond; }
             set
             {
-                days = value;
-                OnPropertyChanged(nameof(Days));
+                endSecond = value;
+                OnPropertyChanged(nameof(EndSecond));
             }
         }
-        public IEnumerable<int> Months { get; } = Enumerable.Range(1, 12);
-        public IEnumerable<int> Years { get; } = Enumerable.Range((int)DateTime.Now.Year, 100);
+        public IEnumerable<int> Hours { get; } = Enumerable.Range(0, 24);
+        public IEnumerable<int> Minutes { get; } = Enumerable.Range(0, 60);
+        public IEnumerable<int> Seconds { get; } = Enumerable.Range(0, 60);
         private DateTime dateStart;
         public DateTime DateStart
         {
-            get { return new DateTime(SelectedStartYear, SelectedStartMonth, SelectedStartDay); }
+            get { return dateStart; }
+            set
+            {
+                if (dateStart != value)
+                {
+                    dateStart = value;
+                    Console.WriteLine(dateStart.ToString());
+                    OnPropertyChanged(nameof(DateStart));
+                }
+            }
         }
 
         private DateTime dateEnd;
         public DateTime DateEnd
         {
-            get { return new DateTime(SelectedEndYear, SelectedEndMonth, SelectedEndDay); ; }
+            get { return dateEnd; }
+            set
+            {
+                if (dateEnd != value)
+                {
+                    dateEnd = value;
+                    Console.WriteLine(dateEnd.ToString());
+                    OnPropertyChanged(nameof(DateEnd));
+                }
+            }
         }
 
         private Service services = new Service();
@@ -166,16 +172,24 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         { 
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
-            SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
-            SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
-            SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
+            dateStart = DateTime.Now;
+            dateEnd = DateTime.Now;
+            //SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
+            //SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
+            //SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
             _ = LoadEvents();
         }
         private async Task LoadEvents()
         {
+            Console.WriteLine(DateTime.Now.ToString());
             Events = await services.GetEventsAsync();
+            //foreach(var e in Events)
+            //{
+            //    Console.WriteLine(e.TimeStart);
+            //    Console.WriteLine(e.TimeEnd);
+            //}
         }
         private async Task ExecuteAddEventCommand(object parameter)
         {
@@ -189,22 +203,35 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 EventModel eventcreated = new EventModel
                 {
                     Name = this.Name,
-                    TimeStart = DateStart,
-                    TimeEnd = DateEnd,
+                    //TimeStart = DateStart,
+                    //TimeEnd = DateEnd,
+                    TimeStart = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond),
+                    TimeEnd = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond),
                     PersonId = creator.Id,
                 };
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
                 System.Windows.MessageBox.Show("Event created successfully!");
-                SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
-                SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
-                SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
+                //SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
+                //SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
+                //SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
                 Name = string.Empty;
             }
         }
         private bool CanExecuteAddEventCommand(object parameter)
         {
-            return Name != null && DateStart < DateEnd && DateStart > DateTime.Now;
+            DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
+            DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"DateStart: {DateStart}");
+            Console.WriteLine($"DateEnd: {DateEnd}");
+            Console.WriteLine($"StartHour: {StartHour}");
+            Console.WriteLine($"EndHour: {EndHour}");
+            Console.WriteLine($"StartMinute: {StartMinute}");
+            Console.WriteLine($"EndMinute: {EndMinute}");
+            Console.WriteLine($"StartSecond: {StartSecond}");
+            Console.WriteLine($"EndSecond: {EndSecond}");
+            return Name != null && startDateWithTime < endDateWithTime && startDateWithTime > DateTime.Now;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
         {         
@@ -215,11 +242,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (IsLoggedIn == true) return true;
             else return false;
         }
-        private void UpdateDays()
-        {
-            int daysInMonth = DateTime.DaysInMonth(SelectedStartYear, SelectedStartMonth);
-            Days = Enumerable.Range(1, daysInMonth).ToList();
-            OnPropertyChanged(nameof(Days));
-        }
+        //private void UpdateDays()
+        //{
+        //    int daysInMonth = DateTime.DaysInMonth(SelectedStartYear, SelectedStartMonth);
+        //    Days = Enumerable.Range(1, daysInMonth).ToList();
+        //    OnPropertyChanged(nameof(Days));
+        //}
     }
 }

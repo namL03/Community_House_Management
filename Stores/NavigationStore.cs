@@ -21,6 +21,7 @@ namespace Community_House_Management.Stores
             }
         }
 
+
         public event Action CurrentViewModelChanged;
 
         private void OnCurrentViewModelChanged()
