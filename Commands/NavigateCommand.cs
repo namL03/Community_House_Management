@@ -1,5 +1,7 @@
-﻿using Community_House_Management.Stores;
+﻿using Community_House_Management.Models;
+using Community_House_Management.Stores;
 using Community_House_Management.ViewModels;
+using Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,14 @@ namespace Community_House_Management.Commands
 
         public override void Execute(object parameter)
         {
-
+            object[] args = new object[] { _navigationStore };
+            if (_objectType.Equals(typeof(EventDetailsViewModel)))
+            {
+                if(parameter is EventModel eventParam)
+                {
+                    _navigationStore.CurrentViewModel = new EventDetailsViewModel(_navigationStore, eventParam);
+                }
+            }
         }
     }
 }

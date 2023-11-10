@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Community_House_Management.Views.StartupViews"
+             xmlns:eventvms="clr-namespace:Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
@@ -28,6 +29,7 @@
                         <TextBlock Text="Add Event" FontSize="18" FontWeight="Bold"  Foreground="#4B87C8" HorizontalAlignment="Left" Margin="0 5 0 5"/>
                     </StackPanel>
                 </Button>
+                
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="1">
@@ -157,7 +159,7 @@
                                             <!--<Button Background="White" Command="{Binding ToEventDetailsViewCommand}">
                                                 <TextBlock Text="Click here" FontSize="15" HorizontalAlignment="Center"/>
                                             </Button>-->
-                                            <Button Command="{Binding ToEventDetailsViewCommand, Mode=OneWay}" Content="Click here"/>
+                                            <Button Command="{Binding DataContext.ToEventDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Click here"/>
                                         </Border>
                                     </Grid>
                                 </Grid>

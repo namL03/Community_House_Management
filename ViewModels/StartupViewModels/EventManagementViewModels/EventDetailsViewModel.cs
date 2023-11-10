@@ -15,9 +15,25 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
 {
     public class EventDetailsViewModel : ViewModelBase
     {
-        public EventDetailsViewModel(NavigationStore navigationStore, int eventId) 
+        private readonly NavigationStore _navigationStore;
+        private EventModel _eventModel;
+        public int PersonId
         {
+            get { return _eventModel.PersonId; }
+            set { }
+        }
+        public string EventName
+        {
+            get { return _eventModel.Name; }
+            set { }
+        }
+        public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
+        public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
 
+        public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel) 
+        {
+            _navigationStore = navigationStore;
+            _eventModel = eventModel;   
         }
     }
 }
