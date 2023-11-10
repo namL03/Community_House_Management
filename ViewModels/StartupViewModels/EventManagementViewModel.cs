@@ -181,7 +181,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             dateEnd = DateTime.Now;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
-            ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
+            //ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
+            ToEventDetailsViewCommand = new NavigateCommand<EventDetailsViewModel>(_navigationStore, typeof(EventDetailsViewModel));
             _ = LoadEvents();    
         }
         private async Task LoadEvents()
@@ -202,7 +203,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                     Name = this.Name,
                     TimeStart = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond),
                     TimeEnd = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond),
-                    PersonId = creator.Id,
                 };
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
@@ -214,10 +214,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
             DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
-            Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"DateStart: {DateStart}");
-            Console.WriteLine($"DateEnd: {DateEnd}");
-            Console.WriteLine($"StartHour: {StartHour}");
             return Name != null && startDateWithTime < endDateWithTime && startDateWithTime > DateTime.Now;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
@@ -228,9 +224,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             return IsLoggedIn;
         }
-        private void ExecuteToEventDetailsViewCommand(object parameter)
-        {
+        //private void ExecuteToEventDetailsViewCommand(object parameter)
+        //{
             
-        }
+        //}
     }
 }
