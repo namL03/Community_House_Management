@@ -2,7 +2,9 @@
 using Community_House_Management.Models;
 using Community_House_Management.Services;
 using Community_House_Management.Stores;
+using Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels;
 using Community_House_Management.Views;
+using Community_House_Management.Views.StartupViews.EventManagementViews;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -166,30 +168,25 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(IsAddEventClicked));
             }
         }
+        private int _eventId;
+        public int EventId => _eventId;
         public ICommand OpenAddEventCommand { get; }
         public ICommand AddEventCommand { get; }
+        public ICommand ToEventDetailsViewCommand { get; }
         public EventManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         { 
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
             dateStart = DateTime.Now;
             dateEnd = DateTime.Now;
-            //SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
-            //SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
-            //SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
-            _ = LoadEvents();
+            ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
+            _ = LoadEvents();    
         }
         private async Task LoadEvents()
         {
-            Console.WriteLine(DateTime.Now.ToString());
             Events = await services.GetEventsAsync();
-            //foreach(var e in Events)
-            //{
-            //    Console.WriteLine(e.TimeStart);
-            //    Console.WriteLine(e.TimeEnd);
-            //}
         }
         private async Task ExecuteAddEventCommand(object parameter)
         {
@@ -203,8 +200,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 EventModel eventcreated = new EventModel
                 {
                     Name = this.Name,
-                    //TimeStart = DateStart,
-                    //TimeEnd = DateEnd,
                     TimeStart = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond),
                     TimeEnd = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond),
                     PersonId = creator.Id,
@@ -212,9 +207,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
                 System.Windows.MessageBox.Show("Event created successfully!");
-                //SelectedEndYear = SelectedStartYear = (int)DateTime.Now.Year;
-                //SelectedEndMonth = SelectedStartMonth = (int)DateTime.Now.Month;
-                //SelectedEndDay = SelectedStartDay = (int)DateTime.Now.Day;
                 Name = string.Empty;
             }
         }
@@ -226,11 +218,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             Console.WriteLine($"DateStart: {DateStart}");
             Console.WriteLine($"DateEnd: {DateEnd}");
             Console.WriteLine($"StartHour: {StartHour}");
-            Console.WriteLine($"EndHour: {EndHour}");
-            Console.WriteLine($"StartMinute: {StartMinute}");
-            Console.WriteLine($"EndMinute: {EndMinute}");
-            Console.WriteLine($"StartSecond: {StartSecond}");
-            Console.WriteLine($"EndSecond: {EndSecond}");
             return Name != null && startDateWithTime < endDateWithTime && startDateWithTime > DateTime.Now;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
@@ -239,14 +226,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private bool CanExecuteOpenAddEventCommand(object parameter)
         {
-            if (IsLoggedIn == true) return true;
-            else return false;
+            return IsLoggedIn;
         }
-        //private void UpdateDays()
-        //{
-        //    int daysInMonth = DateTime.DaysInMonth(SelectedStartYear, SelectedStartMonth);
-        //    Days = Enumerable.Range(1, daysInMonth).ToList();
-        //    OnPropertyChanged(nameof(Days));
-        //}
+        private void ExecuteToEventDetailsViewCommand(object parameter)
+        {
+            
+        }
     }
 }

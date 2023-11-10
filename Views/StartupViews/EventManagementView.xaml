@@ -92,22 +92,26 @@
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <!--<ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>-->
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#3681D2">
                 <TextBlock Text="Event name" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
-            <Grid Grid.Column="1" Background="#3681D2">
+            <!--<Grid Grid.Column="1" Background="#3681D2">
                 <TextBlock Text="Time start" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="2" Background="#3681D2">
                 <TextBlock Text="Time end" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
-            </Grid>
-            <Grid Grid.Column="3" Background="#3681D2">
+            </Grid>-->
+            <Grid Grid.Column="1" Background="#3681D2">
                 <TextBlock Text="Organizer ID" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="2" Background="#3681D2">
+                <TextBlock Text="More details" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="4" Grid.Column="1">
@@ -118,10 +122,11 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <!--<ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>-->
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
@@ -129,22 +134,30 @@
                                             <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
-                                    <Grid Grid.Column="1" >
+                                    <!--<Grid Grid.Column="1" >
                                         <Border BorderBrush="Gray" BorderThickness="1">
-                                            <!--<TextBlock Text="{Binding DateStart}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                            --><!--<TextBlock Text="{Binding DateStart}" FontSize="18" HorizontalAlignment="Center"/>--><!--
                                             <TextBlock Text="{Binding TimeStart, StringFormat=\{0:MM/dd/yyyy HH:mm:ss\}}" FontSize="15" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
                                         <Border BorderBrush="Gray" BorderThickness="1">
-                                            <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                            --><!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>--><!--
                                             <TextBlock Text="{Binding TimeEnd, StringFormat=\{0:MM/dd/yyyy HH:mm:ss\}}" FontSize="15" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                         </Border>
-                                    </Grid>
-                                    <Grid Grid.Column="3">
+                                    </Grid>-->
+                                    <Grid Grid.Column="1">
                                         <Border BorderBrush="Gray" BorderThickness="1">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
                                             <TextBlock Text="{Binding PersonId}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                    <Grid Grid.Column="2">
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <!--<Button Background="White" Command="{Binding ToEventDetailsViewCommand}">
+                                                <TextBlock Text="Click here" FontSize="15" HorizontalAlignment="Center"/>
+                                            </Button>-->
+                                            <Button Command="{Binding ToEventDetailsViewCommand, Mode=OneWay}" Content="Click here"/>
                                         </Border>
                                     </Grid>
                                 </Grid>
