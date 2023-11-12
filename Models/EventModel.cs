@@ -12,10 +12,20 @@ namespace Community_House_Management.Models
     {
         public int Id { get; set; }
         public int PersonId { get; set; }
+        private PersonModel _organizer;
         private string _name;
         private DateTime _timeStart;
         private DateTime _timeEnd;
         private List<PropertyType> propertyTypes;
+        public PersonModel Organizer
+        {
+            get => _organizer;
+            set
+            {
+                Organizer = value;
+                OnPropertyChanged(nameof(Organizer));
+            }
+        }
         public List<PropertyType> PropertyTypes
         {
             get => propertyTypes;
@@ -52,6 +62,7 @@ namespace Community_House_Management.Models
                 OnPropertyChanged(nameof(TimeEnd));
             }
         }
+
 
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Windows.Controls;
 
 namespace Community_House_Management.Services
 {
@@ -78,6 +79,7 @@ namespace Community_House_Management.Services
             using (var _context = new AppDbContext())
             {
                 var result = await _context.Events
+                    .Include(e => e.Person)
                     .Include(e => e.EventProperties)
                     .ThenInclude(ep => ep.Property)
                     .Select(e => new EventModel
@@ -86,10 +88,16 @@ namespace Community_House_Management.Services
                         PersonId = e.PersonId,
                         TimeEnd = e.timeEnd,
                         TimeStart = e.timeStart,
+                        Organizer = new PersonModel
+                        {
+                            Name = e.Person.Name,
+                            Address = e.Person.Address,
+                            CitizenId = e.Person.CitizenId
+                        },
                         Name = e.Name,
                         PropertyTypes = e.EventProperties
                             .GroupBy(ep => ep.Property.Type)
-                            .Select(g => new PropertyType 
+                            .Select(g => new PropertyType
                             {
                                 Type = g.Key,
                                 Count = g.Count()
