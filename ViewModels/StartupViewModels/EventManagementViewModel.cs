@@ -8,11 +8,13 @@ using Community_House_Management.Views.StartupViews.EventManagementViews;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
 
@@ -171,6 +173,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(IsAddEventClicked));
             }
         }
+
         private int _eventId;
         public int EventId => _eventId;
         public ICommand OpenAddEventCommand { get; }
@@ -184,29 +187,15 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             dateEnd = DateTime.Now;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
-            //ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
-            ToEventDetailsViewCommand = new NavigateCommand<EventDetailsViewModel>(_navigationStore, typeof(EventDetailsViewModel));
+            ToEventDetailsViewCommand = new NavigateCommand<EventDetailsViewModel>(_navigationStore, typeof(EventDetailsViewModel), this.isLoggedIn);
             _ = LoadEvents();    
         }
         private async Task LoadEvents()
         {
-            try
-            {
-                Events = await services.GetEventsAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception in LoadEvents: {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                    Console.WriteLine($"Inner Exception Stack Trace: {ex.InnerException.StackTrace}");
-                }
-            }
+            Events = await services.GetEventsAsync();
         }
 
-
+        int elementsPerPage = 5;
         private async Task ExecuteAddEventCommand(object parameter)
         {
             PersonModel creator = await services.GetPersonByCitizenIdAsync(OrganizerCitizenId);
@@ -243,9 +232,5 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             return IsLoggedIn;
         }
-        //private void ExecuteToEventDetailsViewCommand(object parameter)
-        //{
-            
-        //}
     }
 }

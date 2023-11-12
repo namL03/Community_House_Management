@@ -14,7 +14,9 @@ namespace Community_House_Management.Commands
     {
         private readonly NavigationStore _navigationStore;
         private Type _objectType;
-        public NavigateCommand(NavigationStore navigationStore, Type objectType)
+        private bool isLoggedIn;
+
+        public NavigateCommand(NavigationStore navigationStore, Type objectType, bool isLoggedIn)
         {
             _navigationStore = navigationStore;
             if (objectType == null || !typeof(T).IsAssignableFrom(objectType))
@@ -22,6 +24,7 @@ namespace Community_House_Management.Commands
                 throw new ArgumentException("Invalid object type");
             }
             _objectType = objectType;
+            this.isLoggedIn = isLoggedIn;
         }
 
         public override void Execute(object parameter)
@@ -31,9 +34,10 @@ namespace Community_House_Management.Commands
             {
                 if(parameter is EventModel eventParam)
                 {
-                    _navigationStore.CurrentViewModel = new EventDetailsViewModel(_navigationStore, eventParam);
+                    _navigationStore.CurrentViewModel = new EventDetailsViewModel(_navigationStore, eventParam, isLoggedIn);
                 }
             }
+
         }
     }
 }

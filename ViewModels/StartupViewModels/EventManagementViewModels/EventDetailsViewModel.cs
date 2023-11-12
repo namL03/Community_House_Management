@@ -39,13 +39,39 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             set
             { }
         }
+        private bool isLoggedIn;
+        public bool IsLoggedIn
+        {
+            get { return isLoggedIn; }
+            set
+            {
+                if (value != isLoggedIn)
+                {
+                    isLoggedIn = value;
+                    OnPropertyChanged(nameof(IsLoggedIn));
+                }
+            }
+        }
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
+        public ICommand ToAddFacilityToEventViewCommand { get; set; }
 
-        public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel) 
+        public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
+            this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
-            _eventModel = eventModel;   
+            _eventModel = eventModel;
+            ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
+            Console.WriteLine(isLoggedIn);
+        }
+        private void ExecuteToAddFacilityToEventViewCommand(object parameter)
+        {
+            AddFacilityToEventViewModel addFacilityToEventViewModel = new AddFacilityToEventViewModel(_navigationStore, _eventModel);
+            _navigationStore.CurrentViewModel = addFacilityToEventViewModel;
+        }
+        private bool CanExecuteToAddFacilityToEventViewCommand(object parameter)
+        {
+            return IsLoggedIn;
         }
     }
 }
