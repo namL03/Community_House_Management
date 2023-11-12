@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="Community_House_Management.Views.StartupViews.EventManagementViews.AddFacilityToEventView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Community_House_Management.Views.StartupViews.EventManagementViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <UserControl.Resources>
+        <!-- ... (existing resources) ... -->
+        <ControlTemplate x:Key="PopupTemplate" TargetType="{x:Type Control}">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1">
+                <!-- Your Popup Content Goes Here -->
+                <StackPanel>
+                    <TextBlock Text="Enter Quantity:" FontSize="18" FontWeight="Bold" Margin="10"/>
+                    <TextBox Text="{Binding NumberOfProperties}" FontSize="16" Margin="10"/>
+                    <Button Content="Add" Command="{Binding AddPropertyCommand}" CommandParameter="{Binding NumberOfProperties}" Margin="10"/>
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <TextBlock>
+                <Run Text="Event name: " FontSize="18" FontWeight="Bold"/>
+                <Run Text="{Binding Name}" FontSize="18" FontWeight="Bold" Foreground="#F23E5C"/>
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="27"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="Avaiable Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                        <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                        <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" Margin="15 0 0 0">
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Margin="0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
+                            <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
+                        </Button>
+                        <ItemsControl ItemsSource="{Binding PageNumbers}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="30" Height="30" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Foreground" Value="Black" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="LightGray" />
+                                                    </Trigger>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <Binding Path="Content" RelativeSource="{RelativeSource Self}" />
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Background" Value="Yellow" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.Content>
+                                            <TextBlock Text="{Binding}" />
+                                        </Button.Content>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Width="30" Height="30" Command="{Binding NextPageCommand}">
+                            <TextBlock Text="&gt;" FontSize="15" FontWeight="Bold" />
+                        </Button>
+                    </WrapPanel>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Button Background="#3681D2">
+                                <TextBlock Text="Type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button Background="#3681D2">
+                                <TextBlock Text="Remaining" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="1">
+
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding PagedPropertyTypesList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <Button Background="White" BorderBrush="White" Command="{Binding DataContext.OpenAddPropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}">
+                                                    <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
+                                                </Button>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="1" >
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+                <Popup x:Name="AddPropertyPopup" IsOpen="{Binding IsPropertyPopupOpen}" StaysOpen="False" PlacementTarget="{Binding ElementName=YourButton}" Placement="Center" PopupAnimation="Slide">
+                    <Control Template="{StaticResource PopupTemplate}"/>
+                </Popup>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

@@ -18,6 +18,8 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -89,10 +91,10 @@
                 </Grid.Style>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Grid Grid.Row="4" Grid.Column="1">
             <TextBlock Text="Recent Events" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="1">
+        <Grid Grid.Row="5" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
@@ -116,56 +118,110 @@
                 <TextBlock Text="More details" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="1">
-            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Events}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <!--<ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>-->
-                                    </Grid.ColumnDefinitions>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1" Margin="15 0 0 0">
+            <WrapPanel Orientation="Horizontal">
+                <Button Margin="0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
+                    <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+                <ItemsControl ItemsSource="{Binding PageNumbers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="30" Height="30" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="LightGray" />
+                                            </Trigger>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <Binding Path="Content" RelativeSource="{RelativeSource Self}" />
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Background" Value="Yellow" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Content>
+                                    <TextBlock Text="{Binding}" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Width="30" Height="30" Command="{Binding NextPageCommand}">
+                    <TextBlock Text="&gt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+            </WrapPanel>
+        </Grid>
 
-                                    <Grid Grid.Column="0">
+        <Grid Grid.Row="6" Grid.Column="1">
+            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Events}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <!--<ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>-->
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <!--<Grid Grid.Column="1" >
                                         <Border BorderBrush="Gray" BorderThickness="1">
-                                            <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
-                                        </Border>
-                                    </Grid>
-                                    <!--<Grid Grid.Column="1" >
-                                        <Border BorderBrush="Gray" BorderThickness="1">
-                                            --><!--<TextBlock Text="{Binding DateStart}" FontSize="18" HorizontalAlignment="Center"/>--><!--
+                                            -->
+                                        <!--<TextBlock Text="{Binding DateStart}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                        <!--
                                             <TextBlock Text="{Binding TimeStart, StringFormat=\{0:MM/dd/yyyy HH:mm:ss\}}" FontSize="15" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
                                         <Border BorderBrush="Gray" BorderThickness="1">
-                                            --><!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>--><!--
+                                            -->
+                                        <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                        <!--
                                             <TextBlock Text="{Binding TimeEnd, StringFormat=\{0:MM/dd/yyyy HH:mm:ss\}}" FontSize="15" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                         </Border>
                                     </Grid>-->
-                                    <Grid Grid.Column="1">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
-                                            <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
-                                            <TextBlock Text="{Binding Organizer.CitizenId}" FontSize="18" HorizontalAlignment="Center"/>
-                                        </Border>
-                                    </Grid>
-                                    <Grid Grid.Column="2">
-                                        <!--<Button Background="White" Command="{Binding ToEventDetailsViewCommand}">
+                                        <Grid Grid.Column="1">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                                <TextBlock Text="{Binding Organizer.CitizenId}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <!--<Button Background="White" Command="{Binding ToEventDetailsViewCommand}">
                                                 <TextBlock Text="Click here" FontSize="15" HorizontalAlignment="Center"/>
                                             </Button>-->
                                             <Button Command="{Binding DataContext.ToEventDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Click here" Foreground="Gray" Background="White"/>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
         </Grid>
     </Grid>
 </UserControl>

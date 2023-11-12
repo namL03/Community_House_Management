@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace Community_House_Management.Views.StartupViews.EventManagementViews
 {
     /// <summary>
-    /// Interaction logic for EventDetailsView.xaml
+    /// Interaction logic for AddFacilityToEventView.xaml
     /// </summary>
-    public partial class EventDetailsView : UserControl
+    public partial class AddFacilityToEventView : UserControl
     {
-        public EventDetailsView()
+        public AddFacilityToEventView()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
