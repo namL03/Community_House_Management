@@ -22,7 +22,7 @@ namespace Community_House_Management.Models
             get => _organizer;
             set
             {
-                Organizer = value;
+                _organizer = value;
                 OnPropertyChanged(nameof(Organizer));
             }
         }

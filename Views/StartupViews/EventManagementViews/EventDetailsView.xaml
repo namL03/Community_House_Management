@@ -16,7 +16,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -36,11 +37,50 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
             <StackPanel>
-                <TextBlock Text="{Binding PersonId}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
-                <TextBlock Text="Organizer's name" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
+                <TextBlock Text="{Binding OrganizerCitizenId}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
+                <TextBlock Text="{Binding OrganizerName}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                 <TextBlock Text="{Binding EventStartTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                 <TextBlock Text="{Binding EventEndTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
             </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="#3681D2">
+                <TextBlock Text="Facility type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="1" Background="#3681D2">
+                <TextBlock Text="Count" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+           
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+            <Border>
+                <ItemsControl ItemsSource="{Binding PropertyType}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                        <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Column="1" >
+                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                        <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

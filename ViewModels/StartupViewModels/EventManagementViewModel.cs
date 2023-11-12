@@ -5,13 +5,16 @@ using Community_House_Management.Stores;
 using Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels;
 using Community_House_Management.Views;
 using Community_House_Management.Views.StartupViews.EventManagementViews;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace Community_House_Management.ViewModels.StartupViewModels
 {
@@ -187,8 +190,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private async Task LoadEvents()
         {
-            Events = await services.GetEventsAsync();
+            try
+            {
+                Events = await services.GetEventsAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in LoadEvents: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    Console.WriteLine($"Inner Exception Stack Trace: {ex.InnerException.StackTrace}");
+                }
+            }
         }
+
+
         private async Task ExecuteAddEventCommand(object parameter)
         {
             PersonModel creator = await services.GetPersonByCitizenIdAsync(OrganizerCitizenId);
