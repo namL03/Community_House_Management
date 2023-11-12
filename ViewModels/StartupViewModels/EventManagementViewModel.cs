@@ -221,6 +221,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                     Name = this.Name,
                     TimeStart = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond),
                     TimeEnd = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond),
+                    PersonId = creator.Id,
                 };
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
