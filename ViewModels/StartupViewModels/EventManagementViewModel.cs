@@ -138,8 +138,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
 
         private Service services = new Service();
-        private IEnumerable<EventModel> events;
-        public IEnumerable<EventModel> Events
+        private List<EventModel> events;
+        public List<EventModel> Events
         {
             get => events;
             set
@@ -173,12 +173,100 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(IsAddEventClicked));
             }
         }
+        private List<int> _pageNumbers;
+        public List<int> PageNumbers
+        {
+            get { return _pageNumbers; }
+            set
+            {
+                _pageNumbers = value;
+                OnPropertyChanged(nameof(PageNumbers));
+            }
+        }
 
+        private int _currentPage;
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                UpdatePagedEventsList();
+            }
+        }
+        private int _selectedNumber;
+        public int SelectedNumber
+        {
+            get
+            {
+                return _selectedNumber;
+            }
+            set
+            {
+                _selectedNumber = value;
+                OnPropertyChanged(nameof(SelectedNumber));
+            }
+        }
+        private ObservableCollection<EventModel> pagedEventsList;
+        public ObservableCollection<EventModel> PagedEventsList
+        {
+            get { return pagedEventsList; }
+            set
+            {
+                pagedEventsList = value;
+                OnPropertyChanged(nameof(PagedEventsList));
+            }
+        }
+        public List<int> NumberOfPropertyTypes
+        {
+            get
+            {
+                List<int> numberOfPropertyTypes = new List<int>();
+                if (Events != null)
+                {
+                    for (int i = 0; i <= Events.Count(); i++)
+                    {
+                        numberOfPropertyTypes.Add(i);
+                    }
+                }
+                return numberOfPropertyTypes;
+            }
+        }
+        private IEnumerable<EventModel> _filteredList;
+        public IEnumerable<EventModel> FilteredList
+        {
+            get { return _filteredList; }
+            set
+            {
+                _filteredList = value;
+                OnPropertyChanged(nameof(FilteredList));
+            }
+        }
+        private string searchText;
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                while (searchText != string.Empty && searchText.EndsWith(' '))
+                {
+                    searchText = searchText.Remove(searchText.Length - 1);
+                }
+                OnPropertyChanged(nameof(SearchText));
+                UpdatePagedEventsList();
+            }
+        }
         private int _eventId;
         public int EventId => _eventId;
         public ICommand OpenAddEventCommand { get; }
         public ICommand AddEventCommand { get; }
         public ICommand ToEventDetailsViewCommand { get; }
+        public ICommand NextPageCommand { get; }
+        public ICommand PreviousPageCommand { get; }
+        public ICommand ChangePageCommand { get; }
+        public ICommand SearchByNameCommand { get; }
         public EventManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         { 
             _navigationStore = navigationStore;
@@ -188,11 +276,22 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
             ToEventDetailsViewCommand = new NavigateCommand<EventDetailsViewModel>(_navigationStore, typeof(EventDetailsViewModel), this.isLoggedIn);
+            NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
+            PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
+            ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
+            SearchByNameCommand = new RelayCommand(ExecuteSearchByNameCommand);
             _ = LoadEvents();    
         }
         private async Task LoadEvents()
         {
             Events = await services.GetEventsAsync();
+            FilteredList = Events;
+            CurrentPage = 1;
+            UpdatePagedEventsList();
+            UpdatePageNumbers();
+            OnPropertyChanged(nameof(Events));
+            OnPropertyChanged(nameof(NumberOfPropertyTypes));
+            OnPropertyChanged(nameof(CurrentPage));
         }
 
         int elementsPerPage = 5;
@@ -231,6 +330,97 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private bool CanExecuteOpenAddEventCommand(object parameter)
         {
             return IsLoggedIn;
+        }
+        private void UpdatePagedEventsList()
+        {
+            int startIndex = (CurrentPage - 1) * elementsPerPage;
+            PagedEventsList = new ObservableCollection<EventModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
+        }
+
+        private void UpdatePageNumbers()
+        {
+            if (Events != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)Events.Count() / elementsPerPage);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>();
+            }
+        }
+        private void UpdatePageNumbersAfterSearch()
+        {
+            if (FilteredList != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)FilteredList.Count() / elementsPerPage);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>();
+            }
+        }
+
+        private void ExecuteChangePageCommand(object parameter)
+        {
+            if (parameter is int page)
+            {
+                CurrentPage = page;
+                UpdatePagedEventsList();
+            }
+        }
+        private void ExecutePreviousPageCommand(object parameter)
+        {
+            if (CanExecutePreviousPageCommand(parameter))
+            {
+                CurrentPage--;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedEventsList();
+            }
+        }
+        private void ExecuteNextPageCommand(object parameter)
+        {
+            if (CanExecuteNextPageCommand(parameter))
+            {
+                CurrentPage++;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedEventsList();
+            }
+        }
+        private bool CanExecutePreviousPageCommand(object parameter)
+        {
+            return CurrentPage > 1;
+        }
+
+        private bool CanExecuteNextPageCommand(object parameter)
+        {
+            return CurrentPage < PageNumbers.Count;
+        }
+        private void ExecuteSearchByNameCommand(object parameter)
+        {
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                FilteredList = Events.Where(item => item.Name.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+                Console.WriteLine("filterdList count " + FilteredList.Count());
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    PagedEventsList = new ObservableCollection<EventModel>(FilteredList.Take(elementsPerPage));
+                    UpdatePageNumbersAfterSearch();
+                });
+                OnPropertyChanged(nameof(PagedEventsList));
+                CurrentPage = 1;
+                UpdatePagedEventsList();
+            }
+            else
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    FilteredList = Events;
+                    PagedEventsList = new ObservableCollection<EventModel>(Events.Take(elementsPerPage));
+                    UpdatePageNumbers();
+                });
+            }
         }
     }
 }

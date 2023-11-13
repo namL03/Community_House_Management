@@ -91,7 +91,7 @@
                 </Grid.Style>
             </Grid>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="1">
+        <Grid Grid.Row="2" Grid.Column="1">
             <TextBlock Text="Recent Events" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
         <Grid Grid.Row="5" Grid.Column="1">
@@ -118,14 +118,14 @@
                 <TextBlock Text="More details" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Grid Grid.Row="3" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                 <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
+                <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="3" Grid.Column="1" Margin="15 0 0 0">
+        <Grid Grid.Row="4" Grid.Column="1" Margin="15 0 0 0">
             <WrapPanel Orientation="Horizontal">
                 <Button Margin="0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
                     <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
@@ -171,7 +171,7 @@
         <Grid Grid.Row="6" Grid.Column="1">
             <Border BorderBrush="Gray" Grid.ColumnSpan="2">
                     <StackPanel>
-                        <ItemsControl ItemsSource="{Binding Events}">
+                        <ItemsControl ItemsSource="{Binding PagedEventsList}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
