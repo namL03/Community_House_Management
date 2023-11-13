@@ -181,6 +181,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
         public ICommand OpenAddPropertyPopupCommand { get; }
+        public ICommand AddPropertyToEventCommand { get; }
         public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel)
         {
             _eventModel = eventModel;
@@ -190,6 +191,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             OpenAddPropertyPopupCommand = new RelayCommand(ExecuteOpenAddPropertyPopupCommand);
+            AddPropertyToEventCommand = new AsyncRelayCommand(ExecuteAddPropertyToEventCommand);
             _ = LoadProperties();
         }
         
@@ -308,6 +310,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 SelectedProperty = selectedProperty;
                 IsPropertyPopupOpen = true;
             }
+        }
+        private async Task ExecuteAddPropertyToEventCommand(object parameter)
+        {
+            // Thêm logic để lấy danh sách ID của properties vừa tạo
+            //List<int> propertyIds = SelectedProperty.Type.;
+
+            // Thêm properties vào event
+            //await service.AddPropertiesToEventAsync(_eventModel.Id, propertyIds);
+
+            // Thêm logic bổ sung nếu cần
         }
     }
 }
