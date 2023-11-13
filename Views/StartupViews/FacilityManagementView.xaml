@@ -77,7 +77,7 @@
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                <TextBlock Text="Search by type" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                 <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
                 <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
             </StackPanel>

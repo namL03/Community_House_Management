@@ -145,6 +145,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 UpdatePagedPropertyTypesList();
             }
         }
+
         private IEnumerable<PropertyType> _filteredList;
         public IEnumerable<PropertyType> FilteredList
         {
@@ -155,11 +156,30 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 OnPropertyChanged(nameof(FilteredList));
             }
         }
+        private PropertyType _selectedProperty;
+        public PropertyType SelectedProperty
+        {
+            get { return _selectedProperty; }
+            set
+            {
+                _selectedProperty = value;
+                OnPropertyChanged(nameof(SelectedProperty));
+            }
+        }
+        private int _quantityOfProperty;
+        public int QuantityOfProperty
+        {
+            get { return _quantityOfProperty; }
+            set
+            {
+                _quantityOfProperty = value;
+                OnPropertyChanged(nameof(QuantityOfProperty));
+            }
+        }
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
-        public ICommand AddPropertyCommand { get; }
         public ICommand OpenAddPropertyPopupCommand { get; }
         public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel)
         {
@@ -168,7 +188,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
-            AddPropertyCommand = new AsyncRelayCommand(ExecuteAddPropertyCommand, CanExecuteAddPropertyCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             OpenAddPropertyPopupCommand = new RelayCommand(ExecuteOpenAddPropertyPopupCommand);
             _ = LoadProperties();
@@ -184,25 +203,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             OnPropertyChanged(nameof(PropertyTypesList));
             OnPropertyChanged(nameof(NumberOfPropertyTypes));
             OnPropertyChanged(nameof(CurrentPage));
-        }
-        private async Task ExecuteAddPropertyCommand(object parameter)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                PropertyModel propertyModel = new PropertyModel
-                {
-                    Type = this.Type
-                };
-                await service.CreatePropertyAsync(propertyModel);
-            }
-            Type = string.Empty;
-            Count = null;
-            await LoadProperties();
-        }
-
-        private bool CanExecuteAddPropertyCommand(object parameter)
-        {
-            return Count != null && Type != string.Empty;
         }
         int elementsPerPage = 5;
         private void UpdatePagedPropertyTypesList()
@@ -302,8 +302,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private void ExecuteOpenAddPropertyPopupCommand(object parameter)
         {
-            Console.WriteLine("ExecuteOpenAddPropertyPopupCommand executed");
-            IsPropertyPopupOpen = !IsPropertyPopupOpen; 
+            if (parameter is PropertyType selectedProperty)
+            {
+                Console.WriteLine(selectedProperty.Type);
+                SelectedProperty = selectedProperty;
+                IsPropertyPopupOpen = true;
+            }
         }
     }
 }
