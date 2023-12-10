@@ -12,7 +12,6 @@ namespace Community_House_Management.Models
         public int Id { get; set; }
         private string _username;
         private string _password;
-        public int OfficialId { get; set; }
         public string Username
         {
             get { return _username; }

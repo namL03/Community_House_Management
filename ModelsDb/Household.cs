@@ -10,5 +10,7 @@ namespace Community_House_Management.ModelsDb
     {
         public int Id { get; set; }
         public ICollection<Person> Members { get; set; }
+        public int HeaderId {  get; set; }
+        public Person Header { get; set; }
     }
 }

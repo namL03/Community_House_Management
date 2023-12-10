@@ -28,7 +28,8 @@ namespace Community_House_Management.DataAccess
             modelBuilder.Entity<EventProperty>()
                 .HasOne(ep => ep.Event)
                 .WithMany(e => e.EventProperties)
-                .HasForeignKey(ep => ep.EventId);
+                .HasForeignKey(ep => ep.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EventProperty>()
                 .HasOne(ep => ep.Property)
@@ -44,10 +45,11 @@ namespace Community_House_Management.DataAccess
                 .HasOne(e => e.Person)
                 .WithMany(p => p.Events)
                 .HasForeignKey(e => e.PersonId);
-            modelBuilder.Entity<Official>()
-                .HasOne(o => o.OfficialAccount)
-                .WithOne(oc => oc.Official)
-                .HasForeignKey<OfficialAccount>(oc => oc.OfficialId);
+            modelBuilder.Entity<Household>()
+                .HasOne(h => h.Header) 
+                .WithOne(p => p.HouseholdOwned) 
+                .HasForeignKey<Household>(h => h.HeaderId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
