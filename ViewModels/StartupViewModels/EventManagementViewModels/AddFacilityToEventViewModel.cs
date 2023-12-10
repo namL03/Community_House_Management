@@ -18,8 +18,22 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
 {
     public class AddFacilityToEventViewModel : ViewModelBase
     {
+
         private readonly NavigationStore _navigationStore;
         private EventModel _eventModel;
+        private bool isLoggedIn;
+        public bool IsLoggedIn
+        {
+            get { return isLoggedIn; }
+            set
+            {
+                if (value != isLoggedIn)
+                {
+                    isLoggedIn = value;
+                    OnPropertyChanged(nameof(IsLoggedIn));
+                }
+            }
+        }
         public string Name
         {
             get { return _eventModel.Name; }
@@ -182,16 +196,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public ICommand SearchByTypeCommand { get; }
         public ICommand OpenAddPropertyPopupCommand { get; }
         public ICommand AddPropertyToEventCommand { get; }
-        public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel)
+        public ICommand ToEventDetailsViewCommand { get; }
+        public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn)
         {
             _eventModel = eventModel;
             _navigationStore = navigationStore;
+            this.isLoggedIn = isLoggedIn;
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             OpenAddPropertyPopupCommand = new RelayCommand(ExecuteOpenAddPropertyPopupCommand);
             AddPropertyToEventCommand = new AsyncRelayCommand(ExecuteAddPropertyToEventCommand);
+            ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
             _ = LoadProperties();
         }
         
@@ -310,6 +327,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 SelectedProperty = selectedProperty;
                 IsPropertyPopupOpen = true;
             }
+        }
+        private void ExecuteToEventDetailsViewCommand(object parameter)
+        {
+            EventDetailsViewModel eventDetailsViewModel = new EventDetailsViewModel(_navigationStore, _eventModel, isLoggedIn);
+            _navigationStore.CurrentViewModel = eventDetailsViewModel;
         }
         private async Task ExecuteAddPropertyToEventCommand(object parameter)
         {

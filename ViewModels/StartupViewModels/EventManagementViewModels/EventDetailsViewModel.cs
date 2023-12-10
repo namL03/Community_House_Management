@@ -55,6 +55,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
+        public ICommand ToEventManagementViewComamnd { get; }
 
         public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
@@ -62,16 +63,22 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             _navigationStore = navigationStore;
             _eventModel = eventModel;
             ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
+            ToEventManagementViewComamnd = new RelayCommand(ExecuteToEventManagementViewComamnd);
             Console.WriteLine(isLoggedIn);
         }
         private void ExecuteToAddFacilityToEventViewCommand(object parameter)
         {
-            AddFacilityToEventViewModel addFacilityToEventViewModel = new AddFacilityToEventViewModel(_navigationStore, _eventModel);
+            AddFacilityToEventViewModel addFacilityToEventViewModel = new AddFacilityToEventViewModel(_navigationStore, _eventModel, isLoggedIn);
             _navigationStore.CurrentViewModel = addFacilityToEventViewModel;
         }
         private bool CanExecuteToAddFacilityToEventViewCommand(object parameter)
         {
             return IsLoggedIn;
+        }
+        private void ExecuteToEventManagementViewComamnd(object parameter)
+        {
+            EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_navigationStore, isLoggedIn);
+            _navigationStore.CurrentViewModel = eventManagementViewModel;
         }
     }
 }
