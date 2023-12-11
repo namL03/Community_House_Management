@@ -63,6 +63,22 @@ namespace Community_House_Management.Models
                 OnPropertyChanged(nameof(State));
             }
         }
+        public string? StateDisplayed
+        {
+            get
+            {
+                if (State == null) return null;
+                if (State == 1) return "Sinh hoạt";
+                return "Tạm vắng";
+            }
+            set
+            {
+                if (value == "Sinh hoạt") State = 1;
+                else if (value == "Tạm vắng") State = 0;
+                else State = null;
+                OnPropertyChanged(nameof(StateDisplayed));
+            }
+        }
         private bool _isHeader;
         public bool IsHeader
         {

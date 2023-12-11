@@ -114,17 +114,26 @@ namespace Community_House_Management.Services
         {
             using (var _context = new AppDbContext())
             {
-                return await _context.Persons
+                var person =  await _context.Persons
+                    .Include(p => p.Household)
+                    .ThenInclude(h => h.Header)
                     .Where(p => p.CitizenId == citizenid)
                     .Select(p => new PersonModel
                     {
-                        Id = p.Id,
-                        CitizenId = p.CitizenId,
-                        HouseholdId = p.HouseholdId,
+                        Name = p.Name,
                         Address = p.Address,
-                        Name = p.Name
+                        CitizenId = p.CitizenId,
+                        Header = p.Household == null ? null : new PersonModel
+                        {
+                            Name = p.Household.Header.Name,
+                            Address = p.Household.Header.Address,
+                            CitizenId = p.Household.Header.CitizenId,
+                            HeaderId = p.Household.HeaderId
+                        },
+                        State = p.state 
                     })
                     .SingleOrDefaultAsync();
+                return person;
             }
         }
 
@@ -191,7 +200,8 @@ namespace Community_House_Management.Services
                             Address = p.Household.Header.Address,
                             CitizenId = p.Household.Header.CitizenId,
                             HeaderId = p.Household.HeaderId
-                        }
+                        },
+                        State = p.state
                     })
                     .ToListAsync();
                 return allPeople;
@@ -222,6 +232,10 @@ namespace Community_House_Management.Services
                 var personFound = await _context.Persons
                     .SingleOrDefaultAsync(p => p.CitizenId == citizenId);
                 if (personFound == null) return false;
+                if (personFound.HouseholdOwnedId != null)
+                {
+                    await DeleteHouseholdAsync(personFound.CitizenId);
+                }
                 _context.Persons.Remove(personFound);
                 await _context.SaveChangesAsync();
                 return true;
@@ -264,6 +278,7 @@ namespace Community_House_Management.Services
                     memberFound.HouseholdId = header.HouseholdOwnedId;
                     memberFound.state = member.State;
                 }
+                await _context.SaveChangesAsync();
                 return true;
             }
         }
@@ -280,6 +295,9 @@ namespace Community_House_Management.Services
                 {
                     HeaderId = header.Id
                 });
+                await _context.SaveChangesAsync();
+                header.HouseholdId = header.HouseholdOwnedId;
+                header.state = 1;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -300,6 +318,7 @@ namespace Community_House_Management.Services
                         .AsAsyncEnumerable())
                 {
                     member.HouseholdId = null;
+                    member.state = null;
                 }
                 header.HouseholdOwnedId = null;
                 _context.Households.Remove(household);
@@ -307,7 +326,76 @@ namespace Community_House_Management.Services
                 return true;
             }
         }
+        public async Task<bool> ChangePersonInformationAsync(string oldCitizenId, PersonModel newPerson)
+        {
+            using(var _context = new AppDbContext())
+            {
+                var person = await _context.Persons
+                    .SingleOrDefaultAsync(p => p.CitizenId ==  oldCitizenId);
+                if (person == null) return false;
+                if(newPerson.CitizenId != oldCitizenId)
+                {
+                    var personDuplicated = await _context.Persons
+                        .SingleOrDefaultAsync(p => p.CitizenId == newPerson.CitizenId);
+                    if(personDuplicated != null) return false;
+                }
+                person.Name = newPerson.Name;
+                person.Address = newPerson.Address;
+                person.CitizenId = newPerson.CitizenId;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
 
-        //public async ChangePersonInformation()
+        public async Task<bool> RemoveMembersAsync(string headerCitizenId, List<string>memberCitizenIds)
+        {
+            using(var _context = new AppDbContext())
+            {
+                var header = await _context.Persons
+                    .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
+                if (header == null) return false;
+                if (header.HouseholdOwnedId == null) return false;
+                foreach(var memberId in memberCitizenIds)
+                {
+                    var memberFound = await _context.Persons
+                        .SingleOrDefaultAsync(p => p.CitizenId == memberId);
+                    if (memberFound == null) return false;
+                    if (memberId == headerCitizenId) return false;
+                    if (memberFound.HouseholdId != header.HouseholdId) return false;
+                }
+                foreach (var memberId in memberCitizenIds)
+                {
+                    var memberFound = await _context.Persons
+                        .SingleOrDefaultAsync(p => p.CitizenId == memberId);
+                    memberFound.HouseholdId = null;
+                    memberFound.state = null;
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task<List<PersonModel>> GetHouseholdAsync(string headerCitizenId)
+        {
+            using (var _context = new AppDbContext())
+            {
+                var header = await _context.Persons
+                    .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
+                List<PersonModel> result = new List<PersonModel>();
+                if (header == null) return result;
+                if (header.HouseholdOwnedId == null) return result;
+                result = await _context.Persons
+                    .Where(p => p.HouseholdId == header.HouseholdOwnedId)
+                    .Select(p => new PersonModel
+                    {
+                        Name = p.Name,
+                        Address = p.Address,
+                        CitizenId = p.CitizenId,
+                        State = p.state
+                    })
+                    .ToListAsync();
+                return result;
+            }
+        }
     }
 }

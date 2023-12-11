@@ -22,5 +22,7 @@ namespace Community_House_Management.ModelsDb
 
         public int? state {  get; set; }
 
+        
+
     }
 }
