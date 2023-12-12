@@ -22,4 +22,5 @@
             <ContentControl Content="{Binding CurrentViewModel}"/>
         </Grid>
     </Grid>
+    
 </Window>

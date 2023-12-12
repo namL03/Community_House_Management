@@ -159,12 +159,12 @@
 
                                 <Grid Grid.Column="0">
                                     <Border BorderBrush="Gray" BorderThickness="1">
-                                        <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}" FontSize="18" HorizontalAlignment="Center"/>
                                     </Border>
                                 </Grid>
                                 <Grid Grid.Column="1" >
                                     <Border BorderBrush="Gray" BorderThickness="1">
-                                        <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" FontSize="18" HorizontalAlignment="Center"/>
                                     </Border>
                                 </Grid>
                             </Grid>

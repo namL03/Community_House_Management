@@ -18,6 +18,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
     {
         private readonly NavigationStore _navigationStore;
         private EventModel _eventModel;
+        private Service service = new Service();
         public string OrganizerCitizenId
         {
             get { return _eventModel.Organizer.CitizenId; }
@@ -56,6 +57,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
         public ICommand ToEventManagementViewComamnd { get; }
+        public ICommand DeleteEventCommand { get; }
 
         public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
@@ -64,6 +66,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             _eventModel = eventModel;
             ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
             ToEventManagementViewComamnd = new RelayCommand(ExecuteToEventManagementViewComamnd);
+            DeleteEventCommand = new AsyncRelayCommand(ExecuteDeleteEventCommand, CanExecuteDeleteEventCommand);
             Console.WriteLine(isLoggedIn);
         }
         private void ExecuteToAddFacilityToEventViewCommand(object parameter)
@@ -79,6 +82,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         {
             EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_navigationStore, isLoggedIn);
             _navigationStore.CurrentViewModel = eventManagementViewModel;
+        }
+        private async Task ExecuteDeleteEventCommand(object parameter)
+        {
+            bool isDeleted = await service.DeleteEventAsync(_eventModel.Id);
+            if(isDeleted)
+            {
+                EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_navigationStore, isLoggedIn);
+                _navigationStore.CurrentViewModel = eventManagementViewModel;
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("ERROR, something went wrong");
+            }
+        }
+        private bool CanExecuteDeleteEventCommand(object parameter)
+        {
+            return isLoggedIn;
         }
     }
 }

@@ -39,12 +39,12 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <StackPanel>
-                        <TextBlock Text="Name" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                        <TextBlock Text="Header Citizen ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                         <TextBlock Text="Household ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                     </StackPanel>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers >
                                 <DataTrigger Binding="{Binding IsAddHouseholdClicked}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -55,17 +55,15 @@
                 </Grid>
                 <Grid Grid.Column="1">
                     <StackPanel>
-                        <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                        <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                        <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                        <TextBox Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
-                        <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold">
+                        <TextBox Text="{Binding HeaderCitizenId, UpdateSourceTrigger=PropertyChanged}" Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                        <TextBox Text="{Binding HouseholdId, UpdateSourceTrigger=PropertyChanged}" Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
+                        <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold" Command="{Binding AddNewHouseholdCommand}">
                             <TextBlock Text="Add new Household" TextWrapping="WrapWithOverflow"/>
                         </Button>
                     </StackPanel>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers >
                                 <DataTrigger Binding="{Binding IsAddHouseholdClicked}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
