@@ -165,14 +165,14 @@ namespace Community_House_Management.Services
             }
         }
 
-        public async Task<bool> DeleteEventAsync(string eventName)
+        public async Task<bool> DeleteEventAsync(int eventId)
         {
             using (var _context = new AppDbContext())
             {
                 var eventFound = await _context.Events
-                    .Where(e => e.Name == eventName)
+                    .Where(e => e.Id == eventId)
                     .SingleOrDefaultAsync();
-                if(eventFound != null)
+                if (eventFound != null)
                 {
                     _context.Events.Remove(eventFound);
                     await _context.SaveChangesAsync();
@@ -181,7 +181,7 @@ namespace Community_House_Management.Services
                 return false;
             }
         }
-        
+
         public async Task<List<PersonModel>> GetPeopleAsync()
         {
             using (var _context = new AppDbContext())

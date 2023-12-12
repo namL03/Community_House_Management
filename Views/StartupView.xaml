@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:vms="clr-namespace:Community_House_Management.ViewModels.StartupViewModels"
              xmlns:event="clr-namespace:Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels"
+             xmlns:resident="clr-namespace:Community_House_Management.ViewModels.StartupViewModels.ResidentManagementViewModels"
              xmlns:views="clr-namespace:Community_House_Management.Views.StartupViews"
              xmlns:eventviews="clr-namespace:Community_House_Management.Views.StartupViews.EventManagementViews"
+             xmlns:residentviews="clr-namespace:Community_House_Management.Views.StartupViews.ResidentManagementViews"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Community_House_Management"
              mc:Ignorable="d" 
@@ -145,6 +147,9 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type event:AddFacilityToEventViewModel}">
                             <eventviews:AddFacilityToEventView/>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type resident:ResidentDetailsViewModel}">
+                            <residentviews:ResidentDetailsView/>
                         </DataTemplate>
                     </Grid.Resources>
                     <ContentControl Content="{Binding CurrentViewModel}"/>
