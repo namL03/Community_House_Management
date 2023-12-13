@@ -55,17 +55,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                 }
             }
         }
-        public ICommand ToResidentManagementViewComamnd { get; }
+        public ICommand ToResidentManagementViewCommand { get; }
         public ICommand DeletePersonCommand { get; }
         public ResidentDetailsViewModel(NavigationStore navigationStore, PersonModel personModel, bool isLoggedIn)
         {
             _personModel = personModel;
             this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
-            ToResidentManagementViewComamnd = new RelayCommand(ExecuteToResidentManagementViewComamnd);
+            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
             DeletePersonCommand = new AsyncRelayCommand(ExecuteDeletePersonComamnd);
         }
-        private void ExecuteToResidentManagementViewComamnd(object parameter)
+        private void ExecuteToResidentManagementViewCommand(object parameter)
         {
             ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_navigationStore, this.IsLoggedIn);
             _navigationStore.CurrentViewModel = residentManagementViewModel;

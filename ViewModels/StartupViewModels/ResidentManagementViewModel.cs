@@ -160,7 +160,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
-        public ICommand SearchByNameCommand { get; }
+        public ICommand SearchByCitizenIdCommand { get; }
         public ICommand ToResidentDetailsViewCommand { get; }
 
         public ResidentManagementViewModel(NavigationStore navigationStore, bool IsLoggedIn)
@@ -173,7 +173,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
-            SearchByNameCommand = new RelayCommand(ExecuteSearchByNameCommand);
+            SearchByCitizenIdCommand = new RelayCommand(ExecuteSearchByCitizenIdCommand);
             ToResidentDetailsViewCommand = new NavigateCommand<ResidentDetailsViewModel>(_navigationStore, typeof(ResidentDetailsViewModel), this.isLoggedIn);
             _ = LoadPeople();
 
@@ -299,12 +299,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             return CurrentPage < PageNumbers.Count;
         }
-        private void ExecuteSearchByNameCommand(object parameter)
+        private void ExecuteSearchByCitizenIdCommand(object parameter)
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                FilteredList = PeopleList.Where(item => item.Name.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
-                Console.WriteLine("filterdList count " + FilteredList.Count());
+                FilteredList = PeopleList.Where(item => item.CitizenId.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     PagedPeopleList = new ObservableCollection<PersonModel>(FilteredList.Take(elementsPerPage));
