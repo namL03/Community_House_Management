@@ -375,26 +375,73 @@ namespace Community_House_Management.Services
             }
         }
 
-        public async Task<List<PersonModel>> GetHouseholdAsync(string headerCitizenId)
+        public async Task<HouseholdModel> GetHouseholdAsync(string headerCitizenId)
         {
             using (var _context = new AppDbContext())
             {
                 var header = await _context.Persons
                     .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
-                List<PersonModel> result = new List<PersonModel>();
-                if (header == null) return result;
-                if (header.HouseholdOwnedId == null) return result;
-                result = await _context.Persons
+             
+                if (header == null) return null;
+                if (header.HouseholdOwnedId == null) return null;
+                List<PersonModel> _members = new List<PersonModel>();
+                PersonModel _header = new PersonModel
+                {
+                    Id = header.Id,
+                    Name = header.Name,
+                    CitizenId = header.CitizenId,
+                    State = header.state,
+                    Address = header.Address,
+                };
+                _members = await _context.Persons
                     .Where(p => p.HouseholdId == header.HouseholdOwnedId)
                     .Select(p => new PersonModel
                     {
+                        Id = p.Id,
                         Name = p.Name,
                         Address = p.Address,
                         CitizenId = p.CitizenId,
                         State = p.state
                     })
                     .ToListAsync();
-                return result;
+                return new HouseholdModel
+                {
+                    Id = header.HouseholdOwnedId.Value,
+                    Members = _members,
+                    Header = _header,
+                };
+            }
+        }
+
+        public async Task<List<HouseholdModel>> GetAllHouseholdsAsync()
+        {
+            using(var _context = new AppDbContext())
+            {
+                var households = await _context.Households
+                    .Include(h => h.Members)
+                    .Include(h => h.Header)
+                    .Select(h => new HouseholdModel
+                    {
+                        Id= h.Id,
+                        Header = new PersonModel
+                        {
+                            Id = h.Header.Id,
+                            Name = h.Header.Name,
+                            Address = h.Header.Address,
+                            CitizenId= h.Header.CitizenId,
+                            State = h.Header.state
+                        },
+                        Members = h.Members.Select(m => new PersonModel
+                        { 
+                            Id = m.Id,
+                            Name = m.Name,
+                            Address = m.Address,
+                            CitizenId = m.CitizenId,
+                            State = m.state
+                        }).ToList()
+                    })
+                    .ToListAsync();
+                return households;
             }
         }
     }
