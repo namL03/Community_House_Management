@@ -84,7 +84,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Search by Citizen Id" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                     <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                    <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
+                    <Button Content="SEARCH" Command="{Binding SearchByCitizenIdCommand}" Margin="8" />
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="4" Grid.Column="1" Margin="15 0 0 0">

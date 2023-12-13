@@ -2,6 +2,7 @@
 using Community_House_Management.Stores;
 using Community_House_Management.ViewModels;
 using Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels;
+using Community_House_Management.ViewModels.StartupViewModels.HouseholdManagementViewModels;
 using Community_House_Management.ViewModels.StartupViewModels.ResidentManagementViewModels;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,13 @@ namespace Community_House_Management.Commands
                     _navigationStore.CurrentViewModel = new ResidentDetailsViewModel(_navigationStore, personParam, isLoggedIn);
                 }
             }
-            
+            else if (_objectType.Equals(typeof(HouseholdDetailsViewModel)))
+            {
+                if(parameter is HouseholdModel householdParam)
+                {
+                    _navigationStore.CurrentViewModel = new HouseholdDetailsViewModel(_navigationStore, householdParam, isLoggedIn);
+                }
+            }
             
         }
     }

@@ -18,6 +18,8 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="27"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -77,22 +79,115 @@
                 <TextBlock Text="Recent Households" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Search by Citizen Id" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                    <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                    <Button Content="SEARCH" Command="{Binding SearchByCitizenIdCommand}" Margin="8" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="5" Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" Background="#3681D2">
                         <TextBlock Text="Household ID" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                     <Grid Grid.Column="1" Background="#3681D2">
-                        <TextBlock Text="Head of Household" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Header's name" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid Grid.Column="2" Background="#3681D2">
+                        <TextBlock Text="Header's Citizen ID" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid Grid.Column="3" Background="#3681D2">
+                        <TextBlock Text="More details" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="4" Grid.Column="1">
+            <Grid Grid.Row="4" Grid.Column="1" Margin="15 0 0 0">
+                <WrapPanel Orientation="Horizontal">
+                    <Button Margin="0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
+                        <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
+                    </Button>
+                    <ItemsControl ItemsSource="{Binding PageNumbers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="30" Height="30" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Foreground" Value="Black" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="LightGray" />
+                                                </Trigger>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <Binding Path="Content" RelativeSource="{RelativeSource Self}" />
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Background" Value="Yellow" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Content>
+                                        <TextBlock Text="{Binding}" />
+                                    </Button.Content>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Width="30" Height="30" Command="{Binding NextPageCommand}">
+                        <TextBlock Text="&gt;" FontSize="15" FontWeight="Bold" />
+                    </Button>
+                </WrapPanel>
+            </Grid>
+            <Grid Grid.Row="6" Grid.Column="1">
                 <Border BorderBrush="Gray">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding PagedHouseholdList}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="150"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <TextBlock Text="{Binding Id}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <TextBlock Text="{Binding Header.Name}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <TextBlock Text="{Binding Header.CitizenId}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="3">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <Button Command="{Binding DataContext.ToHouseholdDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Click here" Foreground="Gray" Background="White"/>
+                                            </Border>
+                                        </Grid>
+                                    </Grid>
 
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Border>
             </Grid>
         </Grid>
