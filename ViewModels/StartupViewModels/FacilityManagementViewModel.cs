@@ -201,6 +201,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 };
                 await service.CreatePropertyAsync(propertyModel);
             }
+            System.Windows.MessageBox.Show("Property has been added successfully");
             Type = string.Empty;
             Count = null;
             await LoadProperties();
@@ -290,12 +291,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
-                Console.WriteLine("filterdList count " + FilteredList.Count());
-                foreach (var e in FilteredList)
-                {
-                    Console.WriteLine(e.Type + " " + e.Count);
-                }                        
+                FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));                   
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Take(elementsPerPage));

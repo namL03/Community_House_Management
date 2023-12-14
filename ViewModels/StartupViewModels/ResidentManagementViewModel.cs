@@ -193,6 +193,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                         Name = string.Empty;
                         Address = string.Empty;
                         CitizenId = string.Empty;
+                        System.Windows.MessageBox.Show("Person has been added successfully");
                         //IsAddResidentClicked = false;
                     }
                     else

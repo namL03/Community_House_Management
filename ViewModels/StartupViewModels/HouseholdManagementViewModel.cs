@@ -196,6 +196,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
+        public ICommand SearchByCitizenIdCommand { get; }
         public HouseholdManagementViewModel(NavigationStore navigationStore, bool IsLoggedIn) 
         {
             _navigationStore = navigationStore;
@@ -206,6 +207,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
+            SearchByCitizenIdCommand = new RelayCommand(ExecuteSearchByCitizenIdCommand);
             _ = LoadHousehold();
         }
         private void ExecuteOpenAddHouseholdCommand(object parameter)
@@ -229,7 +231,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                     if (addedSuccessfully)
                     {
                         await LoadHousehold();
-                        HeaderCitizenId = string.Empty;                  
+                        HeaderCitizenId = string.Empty;
+                        System.Windows.MessageBox.Show("Household has been added successfully");
                     }
                     else
                     {
@@ -239,23 +242,27 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
+                    //System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
+                    System.Windows.MessageBox.Show("Person with the same Citizen ID already exists.");
                 }
             }
+        }
+        private bool CanExecuteAddNewHouseholdCommand(object parameter)
+        {
+            return HeaderCitizenId != null;
         }
         private async Task LoadHousehold()
         {
             HouseholdList = await service.GetAllHouseholdsAsync();
-            foreach(var  Household in HouseholdList)
-            {
-                Console.WriteLine(Household.Header.Name);
-            }
+            FilteredList = HouseholdList;
+            CurrentPage = 1;
+            UpdatePagedHouseholdList();
+            UpdatePageNumbers();
+            //OnPropertyChanged(nameof(NumberOfPropertyTypes));
+            OnPropertyChanged(nameof(CurrentPage));
             OnPropertyChanged(nameof(HouseholdList));
         }
-        private bool CanExecuteAddNewHouseholdCommand(object parameter)
-        {
-            return HeaderCitizenId != null && HouseholdId > 0;
-        }
+        
         int elementsPerPage = 5;
         private void UpdatePagedHouseholdList()
         {
@@ -326,10 +333,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (!string.IsNullOrEmpty(SearchText))
             {
                 FilteredList = HouseholdList.Where(item => item.Header.CitizenId.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     PagedHouseholdList = new ObservableCollection<HouseholdModel>(FilteredList.Take(elementsPerPage));
-                    UpdatePageNumbersAfterSearch();
+                    UpdatePageNumbersAfterSearch();                   
                 });
                 OnPropertyChanged(nameof(PagedHouseholdList));
                 CurrentPage = 1;
@@ -337,6 +345,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
             else
             {
+                Console.WriteLine("else");
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     FilteredList = HouseholdList;
