@@ -16,8 +16,6 @@ namespace Community_House_Management.ModelsDb
         public ICollection<Event>? Events { get; set; }
         public int? HouseholdId { get; set; }
         public Household? Household { get; set; }
-
-        public int? HouseholdOwnedId { get; set; }
         public Household? HouseholdOwned { get; set; }
 
         public int? state {  get; set; }

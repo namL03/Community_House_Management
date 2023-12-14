@@ -229,10 +229,10 @@ namespace Community_House_Management.Services
         {
             using (var _context = new AppDbContext())
             {
-                var personFound = await _context.Persons
+                var personFound = await _context.Persons.Include(p => p.HouseholdOwned)
                     .SingleOrDefaultAsync(p => p.CitizenId == citizenId);
                 if (personFound == null) return false;
-                if (personFound.HouseholdOwnedId != null)
+                if (personFound.HouseholdOwned != null)
                 {
                     await DeleteHouseholdAsync(personFound.CitizenId);
                 }
@@ -260,10 +260,10 @@ namespace Community_House_Management.Services
         {
             using (var _context = new AppDbContext())
             {
-                var header = await _context.Persons
+                var header = await _context.Persons.Include(p => p.HouseholdOwned)
                     .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
                 if (header == null) return false;
-                if (header.HouseholdOwnedId == null) return false;
+                if (header.HouseholdOwned == null) return false;
                 foreach (var member in members)
                 {
                     var memberFound = await _context.Persons
@@ -275,7 +275,7 @@ namespace Community_House_Management.Services
                 {
                     var memberFound = await _context.Persons
                         .SingleOrDefaultAsync(p => p.CitizenId == member.CitizenId);
-                    memberFound.HouseholdId = header.HouseholdOwnedId;
+                    memberFound.HouseholdId = header.HouseholdOwned.Id;
                     memberFound.state = member.State;
                 }
                 await _context.SaveChangesAsync();
@@ -288,6 +288,7 @@ namespace Community_House_Management.Services
             using (var _context = new AppDbContext())
             {
                 var header = await _context.Persons
+                    .Include(p => p.HouseholdOwned)
                     .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
                 if (header == null) return false;
                 if (header.HouseholdId != null) return false;
@@ -296,7 +297,10 @@ namespace Community_House_Management.Services
                     HeaderId = header.Id
                 });
                 await _context.SaveChangesAsync();
-                header.HouseholdId = header.HouseholdOwnedId;
+                header = await _context.Persons
+                    .Include(p => p.HouseholdOwned)
+                    .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
+                header.HouseholdId = header.HouseholdOwned.Id;
                 header.state = 1;
                 await _context.SaveChangesAsync();
                 return true;
@@ -320,7 +324,6 @@ namespace Community_House_Management.Services
                     member.HouseholdId = null;
                     member.state = null;
                 }
-                header.HouseholdOwnedId = null;
                 _context.Households.Remove(household);
                 await _context.SaveChangesAsync();
                 return true;
@@ -352,9 +355,10 @@ namespace Community_House_Management.Services
             using(var _context = new AppDbContext())
             {
                 var header = await _context.Persons
+                    .Include(p => p.HouseholdOwned)
                     .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
                 if (header == null) return false;
-                if (header.HouseholdOwnedId == null) return false;
+                if (header.HouseholdOwned == null) return false;
                 foreach(var memberId in memberCitizenIds)
                 {
                     var memberFound = await _context.Persons
@@ -380,10 +384,11 @@ namespace Community_House_Management.Services
             using (var _context = new AppDbContext())
             {
                 var header = await _context.Persons
+                    .Include(p => p.HouseholdOwned)
                     .SingleOrDefaultAsync(p => p.CitizenId == headerCitizenId);
              
                 if (header == null) return null;
-                if (header.HouseholdOwnedId == null) return null;
+                if (header.HouseholdOwned == null) return null;
                 List<PersonModel> _members = new List<PersonModel>();
                 PersonModel _header = new PersonModel
                 {
@@ -394,7 +399,7 @@ namespace Community_House_Management.Services
                     Address = header.Address,
                 };
                 _members = await _context.Persons
-                    .Where(p => p.HouseholdId == header.HouseholdOwnedId)
+                    .Where(p => p.HouseholdId == header.HouseholdOwned.Id)
                     .Select(p => new PersonModel
                     {
                         Id = p.Id,
@@ -406,7 +411,7 @@ namespace Community_House_Management.Services
                     .ToListAsync();
                 return new HouseholdModel
                 {
-                    Id = header.HouseholdOwnedId.Value,
+                    Id = header.HouseholdOwned.Id,
                     Members = _members,
                     Header = _header,
                 };
