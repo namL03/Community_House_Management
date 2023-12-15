@@ -55,6 +55,14 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                 }
             }
         }
+        public PersonModel? Header
+        {
+            get
+            {
+                return _personModel.Header;
+            }
+            set { }
+        }
         public ICommand ToResidentManagementViewCommand { get; }
         public ICommand DeletePersonCommand { get; }
         public ResidentDetailsViewModel(NavigationStore navigationStore, PersonModel personModel, bool isLoggedIn)
