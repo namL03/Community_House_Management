@@ -53,7 +53,13 @@ namespace Community_House_Management.Commands
                     _navigationStore.CurrentViewModel = new HouseholdDetailsViewModel(_navigationStore, householdParam, isLoggedIn);
                 }
             }
-            
+            else if (_objectType.Equals(typeof(ModifyMemberInformationViewModel)))
+            {
+                if(parameter is PersonModel personParam)
+                {
+                    _navigationStore.CurrentViewModel = new ModifyMemberInformationViewModel(_navigationStore, personParam, isLoggedIn);
+                }
+            }
         }
     }
 }

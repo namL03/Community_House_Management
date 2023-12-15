@@ -98,6 +98,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand GetPersonByCitizenIdCommand { get; }
         public ICommand AddPersonToHouseholdCommand { get; }
+        public ICommand ToModifyMemberInformationViewCommand { get; }
         public HouseholdDetailsViewModel(NavigationStore navigationStore, HouseholdModel householdModel, bool isLoggedIn)
         {
             _navigationStore = navigationStore;
@@ -108,6 +109,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
             GetPersonByCitizenIdCommand = new AsyncRelayCommand(ExecuteGetPersonByCitizenIdCommand);
             AddPersonToHouseholdCommand = new AsyncRelayCommand(ExecuteAddPersonToHouseholdCommand);
+            ToModifyMemberInformationViewCommand = new NavigateCommand<ModifyMemberInformationViewModel>(_navigationStore, typeof(ModifyMemberInformationViewModel), this.isLoggedIn);
             _ = LoadMembers();
         }
         private async Task LoadMembers()
