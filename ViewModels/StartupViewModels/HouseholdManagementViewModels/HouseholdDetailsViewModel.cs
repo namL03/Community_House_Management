@@ -12,6 +12,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManagementViewModels
@@ -21,6 +22,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         private readonly NavigationStore _navigationStore;
         private HouseholdModel _householdModel;
         private Service service = new Service();
+        private HouseholdModel newHousehold;
+        public HouseholdModel NewHousehold
+        {
+            get
+            {
+                return newHousehold;
+            }
+            set
+            {
+                newHousehold = value;
+                OnPropertyChanged(nameof(NewHousehold));
+            }
+        }
         private bool isLoggedIn;
         public bool IsLoggedIn
         {
@@ -98,26 +112,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         }
         private async Task LoadMembers()
         {
-            try
-            {
-                // Kiểm tra xem householdModel có tồn tại hay không
-                if (_householdModel != null)
-                {
-                    // Gán giá trị của Members từ _householdModel
-                    Members = _householdModel.Members;
-                    Members.Add(Header);
-                    Console.WriteLine("LOADED");
-                }
-                else
-                {
-                    Console.WriteLine("householdModel is null. Unable to load members.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý lỗi nếu có
-                Console.WriteLine($"Error loading household members: {ex.Message}");
-            }
+            NewHousehold = await service.GetHouseholdAsync(_householdModel.Header.CitizenId);
+            Members = NewHousehold.Members;
+            OnPropertyChanged(nameof(Members));
+            OnPropertyChanged(nameof(NewHousehold));
         }
         private async Task ExecuteDeleteHouseholdCommand(object parameter)
         {
@@ -152,21 +150,18 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             {
                 NewMembers.Clear();
                 NewMembers.Add(PersonFound);
-                foreach (var member in NewMembers)
-                {
-                    Console.WriteLine(member.Name);
-                }
-                Console.WriteLine(Header.CitizenId);
-                Console.WriteLine(Header.Name);
-                Console.WriteLine(Header.HouseholdId);
-                Console.WriteLine(_householdModel.Id);
                 bool addedSuccessfully = await service.AddMembersAsync(Header.CitizenId, NewMembers);
 
                 if (addedSuccessfully)
-                {
+                {                 
+                    _householdModel.Members.Add(PersonFound);
+                    foreach (var member in _householdModel.Members)
+                    {
+                        Console.WriteLine(member.Name);
+                    }
                     await LoadMembers();
                     EnteredCitizenId = string.Empty;
-                    NewMembers.Clear();
+
                     System.Windows.MessageBox.Show("Person has been added successfully");
                     //IsAddResidentClicked = false;
                 }
@@ -178,33 +173,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
-            }
-            //if (PersonFound != null)
-            //{
-            //    //Console.WriteLine(PersonFound.Name);
-            //    NewMembers.Clear();
-            //    NewMembers.Add(PersonFound);
-            //    foreach(var member in NewMembers)
-            //    {
-            //        Console.WriteLine(member.Name);
-            //    }
-            //    bool addedSuccessfully = await service.AddMembersAsync(Header.CitizenId, NewMembers);
-
-            //    if (addedSuccessfully)
-            //    {
-            //        await LoadMembers();
-            //        EnteredCitizenId = string.Empty;
-            //        NewMembers.Clear();
-            //        System.Windows.MessageBox.Show("Person has been added successfully");
-            //        //IsAddResidentClicked = false;
-            //    }
-            //    else
-            //    {
-            //        System.Windows.MessageBox.Show("Error, please check the information");
-            //    }
-            //}
-            //else Console.WriteLine("EMPTY");
-            
+            }            
         }
     }
 }
