@@ -159,6 +159,9 @@
                         <DataTemplate DataType="{x:Type household:ModifyMemberInformationViewModel}">
                             <householdviews:ModifyMemberInformationView/>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type resident:ModifyPersonInformationViewModel}">
+                            <residentviews:ModifyPersonInformationView/>
+                        </DataTemplate>
                     </Grid.Resources>
                     <ContentControl Content="{Binding CurrentViewModel}"/>
                 </Grid>

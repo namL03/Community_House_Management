@@ -124,12 +124,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             bool isDeleted = await service.DeleteHouseholdAsync(Header.CitizenId);
             if (isDeleted)
             {
+                System.Windows.MessageBox.Show("Delete Household successfully!");
                 HouseholdManagementViewModel householdManagementViewModel = new HouseholdManagementViewModel(_navigationStore, this.IsLoggedIn);
                 _navigationStore.CurrentViewModel = householdManagementViewModel;
             }
             else
             {
-                System.Windows.MessageBox.Show("ERROR, something went wrong");
+                System.Windows.MessageBox.Show("ERROR, something went wrong!");
             }
         }
         private void ExecuteToHouseholdManagementViewCommand(object parameter)
@@ -164,12 +165,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                     await LoadMembers();
                     EnteredCitizenId = string.Empty;
 
-                    System.Windows.MessageBox.Show("Person has been added successfully");
+                    System.Windows.MessageBox.Show("Person has been added successfully!");
                     //IsAddResidentClicked = false;
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Error, please check informations");
+                    System.Windows.MessageBox.Show("Error, please check informations!");
                 }
             }
             catch (Exception ex)

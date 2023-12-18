@@ -243,8 +243,7 @@ namespace Community_House_Management.Services
         }
 
         public async Task<bool> ChangeStateAsync(PersonModel person)
-        {
-            using (var _context = new AppDbContext())
+        {   using (var _context = new AppDbContext())
             {
                 var personFound = await _context.Persons
                     .SingleOrDefaultAsync(p => p.CitizenId == person.CitizenId);
@@ -255,6 +254,7 @@ namespace Community_House_Management.Services
                 return true;
             }
         }
+         
 
         public async Task<bool> AddMembersAsync(string headerCitizenId, List<PersonModel>members)
         {
