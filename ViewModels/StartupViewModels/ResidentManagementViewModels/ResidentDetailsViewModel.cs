@@ -63,15 +63,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             }
             set { }
         }
+        public string StateDisplayed
+        {
+            get { return _personModel.StateDisplayed; }
+            set { }
+        }
         public ICommand ToResidentManagementViewCommand { get; }
         public ICommand DeletePersonCommand { get; }
+        public ICommand ToModifyPersonInformationViewCommand { get; }
         public ResidentDetailsViewModel(NavigationStore navigationStore, PersonModel personModel, bool isLoggedIn)
         {
             _personModel = personModel;
             this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
             ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
+            ToModifyPersonInformationViewCommand = new RelayCommand(ExecuteToModifyPersonInformationViewCommand);
             DeletePersonCommand = new AsyncRelayCommand(ExecuteDeletePersonComamnd);
+            
         }
         private void ExecuteToResidentManagementViewCommand(object parameter)
         {
@@ -84,6 +92,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                 bool isDeleted = await service.DeletePersonAsync(_personModel.CitizenId);
                 if (isDeleted)
                 {
+                    System.Windows.MessageBox.Show("ERROR, something went wrong");
                     ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_navigationStore, this.IsLoggedIn);
                     _navigationStore.CurrentViewModel = residentManagementViewModel;
                 }
@@ -92,6 +101,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                     System.Windows.MessageBox.Show("ERROR, something went wrong");
                 }
             }
+        }
+        private void ExecuteToModifyPersonInformationViewCommand(object parameter)
+        {
+            ModifyPersonInformationViewModel modifyPersonInformationViewModel = new ModifyPersonInformationViewModel(_navigationStore, _personModel, this.IsLoggedIn);
+            _navigationStore.CurrentViewModel = modifyPersonInformationViewModel;
         }
     }
 }
