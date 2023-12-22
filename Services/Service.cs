@@ -500,7 +500,7 @@ namespace Community_House_Management.Services
                 return freeProperties;
             }
         }
-        public async Task<bool> RemovePropertyFromEvent(int eventId, PropertyTypeModel propertyType)
+        public async Task<bool> RemovePropertyFromEventAsync(int eventId, PropertyTypeModel propertyType)
         {
             using (var _context = new AppDbContext())
             {
@@ -529,7 +529,7 @@ namespace Community_House_Management.Services
                 return true;
             }
         }
-        public async Task<EventModel> GetEventById(int eventId)
+        public async Task<EventModel> GetEventByIdAsync(int eventId)
         {
             using (var _context = new AppDbContext ())
             {

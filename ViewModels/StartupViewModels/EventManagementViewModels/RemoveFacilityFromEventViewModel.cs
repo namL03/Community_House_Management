@@ -16,22 +16,19 @@ using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels
 {
-    public class AddFacilityToEventViewModel : ViewModelBase
+    public class RemoveFacilityFromEventViewModel : ViewModelBase
     {
-
         private readonly NavigationStore _navigationStore;
         private EventModel _eventModel;
+        private Service service = new Service();
         private bool isLoggedIn;
         public bool IsLoggedIn
         {
             get { return isLoggedIn; }
             set
             {
-                if (value != isLoggedIn)
-                {
-                    isLoggedIn = value;
-                    OnPropertyChanged(nameof(IsLoggedIn));
-                }
+                isLoggedIn = value;
+                OnPropertyChanged(nameof(IsLoggedIn));
             }
         }
         public string Name
@@ -39,72 +36,40 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             get { return _eventModel.Name; }
             set { }
         }
-        private Service service = new Service();
-        private List<PropertyTypeModel> propertyTypesList;
-        public List<PropertyTypeModel> PropertyTypesList
+        private ObservableCollection<PropertyTypeModel> pagedPropertyTypeOfEventList;
+        public ObservableCollection<PropertyTypeModel> PagedPropertyTypeOfEventList
         {
-            get { return propertyTypesList; }
+            get { return pagedPropertyTypeOfEventList; }
             set
             {
-                propertyTypesList = value;
-                OnPropertyChanged(nameof(PropertyTypesList));
+                pagedPropertyTypeOfEventList = value;
+                OnPropertyChanged(nameof(PagedPropertyTypeOfEventList));
             }
         }
-        private int? count;
-        public int? Count
-        {
-            get { return count; }
-            set
-            {
-                count = value;
-                OnPropertyChanged(nameof(Count));
-            }
-        }
-        private string type;
-        public string Type
-        {
-            get { return type; }
-            set
-            {
-                type = value;
-                OnPropertyChanged(nameof(Type));
-                Console.WriteLine(Type);
-            }
-        }
-        private int _selectedNumber;
-        public int SelectedNumber
+        private EventModel _eventLoaded;
+        public EventModel EventLoaded
         {
             get
             {
-                return _selectedNumber;
+                return _eventLoaded;
             }
             set
             {
-                _selectedNumber = value;
-                OnPropertyChanged(nameof(SelectedNumber));
-            }
-        }
-        private bool _isPropertyPopupOpen;
-        public bool IsPropertyPopupOpen
-        {
-            get { return _isPropertyPopupOpen; }
-            set
-            {
-                if(_isPropertyPopupOpen != value)
-                {
-                    _isPropertyPopupOpen = value;
-                    OnPropertyChanged(nameof(IsPropertyPopupOpen));
-                }
+                _eventLoaded = value;
+                OnPropertyChanged(nameof(EventLoaded));
             }
         }
-        private ObservableCollection<PropertyTypeModel> pagedPropertyTypesList;
-        public ObservableCollection<PropertyTypeModel> PagedPropertyTypesList
+        private PropertyTypeModel _beRemovedProperty;
+        public PropertyTypeModel BeRemovedProperty
         {
-            get { return pagedPropertyTypesList; }
+            get
+            {
+                return _beRemovedProperty;
+            }
             set
             {
-                pagedPropertyTypesList = value;
-                OnPropertyChanged(nameof(PagedPropertyTypesList));
+                _beRemovedProperty = value;
+                OnPropertyChanged(nameof(BeRemovedProperty));
             }
         }
         private List<int> _pageNumbers;
@@ -134,9 +99,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             get
             {
                 List<int> numberOfPropertyTypes = new List<int>();
-                if (PropertyTypesList != null)
+                if (EventLoaded.PropertyTypes != null)
                 {
-                    for (int i = 0; i <= PropertyTypesList.Count(); i++)
+                    for (int i = 0; i <= EventLoaded.PropertyTypes.Count(); i++)
                     {
                         numberOfPropertyTypes.Add(i);
                     }
@@ -170,6 +135,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 OnPropertyChanged(nameof(FilteredList));
             }
         }
+        private bool _isPropertyPopupOpen;
+        public bool IsPropertyPopupOpen
+        {
+            get { return _isPropertyPopupOpen; }
+            set
+            {
+                if (_isPropertyPopupOpen != value)
+                {
+                    _isPropertyPopupOpen = value;
+                    OnPropertyChanged(nameof(IsPropertyPopupOpen));
+                }
+            }
+        }
         private PropertyTypeModel _selectedProperty;
         public PropertyTypeModel SelectedProperty
         {
@@ -190,64 +168,58 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 OnPropertyChanged(nameof(QuantityOfProperty));
             }
         }
-        private PropertyTypeModel beAddedProperty;
-        public PropertyTypeModel BeAddedProperty
-        {
-            get
-            {
-                return beAddedProperty;
-            }
-            set
-            {
-                beAddedProperty = value;
-                OnPropertyChanged(nameof(BeAddedProperty));
-            }
-        }
+        public ICommand ToEventDetailsViewCommand { get; }
+        public ICommand RemoveFacilityFromEventCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
-        public ICommand OpenAddPropertyPopupCommand { get; }
-        public ICommand ToEventDetailsViewCommand { get; }
-        public ICommand AssignFacilityToEventCommand { get; }
-        public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn)
+        public ICommand OpenRemovePropertyPopupCommand { get; }
+        public RemoveFacilityFromEventViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
-            _eventModel = eventModel;
             _navigationStore = navigationStore;
-            this.isLoggedIn = isLoggedIn;
+            _eventModel = eventModel;
+            Console.WriteLine(_eventModel.Name);
+            Console.WriteLine(_eventModel.Id);
+            this.IsLoggedIn = isLoggedIn;
+            ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
+            RemoveFacilityFromEventCommand = new AsyncRelayCommand(ExecuteRemoveFacilityFromEventCommand);
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
-            OpenAddPropertyPopupCommand = new RelayCommand(ExecuteOpenAddPropertyPopupCommand);
-            ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
-            AssignFacilityToEventCommand = new AsyncRelayCommand(ExecuteAssignFacilityToEventCommand, CanExecuteAssignFacilityToEventCommand);
-            _ = LoadAvaiableProperties();
+            OpenRemovePropertyPopupCommand = new RelayCommand(ExecuteOpenRemovePropertyPopupCommand);
+            _ = LoadEvent();
         }
-        
-        private async Task LoadAvaiableProperties()
+        private async Task LoadEvent()
         {
-            PropertyTypesList = await service.GetAvailablePropertiesForEvent(_eventModel.Id);
-            FilteredList = PropertyTypesList;
+            EventLoaded = await service.GetEventByIdAsync(_eventModel.Id);
+            FilteredList = EventLoaded.PropertyTypes;
             CurrentPage = 1;
             UpdatePagedPropertyTypesList();
             UpdatePageNumbers();
-            OnPropertyChanged(nameof(PropertyTypesList));
+            OnPropertyChanged(nameof(EventLoaded.PropertyTypes));
             OnPropertyChanged(nameof(NumberOfPropertyTypes));
             OnPropertyChanged(nameof(CurrentPage));
         }
+        private void ExecuteToEventDetailsViewCommand(object parameter)
+        {
+            EventDetailsViewModel eventDetailsViewModel = new EventDetailsViewModel(_navigationStore, _eventModel, isLoggedIn);
+            _navigationStore.CurrentViewModel = eventDetailsViewModel;
+        }
+        
         int elementsPerPage = 5;
         private void UpdatePagedPropertyTypesList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;
-            PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
+            PagedPropertyTypeOfEventList = new ObservableCollection<PropertyTypeModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
         }
 
         private void UpdatePageNumbers()
         {
-            if (PropertyTypesList != null)
+            if (EventLoaded.PropertyTypes != null)
             {
-                int totalPages = (int)Math.Ceiling((double)PropertyTypesList.Count() / elementsPerPage);
+                int totalPages = (int)Math.Ceiling((double)EventLoaded.PropertyTypes.Count() / elementsPerPage);
                 PageNumbers = Enumerable.Range(1, totalPages).ToList();
             }
             else
@@ -307,7 +279,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         {
             if (!string.IsNullOrEmpty(SearchText))
             {
-                FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+                FilteredList = EventLoaded.PropertyTypes.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Console.WriteLine("filterdList count " + FilteredList.Count());
                 foreach (var e in FilteredList)
                 {
@@ -315,10 +287,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 }
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Take(elementsPerPage));
+                    PagedPropertyTypeOfEventList = new ObservableCollection<PropertyTypeModel>(FilteredList.Take(elementsPerPage));
                     UpdatePageNumbersAfterSearch();
                 });
-                OnPropertyChanged(nameof(PagedPropertyTypesList));
+                OnPropertyChanged(nameof(PagedPropertyTypeOfEventList));
                 CurrentPage = 1;
                 UpdatePagedPropertyTypesList();
             }
@@ -326,47 +298,40 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             {
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    FilteredList = PropertyTypesList;
-                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(PropertyTypesList.Take(elementsPerPage));
+                    FilteredList = EventLoaded.PropertyTypes;
+                    PagedPropertyTypeOfEventList = new ObservableCollection<PropertyTypeModel>(EventLoaded.PropertyTypes.Take(elementsPerPage));
                     UpdatePageNumbers();
                 });
             }
         }
-        private void ExecuteOpenAddPropertyPopupCommand(object parameter)
+        private void ExecuteOpenRemovePropertyPopupCommand(object parameter)
         {
             if (parameter is PropertyTypeModel selectedProperty)
             {
-                Console.WriteLine(selectedProperty.Type);
                 SelectedProperty = selectedProperty;
                 IsPropertyPopupOpen = true;
             }
         }
-        private void ExecuteToEventDetailsViewCommand(object parameter)
+        private async Task ExecuteRemoveFacilityFromEventCommand(object parameter)
         {
-            EventDetailsViewModel eventDetailsViewModel = new EventDetailsViewModel(_navigationStore, _eventModel, isLoggedIn);
-            _navigationStore.CurrentViewModel = eventDetailsViewModel;
-        }
-        private async Task ExecuteAssignFacilityToEventCommand(object parameter)
-        {
-            BeAddedProperty = new PropertyTypeModel();
-            BeAddedProperty.Type = SelectedProperty.Type;
-            BeAddedProperty.Count = QuantityOfProperty;
-            bool isAdded = await service.AssignPropertyToEventAsync(_eventModel.Id, BeAddedProperty);
-            if(isAdded)
+            BeRemovedProperty = new PropertyTypeModel();
+            BeRemovedProperty.Type = SelectedProperty.Type;
+            BeRemovedProperty.Count = QuantityOfProperty;
+            bool isRemoved = await service.RemovePropertyFromEventAsync(_eventModel.Id, BeRemovedProperty);
+            if (isRemoved)
             {
-                System.Windows.MessageBox.Show("Facility is added successfully!");
-                IsPropertyPopupOpen= false;
-                await LoadAvaiableProperties();
-                _eventModel = await service.GetEventByIdAsync(_eventModel.Id);
+                System.Windows.MessageBox.Show("Facility is removed successfully!");
+                
+                await LoadEvent();
             }
             else
             {
                 System.Windows.MessageBox.Show("Please check the number again");
             }
         }
-        private bool CanExecuteAssignFacilityToEventCommand(object paramter)
+        private bool CanExecuteRemoveFacilityFromEventCommand(object parameter)
         {
-            return QuantityOfProperty > 0;
+            return QuantityOfProperty > 0 && QuantityOfProperty <= SelectedProperty.Count;
         }
     }
 }

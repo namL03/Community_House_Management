@@ -139,7 +139,7 @@
                 </Grid>
                 <Grid Grid.Column="1">
                     <Button Background="#3681D2">
-                        <TextBlock Text="Count" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Total" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Button>
                 </Grid>
             </Grid>

@@ -122,7 +122,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
         }
         private async Task LoadHousehold()
         {
-            Household = await service.GetHouseholdAsync(Person.Header.CitizenId);
+            if(Person.Header != null)
+            {
+                Household = await service.GetHouseholdAsync(Person.Header.CitizenId);
+            }
         }
         private async Task ExecuteSaveChangeInformationCommand(object parameter)
         {

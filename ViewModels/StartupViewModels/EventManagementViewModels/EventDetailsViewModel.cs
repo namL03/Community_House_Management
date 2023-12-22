@@ -18,6 +18,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
     {
         private readonly NavigationStore _navigationStore;
         private EventModel _eventModel;
+        private EventModel _eventLoaded;
+        public EventModel EventLoaded
+        {
+            get
+            {
+                return _eventLoaded;
+            }
+            set
+            {
+                _eventLoaded = value;
+                OnPropertyChanged(nameof(EventLoaded));
+            }
+        }
         private Service service = new Service();
         public string OrganizerCitizenId
         {
@@ -34,11 +47,15 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             get { return _eventModel.Name; }
             set { }
         }
-        public List<PropertyTypeModel> PropertyTypes
+        private List<PropertyTypeModel> pagedPropertyTypesList;
+        public List<PropertyTypeModel> PagedPropertyTypesList
         {
-            get { return _eventModel.PropertyTypes; }
+            get { return pagedPropertyTypesList; }
             set
-            { }
+            {
+                pagedPropertyTypesList = value;
+                OnPropertyChanged(nameof(PagedPropertyTypesList));
+            }
         }
         private bool isLoggedIn;
         public bool IsLoggedIn
@@ -56,6 +73,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
+        public ICommand ToRemoveFacilityFromEventViewCommand { get; set; }
         public ICommand ToEventManagementViewComamnd { get; }
         public ICommand DeleteEventCommand { get; }
 
@@ -67,7 +85,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
             ToEventManagementViewComamnd = new RelayCommand(ExecuteToEventManagementViewComamnd);
             DeleteEventCommand = new AsyncRelayCommand(ExecuteDeleteEventCommand, CanExecuteDeleteEventCommand);
-            Console.WriteLine(isLoggedIn);
+            ToRemoveFacilityFromEventViewCommand = new RelayCommand(ExecuteToRemoveFacilityFromEventViewCommand);
+            _ = LoadEvent();
+        }
+        private async Task LoadEvent()
+        {
+            EventLoaded = await service.GetEventByIdAsync(_eventModel.Id);
         }
         private void ExecuteToAddFacilityToEventViewCommand(object parameter)
         {
@@ -88,7 +111,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             bool isDeleted = await service.DeleteEventAsync(_eventModel.Id);
             if(isDeleted)
             {
-                EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_navigationStore, isLoggedIn);
+                EventManagementViewModel eventManagementViewModel = new EventManagementViewModel(_navigationStore, this.IsLoggedIn);
                 _navigationStore.CurrentViewModel = eventManagementViewModel;
             }
             else
@@ -99,6 +122,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         private bool CanExecuteDeleteEventCommand(object parameter)
         {
             return isLoggedIn;
+        }
+        private void ExecuteToRemoveFacilityFromEventViewCommand(object parameter)
+        {
+            RemoveFacilityFromEventViewModel removeFacilityFromEventViewModel = new RemoveFacilityFromEventViewModel(_navigationStore, _eventModel, this.IsLoggedIn);
+            _navigationStore.CurrentViewModel = removeFacilityFromEventViewModel;
         }
     }
 }

@@ -53,12 +53,16 @@
             <TextBlock Text="Recent event's facilities" FontSize="18" FontWeight="Bold"/>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="2">
-            <Button Content="Add" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToAddFacilityToEventViewCommand}" CommandParameter="{Binding}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Add" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToAddFacilityToEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
+                <Button Content="Remove" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToRemoveFacilityFromEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="17.5"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#3681D2">
                 <TextBlock Text="Facility type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -69,30 +73,32 @@
            
         </Grid>
         <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">
-            <Border>
-                <ItemsControl ItemsSource="{Binding PropertyType}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0">
-                                    <Border BorderBrush="Gray" BorderThickness="1">
-                                        <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
-                                    </Border>
+            <ScrollViewer>
+                <Border>
+                    <ItemsControl ItemsSource="{Binding EventLoaded.PropertyTypes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                    <Grid Grid.Column="1" >
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
                                 </Grid>
-                                <Grid Grid.Column="1" >
-                                    <Border BorderBrush="Gray" BorderThickness="1">
-                                        <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
-                                    </Border>
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>
