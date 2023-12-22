@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.Extensions.Logging;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Community_House_Management.Services
 {
@@ -120,6 +122,7 @@ namespace Community_House_Management.Services
                     .Where(p => p.CitizenId == citizenid)
                     .Select(p => new PersonModel
                     {
+                        Id = p.Id,
                         Name = p.Name,
                         Address = p.Address,
                         CitizenId = p.CitizenId,
@@ -191,6 +194,7 @@ namespace Community_House_Management.Services
                     .ThenInclude(h => h.Header)
                     .Select(p =>  new PersonModel
                     {
+                        Id = p.Id,
                         Name = p.Name,
                         Address = p.Address,
                         CitizenId = p.CitizenId,
@@ -449,6 +453,82 @@ namespace Community_House_Management.Services
                 return households;
             }
         }
+        public async Task<bool> AssignPropertyToEventAsync(int eventId, PropertyTypeModel propertyType)
+        {
+            using (var _context = new AppDbContext())
+            {
+                var EventFound = await _context.Events
+                    .SingleOrDefaultAsync(e => e.Id == eventId);
+                if (EventFound == null) return false;
+                var freeProperties = await _context.Properties
+                    .Where(p => p.Type == propertyType.Type)
+                    .Include(p => p.EventProperties)
+                    .ThenInclude(ep => ep.Event)
+                    .Where(p => !p.EventProperties.Any(ep => ep.Event.timeEnd >= EventFound.timeStart && ep.Event.timeStart <= EventFound.timeEnd))
+                    .ToListAsync();
+                if (freeProperties.Count < propertyType.Count) return false;
+                foreach (Property property in freeProperties.Take(propertyType.Count))
+                {
+                    property.EventProperties.Add(new EventProperty
+                    {
+                        EventId = eventId,
+                        PropertyId = property.Id
+                    });
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+        public async Task<List<PropertyTypeModel>> GetAvailablePropertiesForEvent(int eventId)
+        {
+            using (var _context = new AppDbContext())
+            {
+                var EventFound = await _context.Events
+                    .SingleOrDefaultAsync(e => e.Id == eventId);
+                if (EventFound == null) return null;
+                var freeProperties = await _context.Properties
+                    .Include(p => p.EventProperties)
+                    .ThenInclude(ep => ep.Event)
+                    .Where(p => !p.EventProperties.Any(ep => ep.Event.timeEnd >= EventFound.timeStart && ep.Event.timeStart <= EventFound.timeEnd))
+                    .GroupBy(p => p.Type)
+                    .Select(p => new PropertyTypeModel
+                    {
+                        Type = p.Key,
+                        Count = p.Count()
+                    })
+                    .ToListAsync();
+                return freeProperties;
+            }
+        }
+        public async Task<bool> RemovePropertyFromEvent(int eventId, PropertyTypeModel propertyType)
+        {
+            using (var _context = new AppDbContext())
+            {
+                var eventFound = await _context.Events
+                .Include(e => e.EventProperties)
+                .ThenInclude(ep => ep.Property)
+                .SingleOrDefaultAsync(e => e.Id == eventId);
+
+                if (eventFound == null)
+                {
+                    return false;
+                }
+                var eventPropertiesToRemove = eventFound.EventProperties
+                    .Where(ep => ep.Property.Type == propertyType.Type)
+                    .ToList();
+
+                if (eventPropertiesToRemove.Count < propertyType.Count)
+                {
+                    return false;
+                }
+                foreach(var eventPropertyToRemove in eventPropertiesToRemove.Take(propertyType.Count))
+                {
+                    eventFound.EventProperties.Remove(eventPropertyToRemove);
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
     }
-    //public async Task<bool> AssignPropertyToEventAsync()
+    
 }
