@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.ModelsDb
 {
-    class Event
+    public class Event
     {
         public int Id { get; set; }
         public string Name { get; set; }

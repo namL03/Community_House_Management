@@ -16,7 +16,7 @@ namespace Community_House_Management.Models
         private string _name;
         private DateTime _timeStart;
         private DateTime _timeEnd;
-        private List<PropertyType> propertyTypes;
+        private List<PropertyTypeModel> propertyTypes;
         public PersonModel Organizer
         {
             get => _organizer;
@@ -26,7 +26,7 @@ namespace Community_House_Management.Models
                 OnPropertyChanged(nameof(Organizer));
             }
         }
-        public List<PropertyType> PropertyTypes
+        public List<PropertyTypeModel> PropertyTypes
         {
             get => propertyTypes;
             set

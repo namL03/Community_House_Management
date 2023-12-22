@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.ModelsDb
 {
-    class Household
+    public class Household
     {
         public int Id { get; set; }
         public ICollection<Person> Members { get; set; }

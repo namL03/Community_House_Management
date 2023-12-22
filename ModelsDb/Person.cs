@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.ModelsDb
 {
-    class Person
+    public class Person
     {
         public int Id { get; set; }
         public string CitizenId { get; set; }

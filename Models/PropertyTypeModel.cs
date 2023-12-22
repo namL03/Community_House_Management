@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.Models
 {
-    public class PropertyType : ViewModelBase
+    public class PropertyTypeModel : ViewModelBase
     {
 		private string _type;
 		private int _count;

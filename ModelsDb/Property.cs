@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.ModelsDb
 {
-    class Property
+    public class Property
     {
         public int Id { get; set; }
         public string Type { get; set; }

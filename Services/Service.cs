@@ -59,13 +59,13 @@ namespace Community_House_Management.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<PropertyType>> GetPropertiesTypeAsync()
+        public async Task<List<PropertyTypeModel>> GetPropertiesTypeAsync()
         {
             using (var _context = new AppDbContext ())
             {
                 var result = await _context.Properties
                 .GroupBy(p => p.Type)
-                .Select(g => new PropertyType
+                .Select(g => new PropertyTypeModel
                 {
                     Type = g.Key,
                     Count = g.Count()
@@ -98,7 +98,7 @@ namespace Community_House_Management.Services
                         Name = e.Name,
                         PropertyTypes = e.EventProperties
                             .GroupBy(ep => ep.Property.Type)
-                            .Select(g => new PropertyType
+                            .Select(g => new PropertyTypeModel
                             {
                                 Type = g.Key,
                                 Count = g.Count()
@@ -450,4 +450,5 @@ namespace Community_House_Management.Services
             }
         }
     }
+    //public async Task<bool> AssignPropertyToEventAsync()
 }

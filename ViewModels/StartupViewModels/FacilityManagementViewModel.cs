@@ -22,8 +22,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
     public class FacilityManagementViewModel : ViewModelBase
     {
         private Service service = new Service();
-        private List<PropertyType> propertyTypesList;
-        public List<PropertyType> PropertyTypesList
+        private List<PropertyTypeModel> propertyTypesList;
+        public List<PropertyTypeModel> PropertyTypesList
         {
             get { return propertyTypesList; }
             set
@@ -90,8 +90,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(SelectedNumber));
             }
         }
-        private ObservableCollection<PropertyType> pagedPropertyTypesList;
-        public ObservableCollection<PropertyType> PagedPropertyTypesList
+        private ObservableCollection<PropertyTypeModel> pagedPropertyTypesList;
+        public ObservableCollection<PropertyTypeModel> PagedPropertyTypesList
         {
             get { return pagedPropertyTypesList; }
             set
@@ -152,8 +152,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedPropertyTypesList();
             }
         }
-        private IEnumerable<PropertyType> _filteredList;
-        public IEnumerable<PropertyType> FilteredList
+        private IEnumerable<PropertyTypeModel> _filteredList;
+        public IEnumerable<PropertyTypeModel> FilteredList
         {
             get { return _filteredList; }
             set
@@ -224,7 +224,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private void UpdatePagedPropertyTypesList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;
-            PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Skip(startIndex).Take(elementsPerPage));
+            PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
         }
 
         private void UpdatePageNumbers()
@@ -294,7 +294,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));                   
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Take(elementsPerPage));
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Take(elementsPerPage));
                     UpdatePageNumbersAfterSearch();
                 });
                 OnPropertyChanged(nameof(PagedPropertyTypesList));
@@ -306,7 +306,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     FilteredList = PropertyTypesList;
-                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Take(elementsPerPage));
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(PropertyTypesList.Take(elementsPerPage));
                     UpdatePageNumbers();
                 });
             }

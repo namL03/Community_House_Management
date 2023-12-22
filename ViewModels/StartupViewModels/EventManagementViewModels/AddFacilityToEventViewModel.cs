@@ -40,8 +40,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             set { }
         }
         private Service service = new Service();
-        private List<PropertyType> propertyTypesList;
-        public List<PropertyType> PropertyTypesList
+        private List<PropertyTypeModel> propertyTypesList;
+        public List<PropertyTypeModel> PropertyTypesList
         {
             get { return propertyTypesList; }
             set
@@ -97,8 +97,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 }
             }
         }
-        private ObservableCollection<PropertyType> pagedPropertyTypesList;
-        public ObservableCollection<PropertyType> PagedPropertyTypesList
+        private ObservableCollection<PropertyTypeModel> pagedPropertyTypesList;
+        public ObservableCollection<PropertyTypeModel> PagedPropertyTypesList
         {
             get { return pagedPropertyTypesList; }
             set
@@ -160,8 +160,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             }
         }
 
-        private IEnumerable<PropertyType> _filteredList;
-        public IEnumerable<PropertyType> FilteredList
+        private IEnumerable<PropertyTypeModel> _filteredList;
+        public IEnumerable<PropertyTypeModel> FilteredList
         {
             get { return _filteredList; }
             set
@@ -170,8 +170,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 OnPropertyChanged(nameof(FilteredList));
             }
         }
-        private PropertyType _selectedProperty;
-        public PropertyType SelectedProperty
+        private PropertyTypeModel _selectedProperty;
+        public PropertyTypeModel SelectedProperty
         {
             get { return _selectedProperty; }
             set
@@ -227,7 +227,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         private void UpdatePagedPropertyTypesList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;
-            PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Skip(startIndex).Take(elementsPerPage));
+            PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
         }
 
         private void UpdatePageNumbers()
@@ -302,7 +302,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 }
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(FilteredList.Take(elementsPerPage));
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Take(elementsPerPage));
                     UpdatePageNumbersAfterSearch();
                 });
                 OnPropertyChanged(nameof(PagedPropertyTypesList));
@@ -314,14 +314,14 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     FilteredList = PropertyTypesList;
-                    PagedPropertyTypesList = new ObservableCollection<PropertyType>(PropertyTypesList.Take(elementsPerPage));
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(PropertyTypesList.Take(elementsPerPage));
                     UpdatePageNumbers();
                 });
             }
         }
         private void ExecuteOpenAddPropertyPopupCommand(object parameter)
         {
-            if (parameter is PropertyType selectedProperty)
+            if (parameter is PropertyTypeModel selectedProperty)
             {
                 Console.WriteLine(selectedProperty.Type);
                 SelectedProperty = selectedProperty;

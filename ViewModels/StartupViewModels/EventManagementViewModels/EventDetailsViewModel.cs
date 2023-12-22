@@ -34,7 +34,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             get { return _eventModel.Name; }
             set { }
         }
-        public List<PropertyType> PropertyTypes
+        public List<PropertyTypeModel> PropertyTypes
         {
             get { return _eventModel.PropertyTypes; }
             set

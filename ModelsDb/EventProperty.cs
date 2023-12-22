@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Community_House_Management.ModelsDb
 {
-    class EventProperty
+    public class EventProperty
     {
         public int EventId { get; set; }
         public Event Event { get; set; }
