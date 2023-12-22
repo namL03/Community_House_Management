@@ -529,6 +529,41 @@ namespace Community_House_Management.Services
                 return true;
             }
         }
+        public async Task<EventModel> GetEventById(int eventId)
+        {
+            using (var _context = new AppDbContext ())
+            {
+                var result = await _context.Events
+                    .Include(e => e.Person)
+                    .Include(e => e.EventProperties)
+                    .ThenInclude(ep => ep.Property)
+                    .Where(e => e.Id == eventId)
+                    .Select(e => new EventModel
+                    {
+                        Id = e.Id,
+                        PersonId = e.PersonId,
+                        TimeEnd = e.timeEnd,
+                        TimeStart = e.timeStart,
+                        Organizer = new PersonModel
+                        {
+                            Name = e.Person.Name,
+                            Address = e.Person.Address,
+                            CitizenId = e.Person.CitizenId
+                        },
+                        Name = e.Name,
+                        PropertyTypes = e.EventProperties
+                            .GroupBy(ep => ep.Property.Type)
+                            .Select(g => new PropertyTypeModel
+                            {
+                                Type = g.Key,
+                                Count = g.Count()
+                            })
+                            .ToList()
+                    })
+                    .SingleOrDefaultAsync();
+                return result;
+            }
+        }
     }
     
 }
