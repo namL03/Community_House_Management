@@ -9,18 +9,19 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="260"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="170"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="190"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="27"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
@@ -37,8 +38,9 @@
                 <TextBlock Text="Header Citizen ID: " FontSize="16" Margin="5"/>
                 <TextBlock Text="Address: " FontSize="16" Margin="5"/>
                 <TextBlock Text="State of header: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Number of members: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Delete household:" FontSize="16" Margin="5"/>
+                <TextBlock Text="Tổng số nhân khẩu: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Tổng số nhân khẩu đang sinh hoạt: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Tổng số nhân khẩu tạm vắng: " FontSize="16" Margin="5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
@@ -47,92 +49,16 @@
                 <TextBlock Text="{Binding Header.Address}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                 <TextBlock Text="{Binding Header.StateDisplayed}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                 <TextBlock Text="{Binding NumberOfMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
-                <Button Background="White" BorderThickness="0" Content="Click here" Foreground="DarkGray" Margin="5" HorizontalAlignment="Left" FontSize="16" Command="{Binding DeleteHouseholdCommand}"/>
+                <TextBlock Text="{Binding NumberOfActiveMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
+                <TextBlock Text="{Binding NumberOfNotActiveMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
             </StackPanel>
         </Grid>
+
         <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <TextBlock Text="Add new member to household" FontSize="18" FontWeight="Bold"/>
-            </Grid>
-            <Grid Grid.Row="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Enter Citizen ID:" FontSize="16" Margin="5"/>
-                    <TextBox Text="{Binding EnteredCitizenId}" Width="200" Height="30" Margin="5"/>
-                    <Button Content="SEARCH" Height="30" FontSize="16" Margin="10 5 5 5" Width="80" Command="{Binding GetPersonByCitizenIdCommand}"/>
-                    <Button Content="ADD" Height="30" FontSize="16" Margin="20 5 5 5" Width="60" Command="{Binding AddPersonToHouseholdCommand}"/>
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <!--<RowDefinition Height="40"/>-->
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0">
-                    <TextBlock Text="Name found:" FontSize="16" Margin="5"/>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <TextBlock Text="Address found:" FontSize="16" Margin="5"/>
-                </Grid>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <TextBlock Text="{Binding PersonFound.Name}" FontSize="16" Margin="5"/>
-                </Grid>
-                <Grid Grid.Row="1" Grid.Column="1">
-                    <TextBlock Text="{Binding PersonFound.Address}" FontSize="16" Margin="5"/>
-                </Grid>
-                <!--<Grid Grid.Row="2" Grid.Column="0">
-                    <TextBlock Text="State:" FontSize="16" Margin="5"/>
-                </Grid>
-                <Grid Grid.Row="2" Grid.Column="1">
-                    <ComboBox Width="150" Height="30" Text="{Binding PersonFound.State}" HorizontalAlignment="Left" Margin="5"/>
-                </Grid>-->
-                <!--<ItemsControl ItemsSource="{Binding PersonFound}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition Height="30"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Row="0">
-                                    <TextBlock Text="Name:" FontSize="16" Margin="5"/>
-                                </Grid>
-                                <Grid Grid.Row="1">
-                                    <TextBlock Text="Address:" FontSize="16" Margin="5"/>
-                                </Grid>
-                                <Grid Grid.Row="0" Grid.Column="1">
-                                    <TextBlock Text="{Binding Name}"/>
-                                </Grid>
-                                <Grid Grid.Row="1" Grid.Column="1">
-                                    <TextBlock Text="{Binding Address}"/>
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>-->
-            </Grid>
+            <TextBlock Text="Recent household's members" FontSize="18" FontWeight="Bold"/>
         </Grid>
         
         <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
-            <TextBlock Text="Recent household's members" FontSize="18" FontWeight="Bold"/>
-        </Grid>
-        <!--<Grid Grid.Row="3" Grid.Column="2">
-            <Button Content="Add" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToAddMemberToHouseholdViewCommand}" CommandParameter="{Binding}"/>
-        </Grid>-->
-        <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -153,7 +79,7 @@
                 <TextBlock Text="Modify" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" />
             </Grid>
         </Grid>
-        <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">
             <ScrollViewer>
                 <Border>
                     <ItemsControl ItemsSource="{Binding Members}">
@@ -192,6 +118,53 @@
                     </ItemsControl>
                 </Border>
             </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
+            <Button Content="Xóa hộ gia đình" FontSize="16" Width="150"/>
+        </Grid>
+        <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock Text="Add new member to household" FontSize="18" FontWeight="Bold"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Enter Citizen ID:" FontSize="16" Margin="5"/>
+                    <TextBox Text="{Binding EnteredCitizenId}" Width="200" Height="30" Margin="5"/>
+                    <Button Content="SEARCH" Height="30" FontSize="16" Margin="10 5 5 5" Width="80" Command="{Binding GetPersonByCitizenIdCommand}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <!--<RowDefinition Height="40"/>-->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock Text="Name found:" FontSize="16" Margin="5"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <TextBlock Text="Address found:" FontSize="16" Margin="5"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="{Binding PersonFound.Name}" FontSize="16" Margin="5"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <TextBlock Text="{Binding PersonFound.Address}" FontSize="16" Margin="5"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Button Content="ADD" Height="30" FontSize="16" Margin="20 5 5 5" Width="60" Command="{Binding AddPersonToHouseholdCommand}"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

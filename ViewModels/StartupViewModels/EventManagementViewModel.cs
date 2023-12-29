@@ -104,6 +104,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(EndSecond));
             }
         }
+        private int numberOfEvent;
+        public int NumberOfEvent
+        {
+            get { return numberOfEvent; }
+            set
+            {
+                numberOfEvent = value;
+                OnPropertyChanged(nameof(NumberOfEvent));
+            }
+        }
         public IEnumerable<int> Hours { get; } = Enumerable.Range(0, 24);
         public IEnumerable<int> Minutes { get; } = Enumerable.Range(0, 60);
         public IEnumerable<int> Seconds { get; } = Enumerable.Range(0, 60);
@@ -287,6 +297,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             Events = await services.GetEventsAsync();
             FilteredList = Events;
             CurrentPage = 1;
+            NumberOfEvent = Events.Count();
+            OnPropertyChanged(nameof(NumberOfEvent));
             UpdatePagedEventsList();
             UpdatePageNumbers();
             OnPropertyChanged(nameof(Events));

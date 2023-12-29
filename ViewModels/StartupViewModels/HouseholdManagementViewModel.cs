@@ -137,19 +137,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedHouseholdList();
             }
         }
-        public List<int> NumberOfPropertyTypes
+        public List<int> NumberOfHouseholds
         {
             get
             {
-                List<int> numberOfPropertyTypes = new List<int>();
+                List<int> numberOfHousehold = new List<int>();
                 if (HouseholdList != null)
                 {
                     for (int i = 0; i <= HouseholdList.Count(); i++)
                     {
-                        numberOfPropertyTypes.Add(i);
+                        numberOfHousehold.Add(i);
                     }
                 }
-                return numberOfPropertyTypes;
+                return numberOfHousehold;
             }
         }
         private int _selectedNumber;
@@ -188,6 +188,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 }
                 OnPropertyChanged(nameof(SearchText));
                 UpdatePagedHouseholdList();
+            }
+        }
+        private int numberOfHousehold;
+        public int NumberOfHousehold
+        {
+            get { return numberOfHousehold; }
+            set
+            {
+                numberOfHousehold = value;
+                OnPropertyChanged(nameof(NumberOfHousehold));
             }
         }
         public ICommand OpenAddHouseholdCommand { get; }
@@ -254,8 +264,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private async Task LoadHousehold()
         {
             HouseholdList = await service.GetAllHouseholdsAsync();
+            NumberOfHousehold = HouseholdList.Count();
             FilteredList = HouseholdList;
             CurrentPage = 1;
+            OnPropertyChanged(nameof(NumberOfHousehold));
             UpdatePagedHouseholdList();
             UpdatePageNumbers();
             //OnPropertyChanged(nameof(NumberOfPropertyTypes));

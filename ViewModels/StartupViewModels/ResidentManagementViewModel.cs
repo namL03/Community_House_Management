@@ -155,6 +155,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedEventsList();
             }
         }
+        private int numberOfResident;
+        public int NumberOfResident
+        {
+            get
+            {
+                return numberOfResident;
+            }
+            set
+            {
+                numberOfResident = value;
+                OnPropertyChanged(nameof(NumberOfResident));
+            }
+        }
         public ICommand OpenAddResidentCommand { get; }
         public ICommand AddNewPersonCommand { get; }
         public ICommand NextPageCommand { get; }

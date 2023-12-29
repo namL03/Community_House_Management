@@ -16,7 +16,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="27"/>
             <RowDefinition Height="*"/>
@@ -76,10 +76,16 @@
             <TextBlock Text="Recent Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Search by type" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
-                <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
+            <StackPanel>
+                <TextBlock FontSize="15" Margin="15 10 10 10">
+                    <Run Text="Tổng số loại CSVC: " FontStyle="Italic"/>
+                    <Run Text="{Binding NumberOfPropertyType}"/>
+                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                    <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                    <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
+                </StackPanel>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="4" Grid.Column="1" Margin="15 0 0 0">
