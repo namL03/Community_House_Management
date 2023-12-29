@@ -23,6 +23,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         private HouseholdModel _householdModel;
         private Service service = new Service();
         private HouseholdModel newHousehold;
+        public int? NumberOfMembers => Members == null ? null : Members.Count;
         public HouseholdModel NewHousehold
         {
             get
@@ -61,6 +62,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             {
                 members = value;
                 OnPropertyChanged(nameof(Members));
+                OnPropertyChanged(nameof(NumberOfMembers));
             }
         }
         private List<PersonModel> newMembers;
