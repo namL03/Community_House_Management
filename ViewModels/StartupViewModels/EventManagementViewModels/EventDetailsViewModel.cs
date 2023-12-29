@@ -5,11 +5,13 @@ using Community_House_Management.Stores;
 using Community_House_Management.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels.StartupViewModels.EventManagementViewModels
@@ -47,8 +49,68 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             get { return _eventModel.Name; }
             set { }
         }
-        private List<PropertyTypeModel> pagedPropertyTypesList;
-        public List<PropertyTypeModel> PagedPropertyTypesList
+        private List<int> _pageNumbers;
+        public List<int> PageNumbers
+        {
+            get { return _pageNumbers; }
+            set
+            {
+                _pageNumbers = value;
+                OnPropertyChanged(nameof(PageNumbers));
+            }
+        }
+
+        private int _currentPage;
+        public int CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private List<PropertyTypeModel> propertyTypesList;
+        public List<PropertyTypeModel> PropertyTypesList
+        {
+            get { return propertyTypesList; }
+            set
+            {
+                propertyTypesList = value;
+                OnPropertyChanged(nameof(PropertyTypesList));
+            }
+        }
+        private int numberOfProperty;
+        public int NumberOfProperty
+        {
+            get
+            {
+                return numberOfProperty;
+            }
+            set
+            {
+                numberOfProperty = value;
+                OnPropertyChanged(nameof(NumberOfProperty));
+            }
+        }
+        public List<int> NumberOfPropertyTypes
+        {
+            get
+            {
+                List<int> numberOfPropertyTypes = new List<int>();
+                if (PropertyTypesList != null)
+                {
+                    for (int i = 0; i <= PropertyTypesList.Count(); i++)
+                    {
+                        numberOfPropertyTypes.Add(i);
+                    }
+                }
+                return numberOfPropertyTypes;
+            }
+        }
+        private ObservableCollection<PropertyTypeModel> pagedPropertyTypesList;
+        public ObservableCollection<PropertyTypeModel> PagedPropertyTypesList
         {
             get { return pagedPropertyTypesList; }
             set
@@ -70,27 +132,69 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 }
             }
         }
+        private IEnumerable<PropertyTypeModel> _filteredList;
+        public IEnumerable<PropertyTypeModel> FilteredList
+        {
+            get { return _filteredList; }
+            set
+            {
+                _filteredList = value;
+                OnPropertyChanged(nameof(FilteredList));
+            }
+        }
+        private string searchText;
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                while (searchText != string.Empty && searchText.EndsWith(' '))
+                {
+                    searchText = searchText.Remove(searchText.Length - 1);
+                }
+                OnPropertyChanged(nameof(SearchText));
+                UpdatePagedPropertyTypesList();
+            }
+        }
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
         public ICommand ToRemoveFacilityFromEventViewCommand { get; set; }
         public ICommand ToEventManagementViewComamnd { get; }
         public ICommand DeleteEventCommand { get; }
-
+        public ICommand NextPageCommand { get; }
+        public ICommand PreviousPageCommand { get; }
+        public ICommand ChangePageCommand { get; }
+        public ICommand SearchByTypeCommand { get; }
         public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
             this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
             _eventModel = eventModel;
+            NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
+            PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
+            ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
             ToEventManagementViewComamnd = new RelayCommand(ExecuteToEventManagementViewComamnd);
             DeleteEventCommand = new AsyncRelayCommand(ExecuteDeleteEventCommand, CanExecuteDeleteEventCommand);
-            ToRemoveFacilityFromEventViewCommand = new RelayCommand(ExecuteToRemoveFacilityFromEventViewCommand);
+            ToRemoveFacilityFromEventViewCommand = new RelayCommand(ExecuteToRemoveFacilityFromEventViewCommand, CanExecuteToRemoveFacilityFromEventViewCommand);
+            SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             _ = LoadEvent();
         }
         private async Task LoadEvent()
         {
             EventLoaded = await service.GetEventByIdAsync(_eventModel.Id);
+            PropertyTypesList = EventLoaded.PropertyTypes;
+            FilteredList = PropertyTypesList;
+            CurrentPage = 1;
+            NumberOfProperty = PropertyTypesList.Count();
+            OnPropertyChanged(nameof(NumberOfProperty));
+            UpdatePagedPropertyTypesList();
+            UpdatePageNumbers();
+            OnPropertyChanged(nameof(PropertyTypesList));
+            OnPropertyChanged(nameof(NumberOfPropertyTypes));
+            OnPropertyChanged(nameof(CurrentPage));
         }
         private void ExecuteToAddFacilityToEventViewCommand(object parameter)
         {
@@ -121,12 +225,107 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private bool CanExecuteDeleteEventCommand(object parameter)
         {
-            return isLoggedIn;
+            return this.isLoggedIn;
         }
+        int elementsPerPage = 5;
         private void ExecuteToRemoveFacilityFromEventViewCommand(object parameter)
         {
             RemoveFacilityFromEventViewModel removeFacilityFromEventViewModel = new RemoveFacilityFromEventViewModel(_navigationStore, _eventModel, this.IsLoggedIn);
             _navigationStore.CurrentViewModel = removeFacilityFromEventViewModel;
+        }
+        private bool CanExecuteToRemoveFacilityFromEventViewCommand(object parameter)
+        {
+            return this.isLoggedIn;
+        }
+        private void UpdatePagedPropertyTypesList()
+        {
+            int startIndex = (CurrentPage - 1) * elementsPerPage;
+            PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Skip(startIndex).Take(elementsPerPage));
+        }
+
+        private void UpdatePageNumbers()
+        {
+            if (PropertyTypesList != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)PropertyTypesList.Count() / elementsPerPage);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>();
+            }
+        }
+        private void UpdatePageNumbersAfterSearch()
+        {
+            if (FilteredList != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)FilteredList.Count() / elementsPerPage);
+                PageNumbers = Enumerable.Range(1, totalPages).ToList();
+            }
+            else
+            {
+                PageNumbers = new List<int>();
+            }
+        }
+
+        private void ExecuteChangePageCommand(object parameter)
+        {
+            if (parameter is int page)
+            {
+                CurrentPage = page;
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private void ExecutePreviousPageCommand(object parameter)
+        {
+            if (CanExecutePreviousPageCommand(parameter))
+            {
+                CurrentPage--;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private void ExecuteNextPageCommand(object parameter)
+        {
+            if (CanExecuteNextPageCommand(parameter))
+            {
+                CurrentPage++;
+                //Console.WriteLine(CurrentPage);
+                UpdatePagedPropertyTypesList();
+            }
+        }
+        private bool CanExecutePreviousPageCommand(object parameter)
+        {
+            return CurrentPage > 1;
+        }
+
+        private bool CanExecuteNextPageCommand(object parameter)
+        {
+            return CurrentPage < PageNumbers.Count;
+        }
+        private void ExecuteSearchByTypeCommand(object parameter)
+        {
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(FilteredList.Take(elementsPerPage));
+                    UpdatePageNumbersAfterSearch();
+                });
+                OnPropertyChanged(nameof(PagedPropertyTypesList));
+                CurrentPage = 1;
+                UpdatePagedPropertyTypesList();
+            }
+            else
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    FilteredList = PropertyTypesList;
+                    PagedPropertyTypesList = new ObservableCollection<PropertyTypeModel>(PropertyTypesList.Take(elementsPerPage));
+                    UpdatePageNumbers();
+                });
+            }
         }
     }
 }

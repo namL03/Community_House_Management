@@ -96,6 +96,26 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 OnPropertyChanged(nameof(PersonFound));
             }
         }
+        private int numberOfActiveMembers;
+        public int NumberOfActiveMembers
+        {
+            get { return numberOfActiveMembers; }
+            set
+            {
+                numberOfActiveMembers = value;
+                OnPropertyChanged(nameof(NumberOfActiveMembers));
+            }
+        }
+        private int numberOfNotActiveMembers;
+        public int NumberOfNotActiveMembers
+        {
+            get { return numberOfNotActiveMembers; }
+            set
+            {
+                numberOfNotActiveMembers = value;
+                OnPropertyChanged(nameof(NumberOfNotActiveMembers));
+            }
+        }
         public ICommand DeleteHouseholdCommand { get; }
         public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand GetPersonByCitizenIdCommand { get; }
@@ -118,6 +138,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             NewHousehold = await service.GetHouseholdAsync(_householdModel.Header.CitizenId);
             Members = NewHousehold.Members;
+            foreach(var mem in Members)
+            {
+                if (mem.State == 1)
+                {
+                    NumberOfActiveMembers += 1;
+                }
+                else if(mem.State == 0)
+                {
+                    NumberOfNotActiveMembers += 1;
+                }
+            }
             OnPropertyChanged(nameof(Members));
             OnPropertyChanged(nameof(NewHousehold));
         }

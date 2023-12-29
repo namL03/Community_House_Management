@@ -18,7 +18,7 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="27"/>
                 <RowDefinition Height="*"/>
@@ -79,10 +79,16 @@
                 <TextBlock Text="Recent Households" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Search by Citizen Id" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
-                    <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                    <Button Content="SEARCH" Command="{Binding SearchByCitizenIdCommand}" Margin="8" />
+                <StackPanel>
+                    <TextBlock FontSize="15" Margin="15 10 10 10">
+                    <Run Text="Tổng số loại hộ gia đình: " FontStyle="Italic"/>
+                    <Run Text="{Binding NumberOfHousehold}"/>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                        <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                        <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="5" Grid.Column="1">

@@ -162,6 +162,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(FilteredList));
             }
         }
+        private int numberOfPropertyType;
+        public int NumberOfPropertyType
+        {
+            get { return numberOfPropertyType; }
+            set
+            {
+                numberOfPropertyType = value;
+                OnPropertyChanged(nameof(NumberOfPropertyType));
+            }
+        }
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
         public ICommand NextPageCommand { get; }
@@ -185,6 +195,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             PropertyTypesList = await service.GetPropertiesTypeAsync();
             FilteredList = PropertyTypesList;
             CurrentPage = 1;
+            NumberOfPropertyType = PropertyTypesList.Count();
+            OnPropertyChanged(nameof(NumberOfPropertyType));
             UpdatePagedPropertyTypesList();
             UpdatePageNumbers();
             OnPropertyChanged(nameof(PropertyTypesList));
