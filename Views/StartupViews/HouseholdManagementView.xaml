@@ -28,7 +28,7 @@
                     <Button BorderThickness="0" Background="White" HorizontalAlignment="Left" Margin="5 0 0 0" Command="{Binding OpenAddHouseholdCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="pack://application:,,,/Resources/Images/plusicon.png" Margin="10"/>
-                            <TextBlock Text="Add Household" FontSize="18" FontWeight="Bold"  Foreground="#4B87C8" HorizontalAlignment="Left" Margin="0 5 0 5"/>
+                            <TextBlock Text="Thêm hộ gia đình mới" FontSize="18" FontWeight="Bold"  Foreground="#4B87C8" HorizontalAlignment="Left" Margin="0 5 0 5"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -41,7 +41,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <StackPanel>
-                        <TextBlock Text="Header Citizen ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
+                        <TextBlock Text="Số CCCD chủ hộ" HorizontalAlignment="Right" FontSize="17" Margin="5"/>
                         <!--<TextBlock Text="Household ID" HorizontalAlignment="Right" FontSize="17" Margin="5"/>-->
                     </StackPanel>
                     <Grid.Style>
@@ -60,7 +60,7 @@
                         <TextBox Text="{Binding HeaderCitizenId, UpdateSourceTrigger=PropertyChanged}" Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>
                         <!--<TextBox Text="{Binding HouseholdId, UpdateSourceTrigger=PropertyChanged}" Height="25" Padding="3 3 0 0" Margin="4" Width="300" HorizontalAlignment="Left"/>-->
                         <Button Margin="4 10 0 0" Width="150" FontSize="14" HorizontalAlignment="Left" Background="#A5BAF1" FontWeight="Bold" Command="{Binding AddNewHouseholdCommand}">
-                            <TextBlock Text="Add new Household" TextWrapping="WrapWithOverflow"/>
+                            <TextBlock Text="Thêm hộ gia đình" TextWrapping="WrapWithOverflow"/>
                         </Button>
                     </StackPanel>
                     <Grid.Style>
@@ -76,16 +76,16 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
-                <TextBlock Text="Recent Households" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
+                <TextBlock Text="Các hộ gia đình trên địa bàn" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
                 <StackPanel>
                     <TextBlock FontSize="15" Margin="15 10 10 10">
-                    <Run Text="Tổng số loại hộ gia đình: " FontStyle="Italic"/>
+                    <Run Text="Tổng số hộ gia đình: " FontStyle="Italic"/>
                     <Run Text="{Binding NumberOfHousehold}"/>
                     </TextBlock>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                        <TextBlock Text="Tìm theo CCCD chủ hộ" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                         <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
                         <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
                     </StackPanel>
@@ -103,13 +103,13 @@
                         <TextBlock Text="Household ID" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>-->
                     <Grid Grid.Column="0" Background="#3681D2">
-                        <TextBlock Text="Header's name" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Tên chủ hộ" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                     <Grid Grid.Column="1" Background="#3681D2">
-                        <TextBlock Text="Header's Citizen ID" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Số CCCD chủ hộ" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                     <Grid Grid.Column="2" Background="#3681D2">
-                        <TextBlock Text="More details" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Chi tiết" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -185,7 +185,7 @@
                                         </Grid>
                                         <Grid Grid.Column="2">
                                             <Border BorderBrush="Gray" BorderThickness="1">
-                                                <Button Command="{Binding DataContext.ToHouseholdDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Click here" Foreground="Gray" Background="White"/>
+                                                <Button Command="{Binding DataContext.ToHouseholdDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White"/>
                                             </Border>
                                         </Grid>
                                     </Grid>

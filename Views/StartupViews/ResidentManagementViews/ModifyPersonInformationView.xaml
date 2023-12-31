@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
             <TextBlock FontSize="18" FontWeight="Bold">
-                <Run Text="Person Name: "/>
+                <Run Text="Thay đổi thông tin cư dân có số CCCD: "/>
                 <Run Text="{Binding PersonName}" Foreground="#F23E5C"/>
             </TextBlock>
         </Grid>
@@ -34,9 +34,9 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <StackPanel>
-                <TextBlock Text="Name: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Citizen ID: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Address: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Tên: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Số CCCD: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Địa chỉ: " FontSize="16" Margin="5"/>
                 <!--<TextBlock Text="State:" FontSize="16" Margin="5"/>-->
             </StackPanel>
         </Grid>
@@ -52,8 +52,8 @@
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
-                <Button Content="SAVE CHANGE" FontSize="16" Width="150" Height="30" FontWeight="Bold" HorizontalAlignment="Left" Margin="105 0 0 0" Command="{Binding SaveChangeInformationCommand}"/>
-                <Button Content="CANCEL" FontSize="16" Width="100" Height="30" FontWeight="Bold" HorizontalAlignment="Left" Margin="30 0 0 0" Command="{Binding ToResidentDetailsViewCommand}"/>
+                <Button Content="LƯU THAY ĐỔI" FontSize="16" Width="150" Height="30" FontWeight="Bold" HorizontalAlignment="Left" Margin="105 0 0 0" Command="{Binding SaveChangeInformationCommand}"/>
+                <Button Content="HỦY BỎ" FontSize="16" Width="100" Height="30" FontWeight="Bold" HorizontalAlignment="Left" Margin="30 0 0 0" Command="{Binding ToResidentDetailsViewCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>

@@ -25,11 +25,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock>
-                <Run Text="Event Name: " FontSize="18" FontWeight="Bold"/>
+                <Run Text="Tên sự kiện: " FontSize="18" FontWeight="Bold"/>
                 <Run Text="{Binding Name}" FontSize="18" FontWeight="Bold" Foreground="#F23E5C"/>
             </TextBlock>
             <Grid Grid.Column="1">
-                <Button Width="100" Content="Back" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToEventDetailsViewCommand}"/>
+                <Button Width="100" Content="Trở về" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToEventDetailsViewCommand}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
@@ -43,13 +43,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="1">
-                    <TextBlock Text="Current Facilities" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
+                    <TextBlock Text="CSVC đã được cấp phát" FontSize="18" FontWeight="Bold" Foreground="#4B87C8" Margin="15 10 0 0"/>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Search by type" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                        <TextBlock Text="Tìm theo loại" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                         <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                        <Button Content="SEARCH" Command="{Binding SearchByTypeCommand}" Margin="8" />
+                        <Button Content="TÌM" Command="{Binding SearchByTypeCommand}" Margin="8" MinWidth="50"/>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="1" Margin="15 0 0 0">
@@ -104,12 +104,12 @@
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Button Background="#3681D2">
-                                <TextBlock Text="Type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Loại" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Button Background="#3681D2">
-                                <TextBlock Text="Count" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                     </Grid>

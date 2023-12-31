@@ -27,19 +27,19 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
             <TextBlock FontSize="18" FontWeight="Bold">
-                <Run Text="Event Name: "/>
+                <Run Text="Tên sự kiện: "/>
                 <Run Text="{Binding EventName}" Foreground="#F23E5C"/>
             </TextBlock>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2">
-            <Button Width="100" Content="Back" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToEventManagementViewComamnd}"/>
+            <Button Width="100" Content="Trở về" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToEventManagementViewComamnd}"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <StackPanel>
-                <TextBlock Text="Event Organizer ID: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Name of Organizer: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Time Start: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Time End: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Số CCCD người chủ trì: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Tên người chủ trì: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian bắt đầu: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian kết thúc: " FontSize="16" Margin="5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
@@ -52,12 +52,12 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-            <TextBlock Text="Recent event's facilities" FontSize="18" FontWeight="Bold"/>
+            <TextBlock Text="CSVC đã được cấp phát" FontSize="18" FontWeight="Bold"/>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Add" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToAddFacilityToEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
-                <Button Content="Remove" FontSize="18" FontWeight="Bold" Width="120" Height="30" HorizontalAlignment="Right" Command="{Binding ToRemoveFacilityFromEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
+                <Button Content="Cấp phát thêm" FontSize="18" FontWeight="Bold" Width="150" Height="30" HorizontalAlignment="Right" Command="{Binding ToAddFacilityToEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
+                <Button Content="Thu hồi" FontSize="18" FontWeight="Bold" Width="150" Height="30" HorizontalAlignment="Right" Command="{Binding ToRemoveFacilityFromEventViewCommand}" CommandParameter="{Binding}" Margin="5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="15 0 0 0">
@@ -67,9 +67,9 @@
                     <Run Text="{Binding NumberOfPropertyType}"/>
                 </TextBlock>-->
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Search by name" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                    <TextBlock Text="Tìm theo loại" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                     <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                    <Button Content="SEARCH" Command="{Binding SearchByNameCommand}" Margin="8" />
+                    <Button Content="TÌM" Command="{Binding SearchByNameCommand}" Margin="8" MinWidth="50"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -121,10 +121,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#3681D2">
-                <TextBlock Text="Facility type" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Loại" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="1" Background="#3681D2">
-                <TextBlock Text="Count" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
            
         </Grid>

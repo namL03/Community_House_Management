@@ -74,7 +74,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(Address));
             }
         }
-        private List<PersonModel> peopleList;
+        private List<PersonModel> peopleList = new List<PersonModel>();
         public List<PersonModel> PeopleList
         {
             get { return peopleList; }
@@ -82,6 +82,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             {
                 peopleList = value;
                 OnPropertyChanged(nameof(PeopleList));
+                OnPropertyChanged(nameof(NumberOfResident));
             }
         }
 
@@ -155,19 +156,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedEventsList();
             }
         }
-        private int numberOfResident;
-        public int NumberOfResident
-        {
-            get
-            {
-                return numberOfResident;
-            }
-            set
-            {
-                numberOfResident = value;
-                OnPropertyChanged(nameof(NumberOfResident));
-            }
-        }
+        public int NumberOfResident => peopleList.Count;
         public ICommand OpenAddResidentCommand { get; }
         public ICommand AddNewPersonCommand { get; }
         public ICommand NextPageCommand { get; }

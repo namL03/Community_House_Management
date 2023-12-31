@@ -29,12 +29,11 @@
             <Grid Grid.Column="0">
                 <Button BorderThickness="0" Background="#EDEDFC" Command="{Binding OpenMenuCommand}">
                     <Image Source="pack://application:,,,/Resources/Images/menuicon.png" Margin="5"/>
-                    
                 </Button>
             </Grid>
             <Grid Grid.Column="1" Background="#EDEDFC">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="Community House Management" FontWeight="Light" HorizontalAlignment="Left" FontSize="30" Margin="30 0 0 0"/>
+                    <TextBlock Text="Phần mềm quản lý nhà văn hóa" FontWeight="Light" HorizontalAlignment="Left" FontSize="30" Margin="30 0 0 0"/>
                     
                 </StackPanel>
             </Grid>
@@ -46,8 +45,8 @@
                     <!-- Popup Content -->
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1">
                         <StackPanel>
-                            <Button Height="30" Content="Account" FontSize="18" Background="White" BorderThickness="0" Command="{Binding ToAccountManagementViewCommand}"/>
-                            <Button Height="30" Content="Sign Out" FontSize="18" Background="White" BorderThickness="0"/>
+                            <Button Height="30" Content="Tài khoản" FontSize="18" Background="White" BorderThickness="0" Command="{Binding ToAccountManagementViewCommand}"/>
+                            <Button Height="30" Content="Đăng xuất" FontSize="18" Background="White" BorderThickness="0"/>
                         </StackPanel>
                     </Border>
                 </Popup>
@@ -75,7 +74,7 @@
                             <Grid Grid.Row="0" Margin="5">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Resources/Images/category.png"/>
-                                    <TextBlock Text="Category" FontSize="22" Margin="10 0 0 0"/>
+                                    <TextBlock Text="Danh mục" FontSize="22" Margin="10 0 0 0"/>
                                 </StackPanel>
                             </Grid>
                             <Grid Grid.Row="2" Margin="5">
@@ -85,14 +84,14 @@
                                 <Button Content="Sự kiện" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToEventManagementViewCommand}"/>
                             </Grid>
                             <Grid Grid.Row="4" Margin="5">
-                                <Button Content="Dân cư" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToResidentManagementViewCommand}"/>
+                                <Button Content="Cư dân" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToResidentManagementViewCommand}"/>
                             </Grid>
                             <Grid Grid.Row="5" Margin="5">
                                 <Button Content="Hộ gia đình" FontSize="15" Background="#7D7D8A" Foreground="White" Command="{Binding ToHouseholdManagementViewCommand}"/>
                             </Grid>
                             <Grid Grid.Row="6" Margin="5 20 5 5">
                                 <Grid>
-                                    <Button Content="Login" FontSize="19" Background="#3FCFF6" VerticalAlignment="Bottom" BorderThickness="0" Command="{Binding OpenLoginWindowCommand}">
+                                    <Button Content="Đăng nhập" FontSize="19" Background="#3FCFF6" VerticalAlignment="Bottom" BorderThickness="0" Command="{Binding OpenLoginWindowCommand}">
                                         <Button.Style>
                                             <Style TargetType="Button">
                                                 <Style.Triggers>
