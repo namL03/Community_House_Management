@@ -179,7 +179,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
-        {          
+        {
+            Type = string.Empty;
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
             OpenAddFacilityCommand = new RelayCommand(ExecuteOpenAddFacilityCommand, CanExecuteOpenAddFacilityCommand);
@@ -221,7 +222,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         
         private bool CanExecuteAddPropertyCommand(object parameter)
         {
-            return Count != null && Type != string.Empty;
+            return Count != null && Type != string.Empty && Count > 0;
         }
         private void ExecuteOpenAddFacilityCommand(object parameter)
         {
@@ -232,7 +233,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (isLoggedIn == true) return true;
             else return false;
         }
-        int elementsPerPage = 5;
+        int elementsPerPage = 10;
         private void UpdatePagedPropertyTypesList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;

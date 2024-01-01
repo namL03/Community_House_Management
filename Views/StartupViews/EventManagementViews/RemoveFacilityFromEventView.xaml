@@ -100,7 +100,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
-
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
                             <Button Background="#3681D2">
@@ -110,6 +110,11 @@
                         <Grid Grid.Column="1">
                             <Button Background="#3681D2">
                                 <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                            <Button Background="#3681D2">
+                                <TextBlock Text="" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                     </Grid>
@@ -125,18 +130,22 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
                                         <Grid Grid.Column="0">
                                             <Border BorderBrush="Gray" BorderThickness="1">
-                                                <Button Background="White" BorderBrush="White" Command="{Binding DataContext.OpenRemovePropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}">
-                                                    <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
-                                                </Button>
+                                                <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="1" >
                                             <Border BorderBrush="Gray" BorderThickness="1">
                                                 <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                                <Button Background="White" Content="Bấm để thu hồi" Foreground="Gray" Command="{Binding DataContext.OpenRemovePropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
                                             </Border>
                                         </Grid>
                                     </Grid>
@@ -152,14 +161,10 @@
             <Border BorderBrush="Black" BorderThickness="1" Background="White">
                 <StackPanel>
                     <TextBlock Margin="5">
-                        <Run Text="Property type: " FontSize="16"/>
+                        <Run Text="CSVC muốn thu hồi: " FontSize="16"/>
                         <Run Text="{Binding SelectedProperty.Type}" FontSize="16"/>
                     </TextBlock>
-                    <TextBlock Margin="5">
-                        <Run Text="Avaiable: " FontSize="16"/>
-                        <Run Text="{Binding SelectedProperty.Count}" FontSize="16"/>
-                    </TextBlock>
-                    <TextBlock Text="Enter quantity:" FontSize="16" Margin="5"/>
+                    <TextBlock Text="Nhập số lượng:" FontSize="16" Margin="5"/>
                     <TextBox Text="{Binding QuantityOfProperty, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Margin="5"/>
                     <Button Content="OK" FontSize="16" Margin="5" FontWeight="Bold" Width="60" Background="White" Command="{Binding RemoveFacilityFromEventCommand}"/>
                 </StackPanel>

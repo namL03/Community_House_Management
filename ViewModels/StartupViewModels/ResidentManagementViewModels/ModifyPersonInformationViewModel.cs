@@ -3,6 +3,7 @@ using Community_House_Management.Models;
 using Community_House_Management.Services;
 using Community_House_Management.Stores;
 using Community_House_Management.ViewModels.StartupViewModels.HouseholdManagementViewModels;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
         private readonly NavigationStore _navigationStore;
         private Service service = new Service();
         private PersonModel _personModel;
+        public PersonModel personModel
+        {
+            get => _personModel;
+            set
+            {
+                _personModel = value;
+                OnPropertyChanged(nameof(personModel));
+                OnPropertyChanged(nameof(PersonCitizenId));
+                OnPropertyChanged(nameof(PersonName));
+            }
+        }
         private HouseholdModel _household;
         public HouseholdModel Household
         {
@@ -65,7 +77,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
 
         public string PersonName
         {
-            get { return _personModel.Name; }
+            get { return personModel.Name; }
+            set { }
+        }
+
+        public string PersonCitizenId
+        {
+            get { return personModel.CitizenId; }
             set { }
         }
 
@@ -108,15 +126,15 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             _personModel = personModel;
             this.IsLoggedIn = isLoggedIn;
             ToResidentDetailsViewCommand = new RelayCommand(ExecuteToResidentDetailsViewCommand);
-            SaveChangeInformationCommand = new AsyncRelayCommand(ExecuteSaveChangeInformationCommand);
+            SaveChangeInformationCommand = new AsyncRelayCommand(ExecuteSaveChangeInformationCommand, CanExecuteSaveChangeInformationCommand);
             _ = LoadPersonInformation();
-            NewName = _personModel.Name;
-            NewAddress = _personModel.Address;
-            NewCitizenId = _personModel.CitizenId;
+            NewName = personModel.Name;
+            NewAddress = personModel.Address;
+            NewCitizenId = personModel.CitizenId;
         }
         private async Task LoadPersonInformation()
         {
-            Person = await service.GetPersonByCitizenIdAsync(_personModel.CitizenId);
+            Person = await service.GetPersonByCitizenIdAsync(personModel.CitizenId);
             Header = Person.Header;
             _ = LoadHousehold();
         }
@@ -132,7 +150,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
 
             try
             {
-                bool isSaved = await service.ChangePersonInformationAsync(_personModel.CitizenId, new PersonModel
+                bool isSaved = await service.ChangePersonInformationAsync(personModel.CitizenId, new PersonModel
                 {
                     Name = NewName,
                     CitizenId = NewCitizenId,
@@ -145,7 +163,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                     Console.WriteLine(NewAddress);
                     Console.WriteLine(NewCitizenId);
                     System.Windows.MessageBox.Show("Changes saved successfully.");
-
+                    personModel.Name = NewName;
+                    personModel.CitizenId = NewCitizenId;
+                    personModel.Address = NewAddress;
+                    personModel = personModel;
                 }
                 else
                 {
@@ -157,7 +178,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                 System.Windows.MessageBox.Show($"Error saving changes: {ex.Message}");
             }
         }
-
+        private bool CanExecuteSaveChangeInformationCommand(object parameter)
+        {
+            return !string.IsNullOrEmpty(NewName) && !string.IsNullOrEmpty(NewCitizenId);
+        }
 
         private void ExecuteToResidentDetailsViewCommand(object parameter)
         {

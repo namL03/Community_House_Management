@@ -50,7 +50,7 @@
                 </StackPanel>
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers >
                             <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -81,7 +81,7 @@
                 </StackPanel>
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers >
                             <DataTrigger Binding="{Binding IsAddEventClicked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>

@@ -283,6 +283,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             this.isLoggedIn = isLoggedIn;
             dateStart = DateTime.Now;
             dateEnd = DateTime.Now;
+            Name = string.Empty;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
             ToEventDetailsViewCommand = new NavigateCommand<EventDetailsViewModel>(_navigationStore, typeof(EventDetailsViewModel), this.isLoggedIn);
@@ -333,7 +334,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
             DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
-            return Name != null && startDateWithTime < endDateWithTime;
+            return Name != string.Empty && startDateWithTime < endDateWithTime;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
         {         

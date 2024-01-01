@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
                 <TextBlock FontSize="18" FontWeight="Bold">
-                <Run Text="Họ tên của chủ hộ: "/>
+                <Run Text=" Tên chủ hộ: "/>
                 <Run Text="{Binding Header.Name}" Foreground="#F23E5C"/>
                 </TextBlock>
             </Grid>
@@ -36,9 +36,8 @@
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
                 <StackPanel>
-                    <TextBlock Text="Số CCCD của chủ hộ: " FontSize="16" Margin="5"/>
-                    <TextBlock Text="Địa chỉ: " FontSize="16" Margin="5"/>
-                    <TextBlock Text="Trạng thái của chủ hộ: " FontSize="16" Margin="5"/>
+                    <TextBlock Text="Số CCCD chủ hộ: " FontSize="16" Margin="5"/>
+                    <TextBlock Text="Địa chỉ chủ hộ: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Tổng số nhân khẩu: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Tổng số nhân khẩu đang sinh hoạt: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Tổng số nhân khẩu tạm vắng: " FontSize="16" Margin="5"/>
@@ -48,7 +47,6 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Header.CitizenId}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                     <TextBlock Text="{Binding Header.Address}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
-                    <TextBlock Text="{Binding Header.StateDisplayed}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                     <TextBlock Text="{Binding NumberOfMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                     <TextBlock Text="{Binding NumberOfActiveMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                     <TextBlock Text="{Binding NumberOfNotActiveMembers}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
@@ -56,7 +54,7 @@
             </Grid>
 
             <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-                <TextBlock Text="Danh sách thành viên" FontSize="18" FontWeight="Bold"/>
+                <TextBlock Text=" Danh sách nhân khẩu" FontSize="18" FontWeight="Bold"/>
             </Grid>
 
             <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
@@ -121,7 +119,7 @@
                 </ScrollViewer>
             </Grid>
             <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
-                <Button Content="Xóa hộ gia đình" FontSize="16" Width="150"/>
+                <Button Content="Xóa hộ gia đình" Command="{Binding DeleteHouseholdCommand}" FontSize="16" Width="150"/>
             </Grid>
             <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
@@ -131,36 +129,47 @@
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <TextBlock Text="Thêm thành viên mới vào hộ gia đình" FontSize="18" FontWeight="Bold"/>
+                    <TextBlock Text=" Thêm nhân khẩu mới" FontSize="18" FontWeight="Bold"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Nhập số CCCD:" FontSize="16" Margin="5"/>
-                        <TextBox Text="{Binding EnteredCitizenId}" Width="200" Height="30" Margin="5"/>
-                        <Button Content="TÌM KIẾM" Height="30" FontSize="16" Margin="10 5 5 5" Width="80" Command="{Binding GetPersonByCitizenIdCommand}"/>
+                        <TextBlock Text="Nhập số CCCD:" FontStyle="Italic" FontSize="15" Margin="5 10 10 0"/>
+                        <TextBox Text="{Binding EnteredCitizenId, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="30" TextWrapping="Wrap" Padding="5 5 0 0" />
+                        <Button Content="TÌM" Height="30" FontSize="16" Margin="10 5 5 5" Width="80" Command="{Binding GetPersonByCitizenIdCommand}"/>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="40"/>
-                        <!--<RowDefinition Height="40"/>-->
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0">
-                        <TextBlock Text="Họ tên:" FontSize="16" Margin="5"/>
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <TextBlock Text="Địa chỉ:" FontSize="16" Margin="5"/>
-                    </Grid>
-                    <Grid Grid.Row="0" Grid.Column="1">
-                        <TextBlock Text="{Binding PersonFound.Name}" FontSize="16" Margin="5"/>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1">
-                        <TextBlock Text="{Binding PersonFound.Address}" FontSize="16" Margin="5"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Row 0 -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Họ tên:" FontSize="16" Margin="5" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PersonFound.Name}" FontSize="16" Margin="5" VerticalAlignment="Center"/>
+
+                        <!-- Row 1 -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Địa chỉ:" FontSize="16" Margin="5" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PersonFound.Address}" FontSize="16" Margin="5" VerticalAlignment="Center"/>
+
+                        <!-- Row 2 -->
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Trạng thái:" FontSize="16" Margin="5" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" 
+                                  SelectedValue="{Binding DisplayedState}" 
+                                  SelectedValuePath="Content" 
+                                  Width="100" Margin="5" 
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Left"
+                                  IsEnabled="{Binding IsStateListEnabled}">
+                            <ComboBoxItem Content="Sinh hoạt"/>
+                            <ComboBoxItem Content="Tạm vắng"/>
+                        </ComboBox>
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="3">

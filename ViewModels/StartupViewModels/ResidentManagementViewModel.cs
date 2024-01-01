@@ -168,6 +168,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ResidentManagementViewModel(NavigationStore navigationStore, bool IsLoggedIn)
         {
             //Console.WriteLine("Resident " + IsLoggedIn);
+            Name = string.Empty;
+            CitizenId = string.Empty;
             _navigationStore = navigationStore;
             this.isLoggedIn = IsLoggedIn;
             OpenAddResidentCommand = new RelayCommand(ExecuteOpenAddResidentCommand, CanExecuteOpenAddResidentCommand);
@@ -212,7 +214,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private bool CanExecuteAddNewPersonCommand(object parameter)
         {
-            return Name != null && CitizenId != null;
+            return Name != string.Empty && CitizenId != string.Empty;
         }
         private async Task LoadPeople()
         {

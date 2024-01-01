@@ -84,7 +84,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Tìm theo loại" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                     <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                    <Button Content="TÌM" Command="{Binding SearchByNameCommand}" Margin="8" MinWidth="50"/>
+                    <Button Content="TÌM" Command="{Binding SearchByTypeCommand}" Margin="8" MinWidth="50"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

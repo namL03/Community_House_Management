@@ -75,7 +75,30 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 OnPropertyChanged(nameof(NewMembers));
             }
         }
-    
+        private int enteredState;
+        public int EnteredState
+        {
+            get => enteredState;
+            set
+            {
+                enteredState = value;
+                OnPropertyChanged(nameof(EnteredState));
+                OnPropertyChanged(nameof(DisplayedState));
+            }
+        }
+        public string DisplayedState
+        {
+            get
+            {
+                return EnteredState == 0 ? "Tạm vắng" : "Sinh hoạt";
+            }
+            set
+            {
+                if (value == "Sinh hoạt") EnteredState = 1;
+                else EnteredState = 0;
+                OnPropertyChanged(nameof(DisplayedState));
+            }
+        }
         private string enteredCitizenId;
         public string EnteredCitizenId
         {
@@ -116,6 +139,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 OnPropertyChanged(nameof(NumberOfNotActiveMembers));
             }
         }
+        private bool isStateListEnabled;
+
+        public bool IsStateListEnabled
+        {
+            get => isStateListEnabled;
+            set
+            {
+                isStateListEnabled = value;
+                OnPropertyChanged(nameof(IsStateListEnabled));
+            }
+        }
         public ICommand DeleteHouseholdCommand { get; }
         public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand GetPersonByCitizenIdCommand { get; }
@@ -130,14 +164,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             DeleteHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteHouseholdCommand);
             ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
             GetPersonByCitizenIdCommand = new AsyncRelayCommand(ExecuteGetPersonByCitizenIdCommand);
-            AddPersonToHouseholdCommand = new AsyncRelayCommand(ExecuteAddPersonToHouseholdCommand);
+            AddPersonToHouseholdCommand = new AsyncRelayCommand(ExecuteAddPersonToHouseholdCommand, CanExecuteAddPersonToHouseholdCommand);
             ToModifyMemberInformationViewCommand = new NavigateCommand<ModifyMemberInformationViewModel>(_navigationStore, typeof(ModifyMemberInformationViewModel), this.isLoggedIn);
             _ = LoadMembers();
+            IsStateListEnabled = false;
+            EnteredState = 1;
         }
         private async Task LoadMembers()
         {
             NewHousehold = await service.GetHouseholdAsync(_householdModel.Header.CitizenId);
             Members = NewHousehold.Members;
+            NumberOfActiveMembers = NumberOfNotActiveMembers = 0;
             foreach(var mem in Members)
             {
                 if (mem.State == 1)
@@ -176,7 +213,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             PersonFound = await service.GetPersonByCitizenIdAsync(EnteredCitizenId);
             if(PersonFound == null)
             {
+                IsStateListEnabled = false;
                 System.Windows.MessageBox.Show("Citizen ID not found!");
+            }
+            else
+            {
+                IsStateListEnabled = true;
             }
             OnPropertyChanged(nameof(PersonFound));
         }
@@ -184,6 +226,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             try
             {
+                PersonFound.State = EnteredState;
+                OnPropertyChanged(nameof(PersonFound));
                 NewMembers.Clear();
                 NewMembers.Add(PersonFound);
                 bool addedSuccessfully = await service.AddMembersAsync(Header.CitizenId, NewMembers);
@@ -197,7 +241,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                     }
                     await LoadMembers();
                     EnteredCitizenId = string.Empty;
-
+                    PersonFound = new PersonModel();
+                    IsStateListEnabled = false;
                     System.Windows.MessageBox.Show("Person has been added successfully!");
                     //IsAddResidentClicked = false;
                 }
@@ -210,6 +255,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             {
                 System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
             }            
+        }
+        private bool CanExecuteAddPersonToHouseholdCommand(object parameter )
+        {
+            return IsStateListEnabled;
         }
     }
 }

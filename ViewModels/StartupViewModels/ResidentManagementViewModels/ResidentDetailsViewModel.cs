@@ -38,7 +38,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             get { return _personModel.Name; }
             set { }
         }
-        public string CitizenId => _personModel.CitizenId;
+        public string CitizenId
+        {
+            get { return _personModel.CitizenId; }
+            set { }
+        }
         public string Address => _personModel.Address;
         public int? HouseholdId => _personModel.HouseholdId;
         public string IsHeader
@@ -76,8 +80,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             _personModel = personModel;
             this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
-            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
-            ToModifyPersonInformationViewCommand = new RelayCommand(ExecuteToModifyPersonInformationViewCommand);
+            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand, CanExecuteDeletePersonComamnd);
+            ToModifyPersonInformationViewCommand = new RelayCommand(ExecuteToModifyPersonInformationViewCommand, CanExecuteToModifyPersonInformationViewCommand);
             DeletePersonCommand = new AsyncRelayCommand(ExecuteDeletePersonComamnd);
             
         }
@@ -106,6 +110,15 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
         {
             ModifyPersonInformationViewModel modifyPersonInformationViewModel = new ModifyPersonInformationViewModel(_navigationStore, _personModel, this.IsLoggedIn);
             _navigationStore.CurrentViewModel = modifyPersonInformationViewModel;
+        }
+
+        private bool CanExecuteDeletePersonComamnd(object parameter)
+        {
+            return this.isLoggedIn;
+        }
+        private bool CanExecuteToModifyPersonInformationViewCommand(object parameter)
+        {
+            return this.isLoggedIn;
         }
     }
 }

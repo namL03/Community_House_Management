@@ -9,7 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="175"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
@@ -38,8 +38,8 @@
             <StackPanel>
                 <TextBlock Text="Số CCCD người chủ trì: " FontSize="16" Margin="5"/>
                 <TextBlock Text="Tên người chủ trì: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Thời gian bắt đầu: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Thời gian kết thúc: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian bắt đầu (mm/dd/yyyy): " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian kết thúc (mm/dd/yyyy): " FontSize="16" Margin="5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">

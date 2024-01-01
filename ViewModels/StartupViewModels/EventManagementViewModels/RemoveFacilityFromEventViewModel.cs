@@ -183,7 +183,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             Console.WriteLine(_eventModel.Id);
             this.IsLoggedIn = isLoggedIn;
             ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
-            RemoveFacilityFromEventCommand = new AsyncRelayCommand(ExecuteRemoveFacilityFromEventCommand);
+            RemoveFacilityFromEventCommand = new AsyncRelayCommand(ExecuteRemoveFacilityFromEventCommand, CanExecuteRemoveFacilityFromEventCommand);
             NextPageCommand = new RelayCommand(ExecuteNextPageCommand);
             PreviousPageCommand = new RelayCommand(ExecutePreviousPageCommand);
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);

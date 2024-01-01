@@ -259,7 +259,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private bool CanExecuteAddNewHouseholdCommand(object parameter)
         {
-            return HeaderCitizenId != null;
+            return !string.IsNullOrEmpty(HeaderCitizenId);
         }
         private async Task LoadHousehold()
         {
