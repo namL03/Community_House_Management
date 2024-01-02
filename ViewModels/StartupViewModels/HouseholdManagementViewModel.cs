@@ -242,24 +242,24 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                     {
                         await LoadHousehold();
                         HeaderCitizenId = string.Empty;
-                        System.Windows.MessageBox.Show("Household has been added successfully");
+                        MessageBox.Show("Thêm hộ gia đình mới thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
                         Console.WriteLine("Person with the same Citizen ID already exists.");
-                        System.Windows.MessageBox.Show("Person with the same CitizenId already exists.");
+                        MessageBox.Show("Số CCCD không tồn tại hoặc chủ hộ đã thuộc một hộ gia đình khác", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
                 {
                     //System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
-                    System.Windows.MessageBox.Show("Person with the same Citizen ID already exists.");
+                    //System.Windows.MessageBox.Show("Person with the same Citizen ID already exists.");
                 }
             }
         }
         private bool CanExecuteAddNewHouseholdCommand(object parameter)
         {
-            return !string.IsNullOrEmpty(HeaderCitizenId);
+            return !string.IsNullOrWhiteSpace(HeaderCitizenId);
         }
         private async Task LoadHousehold()
         {
@@ -342,7 +342,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private void ExecuteSearchByCitizenIdCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = HouseholdList.Where(item => item.Header.CitizenId.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
 

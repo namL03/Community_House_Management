@@ -220,7 +220,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             }
             else
             {
-                System.Windows.MessageBox.Show("ERROR, something went wrong");
+                MessageBox.Show("Không thể xóa",
+                    "Thất bại",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
         private bool CanExecuteDeleteEventCommand(object parameter)
@@ -305,7 +308,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private void ExecuteSearchByTypeCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Application.Current.Dispatcher.InvokeAsync(() =>

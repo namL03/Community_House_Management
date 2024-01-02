@@ -80,9 +80,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             _personModel = personModel;
             this.isLoggedIn = isLoggedIn;
             _navigationStore = navigationStore;
-            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand, CanExecuteDeletePersonComamnd);
+            ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
             ToModifyPersonInformationViewCommand = new RelayCommand(ExecuteToModifyPersonInformationViewCommand, CanExecuteToModifyPersonInformationViewCommand);
-            DeletePersonCommand = new AsyncRelayCommand(ExecuteDeletePersonComamnd);
             
         }
         private void ExecuteToResidentManagementViewCommand(object parameter)
@@ -90,31 +89,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
             ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_navigationStore, this.IsLoggedIn);
             _navigationStore.CurrentViewModel = residentManagementViewModel;
         }
-        private async Task ExecuteDeletePersonComamnd(object parameter)
-        {
-            {
-                bool isDeleted = await service.DeletePersonAsync(_personModel.CitizenId);
-                if (isDeleted)
-                {
-                    System.Windows.MessageBox.Show("ERROR, something went wrong");
-                    ResidentManagementViewModel residentManagementViewModel = new ResidentManagementViewModel(_navigationStore, this.IsLoggedIn);
-                    _navigationStore.CurrentViewModel = residentManagementViewModel;
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("ERROR, something went wrong");
-                }
-            }
-        }
         private void ExecuteToModifyPersonInformationViewCommand(object parameter)
         {
             ModifyPersonInformationViewModel modifyPersonInformationViewModel = new ModifyPersonInformationViewModel(_navigationStore, _personModel, this.IsLoggedIn);
             _navigationStore.CurrentViewModel = modifyPersonInformationViewModel;
-        }
-
-        private bool CanExecuteDeletePersonComamnd(object parameter)
-        {
-            return this.isLoggedIn;
         }
         private bool CanExecuteToModifyPersonInformationViewCommand(object parameter)
         {

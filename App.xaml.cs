@@ -53,7 +53,7 @@ namespace Community_House_Management
                 Directory.CreateDirectory(dataDirectory);
             }
             ConsoleHelper.Initialize();
-            _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, true);
+            _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, false, null);
             MainWindow = new MainWindow()
             {
                 DataContext = new MainViewModel(_navigationStore)

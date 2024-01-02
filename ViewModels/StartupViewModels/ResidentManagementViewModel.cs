@@ -197,24 +197,26 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                         Name = string.Empty;
                         Address = string.Empty;
                         CitizenId = string.Empty;
-                        System.Windows.MessageBox.Show("Person has been added successfully");
+                        MessageBox.Show("Thêm cư dân thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
                         //IsAddResidentClicked = false;
                     }
                     else
                     {
                         Console.WriteLine("Person with the same Citizen ID already exists.");
-                        System.Windows.MessageBox.Show("Person with the same CitizenId already exists.");
+                        MessageBox.Show("Số CCCD đã tồn tại!", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
+
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
+                    //System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
                 }
             }
         }
         private bool CanExecuteAddNewPersonCommand(object parameter)
         {
-            return Name != string.Empty && CitizenId != string.Empty;
+            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(CitizenId);
         }
         private async Task LoadPeople()
         {
@@ -306,7 +308,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private void ExecuteSearchByCitizenIdCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = PeopleList.Where(item => item.CitizenId.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Application.Current.Dispatcher.InvokeAsync(() =>

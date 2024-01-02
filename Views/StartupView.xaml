@@ -46,7 +46,7 @@
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1">
                         <StackPanel>
                             <Button Height="30" Content="Tài khoản" FontSize="18" Background="White" BorderThickness="0" Command="{Binding ToAccountManagementViewCommand}"/>
-                            <Button Height="30" Content="Đăng xuất" FontSize="18" Background="White" BorderThickness="0"/>
+                            <Button Height="30" Content="Đăng xuất" FontSize="18" Background="White" BorderThickness="0" Command="{Binding LogoutCommand}"/>
                         </StackPanel>
                     </Border>
                 </Popup>

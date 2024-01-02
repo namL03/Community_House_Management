@@ -277,7 +277,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private void ExecuteSearchByTypeCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = EventLoaded.PropertyTypes.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Console.WriteLine("filterdList count " + FilteredList.Count());
@@ -320,13 +320,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             bool isRemoved = await service.RemovePropertyFromEventAsync(_eventModel.Id, BeRemovedProperty);
             if (isRemoved)
             {
-                System.Windows.MessageBox.Show("Facility is removed successfully!");
+                MessageBox.Show("Thu hồi CSVC thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 
                 await LoadEvent();
             }
             else
             {
-                System.Windows.MessageBox.Show("Please check the number again");
+                MessageBox.Show("Số lượng không hợp lệ", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private bool CanExecuteRemoveFacilityFromEventCommand(object parameter)

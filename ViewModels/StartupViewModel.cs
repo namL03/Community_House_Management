@@ -9,6 +9,10 @@ using Community_House_Management.ViewModels.StartupViewModels;
 using System.CodeDom.Compiler;
 using Community_House_Management.Views;
 using System.Windows;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Community_House_Management.ModelsDb;
+using Community_House_Management.Models;
+
 
 namespace Community_House_Management.ViewModels
 {
@@ -18,7 +22,16 @@ namespace Community_House_Management.ViewModels
         private readonly NavigationStore _navigationStore;
         private readonly NavigationStore _ownNavigationStore;
         public ViewModelBase CurrentViewModel => _ownNavigationStore.CurrentViewModel;
-
+        private AccountModel _officialAccount;
+        public AccountModel OfficialAccount
+        {
+            get => _officialAccount;
+            set
+            {
+                _officialAccount = value;
+                OnPropertyChanged(nameof(OfficialAccount));
+            }
+        }
         private bool isPopupOpen;
         public bool IsPopupOpen
         {
@@ -66,9 +79,12 @@ namespace Community_House_Management.ViewModels
         public ICommand ToResidentManagementViewCommand { get; }
         public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand OpenLoginWindowCommand { get; }
+
+        public ICommand LogoutCommand { get; }
         
-        public StartupViewModel(NavigationStore navigationStore, bool isLoggedIn)
+        public StartupViewModel(NavigationStore navigationStore, bool isLoggedIn, AccountModel officialAccount)
         {
+            OfficialAccount = officialAccount;
             this.isLoggedIn = isLoggedIn;
             Console.WriteLine(IsLoggedIn);
             _navigationStore = navigationStore;
@@ -81,7 +97,7 @@ namespace Community_House_Management.ViewModels
             ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
             ToResidentManagementViewCommand = new RelayCommand(ExecuteToResidentManagementViewCommand);
             OpenLoginWindowCommand = new RelayCommand(ExecuteOpenLoginWindowCommand, CanExecuteOpenLoginWindowCommand);
-            
+            LogoutCommand = new RelayCommand(ExecuteLogoutCommand);
 
             if (!_ownNavigationStore.ViewModels.Any())
             {
@@ -110,7 +126,7 @@ namespace Community_House_Management.ViewModels
         }
         private void ExecuteToAccountManagementViewCommand(object parameter)
         {         
-            AccountManagementViewModel accountManagementViewModel = new AccountManagementViewModel(_ownNavigationStore);
+            AccountManagementViewModel accountManagementViewModel = new AccountManagementViewModel(_ownNavigationStore, OfficialAccount);
             _ownNavigationStore.CurrentViewModel = accountManagementViewModel;
         }
         
@@ -152,6 +168,20 @@ namespace Community_House_Management.ViewModels
         {
             if (IsLoggedIn == false) return false;
             else return true;
+        }
+
+        private void ExecuteLogoutCommand(object parameter)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show("Đăng xuất thành công",
+                "Thành công",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+                Application.Current.MainWindow.DataContext = new MainViewModel(_navigationStore);
+                _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, false, null);
+                Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            });
         }
     }
 }

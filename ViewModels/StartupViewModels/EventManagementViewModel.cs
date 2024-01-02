@@ -313,7 +313,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             PersonModel creator = await services.GetPersonByCitizenIdAsync(OrganizerCitizenId);
             if(creator == null)
             {
-                System.Windows.MessageBox.Show("Error. The CitizenId doesn't exist");
+                MessageBox.Show("Số CCCD không tồn tại", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -326,15 +326,16 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 };
                 await services.CreateEventAsync(eventcreated);
                 await LoadEvents();
-                System.Windows.MessageBox.Show("Event created successfully!");
+                MessageBox.Show("Thêm sự kiện mới thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 Name = string.Empty;
+
             }
         }
         private bool CanExecuteAddEventCommand(object parameter)
         {
             DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
             DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
-            return Name != string.Empty && startDateWithTime < endDateWithTime;
+            return !string.IsNullOrWhiteSpace(Name) && startDateWithTime < endDateWithTime;
         }
         private void ExecuteOpenAddEventCommand(object parameter)
         {         
@@ -412,7 +413,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private void ExecuteSearchByNameCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = Events.Where(item => item.Name.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Console.WriteLine("filterdList count " + FilteredList.Count());

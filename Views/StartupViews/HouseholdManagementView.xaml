@@ -46,7 +46,7 @@
                     </StackPanel>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers >
                                 <DataTrigger Binding="{Binding IsAddHouseholdClicked}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -65,7 +65,7 @@
                     </StackPanel>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers >
                                 <DataTrigger Binding="{Binding IsAddHouseholdClicked}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -87,7 +87,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Tìm theo CCCD chủ hộ" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
                         <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
-                        <Button Content="SEARCH" Command="{Binding SearchByCitizenIdCommand}" Margin="8" />
+                        <Button Content="TÌM" Command="{Binding SearchByCitizenIdCommand}" MinWidth="50" Margin="8" />
                     </StackPanel>
                 </StackPanel>
             </Grid>

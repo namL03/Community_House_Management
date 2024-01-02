@@ -90,11 +90,11 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             get
             {
-                return EnteredState == 0 ? "Tạm vắng" : "Sinh hoạt";
+                return EnteredState == 0 ? "Tạm vắng" : "Tạm trú";
             }
             set
             {
-                if (value == "Sinh hoạt") EnteredState = 1;
+                if (value == "Tạm trú") EnteredState = 1;
                 else EnteredState = 0;
                 OnPropertyChanged(nameof(DisplayedState));
             }
@@ -161,14 +161,30 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             this.isLoggedIn = isLoggedIn;
             _householdModel = householdModel;
             NewMembers = new List<PersonModel>();
-            DeleteHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteHouseholdCommand);
+            DeleteHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteHouseholdCommand, CanExecuteDeleteHouseholdCommand);
             ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
             GetPersonByCitizenIdCommand = new AsyncRelayCommand(ExecuteGetPersonByCitizenIdCommand);
             AddPersonToHouseholdCommand = new AsyncRelayCommand(ExecuteAddPersonToHouseholdCommand, CanExecuteAddPersonToHouseholdCommand);
-            ToModifyMemberInformationViewCommand = new NavigateCommand<ModifyMemberInformationViewModel>(_navigationStore, typeof(ModifyMemberInformationViewModel), this.isLoggedIn);
+            //ToModifyMemberInformationViewCommand = new NavigateCommand<ModifyMemberInformationViewModel>(_navigationStore, typeof(ModifyMemberInformationViewModel), this.isLoggedIn);
+            ToModifyMemberInformationViewCommand = new RelayCommand(ExecuteToModifyMemberInformationViewCommand, CanExecuteToModifyMemberInformationViewCommand);
             _ = LoadMembers();
             IsStateListEnabled = false;
             EnteredState = 1;
+        }
+        private void ExecuteToModifyMemberInformationViewCommand(object parameter)
+        {
+            if (parameter is PersonModel personParam)
+            {
+                _navigationStore.CurrentViewModel = new ModifyMemberInformationViewModel(_navigationStore, personParam, isLoggedIn);
+            }
+        }
+        private bool CanExecuteToModifyMemberInformationViewCommand(object parameter)
+        {
+            return IsLoggedIn;
+        }
+        private bool CanExecuteDeleteHouseholdCommand(object parameter)
+        {
+            return IsLoggedIn;
         }
         private async Task LoadMembers()
         {
@@ -194,13 +210,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             bool isDeleted = await service.DeleteHouseholdAsync(Header.CitizenId);
             if (isDeleted)
             {
-                System.Windows.MessageBox.Show("Delete Household successfully!");
+                MessageBox.Show("Xóa hộ gia đình thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 HouseholdManagementViewModel householdManagementViewModel = new HouseholdManagementViewModel(_navigationStore, this.IsLoggedIn);
                 _navigationStore.CurrentViewModel = householdManagementViewModel;
             }
             else
             {
-                System.Windows.MessageBox.Show("ERROR, something went wrong!");
+                //MessageBox.Show("???", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         private void ExecuteToHouseholdManagementViewCommand(object parameter)
@@ -243,22 +259,22 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                     EnteredCitizenId = string.Empty;
                     PersonFound = new PersonModel();
                     IsStateListEnabled = false;
-                    System.Windows.MessageBox.Show("Person has been added successfully!");
+                    MessageBox.Show("Thêm nhân khẩu mới thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                     //IsAddResidentClicked = false;
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Error, please check informations!");
+                    MessageBox.Show("Nhân khẩu đã thuộc về một hộ gia đình khác", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Error adding new person: {ex.Message}");
+                //MessageBox.Show("???", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             }            
         }
         private bool CanExecuteAddPersonToHouseholdCommand(object parameter )
         {
-            return IsStateListEnabled;
+            return IsStateListEnabled && IsLoggedIn;
         }
     }
 }

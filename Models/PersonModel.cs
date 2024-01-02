@@ -68,12 +68,12 @@ namespace Community_House_Management.Models
             get
             {
                 if (State == null) return null;
-                if (State == 1) return "Sinh hoạt";
+                if (State == 1) return "Tạm trú";
                 return "Tạm vắng";
             }
             set
             {
-                if (value == "Sinh hoạt") State = 1;
+                if (value == "Tạm trú") State = 1;
                 else if (value == "Tạm vắng") State = 0;
                 else State = null;
                 OnPropertyChanged(nameof(StateDisplayed));
@@ -85,6 +85,16 @@ namespace Community_House_Management.Models
             get { return _isHeader; }
             set { _isHeader = value;
             OnPropertyChanged(nameof(IsHeader));}
+        }
+
+        private List<EventModel> _events;
+        public List<EventModel> Events
+        {
+            get => _events;
+            set
+            {
+                _events = value;
+            }
         }
     }
 }

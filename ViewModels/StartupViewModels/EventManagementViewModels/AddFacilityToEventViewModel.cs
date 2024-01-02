@@ -305,7 +305,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private void ExecuteSearchByTypeCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
                 Console.WriteLine("filterdList count " + FilteredList.Count());
@@ -354,14 +354,20 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             bool isAdded = await service.AssignPropertyToEventAsync(_eventModel.Id, BeAddedProperty);
             if(isAdded)
             {
-                System.Windows.MessageBox.Show("Facility is added successfully!");
+                MessageBox.Show("Cấp phát CSVC thành công", 
+                    "Thành công",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 IsPropertyPopupOpen= false;
                 await LoadAvaiableProperties();
                 _eventModel = await service.GetEventByIdAsync(_eventModel.Id);
             }
             else
             {
-                System.Windows.MessageBox.Show("Please check the number again");
+                MessageBox.Show("Không đủ số lượng để cấp phát",
+                    "Thất bại",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
         private bool CanExecuteAssignFacilityToEventCommand(object paramter)

@@ -146,8 +146,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             }
         }
         public ICommand ToHouseholdDetailsViewCommand { get; }
-
-        public ICommand SaveChangeInformationCommand { get; }
         public ICommand DeleteMemberFromHouseholdCommand { get; }
         public ICommand SaveChangeStateCommand { get; }
         public ModifyMemberInformationViewModel(NavigationStore navigationStore, PersonModel personModel, bool isLoggedIn)
@@ -156,7 +154,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             _personModel = personModel;
             this.IsLoggedIn = isLoggedIn;
             ToHouseholdDetailsViewCommand = new RelayCommand(ExecuteToHouseholdDetailsViewCommand);
-            SaveChangeInformationCommand = new AsyncRelayCommand(ExecuteSaveChangeInformationCommand);
             DeleteMemberFromHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteMemberFromHouseholdCommand);
             SaveChangeStateCommand = new AsyncRelayCommand(ExecuteSaveChangeStateCommand);
             RemoveMembersList = new List<string>();
@@ -164,7 +161,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             NewStateDisplayed = _personModel.StateDisplayed;
             StateList = new ObservableCollection<string>
             {
-                "Sinh hoạt",
+                "Tạm trú",
                 "Tạm vắng"
             };
             NewName = _personModel.Name;
@@ -185,35 +182,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             Household = await service.GetHouseholdAsync(Person.Header.CitizenId);
         }
-        private async Task ExecuteSaveChangeInformationCommand(object parameter)
-        {
-
-            try
-            {
-                bool isSaved = await service.ChangePersonInformationAsync(_personModel.CitizenId, new PersonModel
-                {
-                    Name = NewName,
-                    CitizenId = NewCitizenId,
-                    Address = NewAddress,
-                }); 
-
-                if (isSaved)
-                {
-                    System.Windows.MessageBox.Show("Changes saved successfully.");
-              
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("Error saving changes. Please check your input.");
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error saving changes: {ex.Message}");
-            }
-        }
-
-
+        
         private void ExecuteToHouseholdDetailsViewCommand(object parameter)
         {
             //Console.WriteLine(_personModel.Header.CitizenId);
@@ -223,7 +192,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         private void UpdateNewState()
         {
             // Update NewState based on the selected value in the combo box
-            NewState = (NewStateDisplayed == "Sinh hoạt") ? 1 : 0;
+            NewState = (NewStateDisplayed == "Tạm trú") ? 1 : 0;
             OnPropertyChanged(nameof(NewStateDisplayed));
             
             Console.WriteLine(NewState);
@@ -234,13 +203,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             bool isRemoved = await service.RemoveMembersAsync(Header.CitizenId, RemoveMembersList);
             if (isRemoved)
             {
-                System.Windows.MessageBox.Show("Changes saved successfully.");
+                MessageBox.Show("Loại bỏ nhân khẩu thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 HouseholdDetailsViewModel householdDetailsViewModel = new HouseholdDetailsViewModel(_navigationStore, _household, this.isLoggedIn);
                 _navigationStore.CurrentViewModel = householdDetailsViewModel;
             }
             else
             {
-                System.Windows.MessageBox.Show("Error, something went wrong");
+                MessageBox.Show("Không thể loại bỏ chủ hộ!", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private async Task ExecuteSaveChangeStateCommand(object parameter)
@@ -249,13 +218,13 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             bool isSaved = await service.ChangeStateAsync(_personModel);
             if (isSaved)
             {
-                System.Windows.MessageBox.Show("Changes saved successfully.");
+                MessageBox.Show("Thay đổi trạng thái nhân khẩu thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 HouseholdDetailsViewModel householdDetailsViewModel = new HouseholdDetailsViewModel(_navigationStore, _household, this.isLoggedIn);
                 _navigationStore.CurrentViewModel = householdDetailsViewModel;
             }
             else
             {
-                System.Windows.MessageBox.Show("Error saving changes. Please check your input.");
+                //System.Windows.MessageBox.Show("Error saving changes. Please check your input.");
             }
         }
     }

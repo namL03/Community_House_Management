@@ -116,9 +116,10 @@ namespace Community_House_Management.Services
         {
             using (var _context = new AppDbContext())
             {
-                var person =  await _context.Persons
+                var person = await _context.Persons
                     .Include(p => p.Household)
                     .ThenInclude(h => h.Header)
+                    .Include(p => p.Events)
                     .Where(p => p.CitizenId == citizenid)
                     .Select(p => new PersonModel
                     {
@@ -133,7 +134,14 @@ namespace Community_House_Management.Services
                             CitizenId = p.Household.Header.CitizenId,
                             HeaderId = p.Household.HeaderId
                         },
-                        State = p.state 
+                        State = p.state,
+                        Events = p.Events.Select(e => new EventModel {
+                            Id = e.Id,
+                            PersonId = e.PersonId,
+                            TimeEnd = e.timeEnd,
+                            TimeStart = e.timeStart,
+                            Name = e.Name
+                        }).ToList()
                     })
                     .SingleOrDefaultAsync();
                 return person;
@@ -151,7 +159,7 @@ namespace Community_House_Management.Services
             }
         }
 
-        public async Task<bool> ChangePasswordAsync(string username, string oldPassword, string newPassword)
+        public async Task ChangePasswordAsync(string username, string oldPassword, string newPassword)
         {
             using (var _context = new AppDbContext())
             {
@@ -162,9 +170,7 @@ namespace Community_House_Management.Services
                 {
                     accountFound.Password = newPassword;
                     await _context.SaveChangesAsync();
-                    return true;
                 }
-                return false;
             }
         }
 

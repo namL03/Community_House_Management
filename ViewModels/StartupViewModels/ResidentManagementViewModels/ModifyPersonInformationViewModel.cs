@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManagementViewModels
@@ -156,13 +157,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                     CitizenId = NewCitizenId,
                     Address = NewAddress,
                 });
-
                 if (isSaved)
                 {
                     Console.WriteLine(NewName);
                     Console.WriteLine(NewAddress);
                     Console.WriteLine(NewCitizenId);
-                    System.Windows.MessageBox.Show("Changes saved successfully.");
+                    MessageBox.Show("Thay đổi thông tin cư dân thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                     personModel.Name = NewName;
                     personModel.CitizenId = NewCitizenId;
                     personModel.Address = NewAddress;
@@ -170,17 +170,17 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Error saving changes. Please check your input.");
+                    MessageBox.Show("Số CCCD đã tồn tại!", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Error saving changes: {ex.Message}");
+                //MessageBox.Show("Số CCCD đã tồn tại!", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private bool CanExecuteSaveChangeInformationCommand(object parameter)
         {
-            return !string.IsNullOrEmpty(NewName) && !string.IsNullOrEmpty(NewCitizenId);
+            return !string.IsNullOrWhiteSpace(NewName) && !string.IsNullOrWhiteSpace(NewCitizenId);
         }
 
         private void ExecuteToResidentDetailsViewCommand(object parameter)

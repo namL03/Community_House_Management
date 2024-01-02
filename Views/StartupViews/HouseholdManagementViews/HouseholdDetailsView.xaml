@@ -39,7 +39,7 @@
                     <TextBlock Text="Số CCCD chủ hộ: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Địa chỉ chủ hộ: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Tổng số nhân khẩu: " FontSize="16" Margin="5"/>
-                    <TextBlock Text="Tổng số nhân khẩu đang sinh hoạt: " FontSize="16" Margin="5"/>
+                    <TextBlock Text="Tổng số nhân khẩu tạm trú: " FontSize="16" Margin="5"/>
                     <TextBlock Text="Tổng số nhân khẩu tạm vắng: " FontSize="16" Margin="5"/>
                 </StackPanel>
             </Grid>
@@ -167,7 +167,7 @@
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Left"
                                   IsEnabled="{Binding IsStateListEnabled}">
-                            <ComboBoxItem Content="Sinh hoạt"/>
+                            <ComboBoxItem Content="Tạm trú"/>
                             <ComboBoxItem Content="Tạm vắng"/>
                         </ComboBox>
                     </Grid>

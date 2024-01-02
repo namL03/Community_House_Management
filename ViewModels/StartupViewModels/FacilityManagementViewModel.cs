@@ -214,7 +214,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 };
                 await service.CreatePropertyAsync(propertyModel);
             }
-            System.Windows.MessageBox.Show("Property has been added successfully");
+            MessageBox.Show("Thêm CSVC thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             Type = string.Empty;
             Count = null;
             await LoadProperties();
@@ -222,7 +222,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         
         private bool CanExecuteAddPropertyCommand(object parameter)
         {
-            return Count != null && Type != string.Empty && Count > 0;
+            return Count != null && !string.IsNullOrWhiteSpace(Type) && Count > 0;
         }
         private void ExecuteOpenAddFacilityCommand(object parameter)
         {
@@ -302,7 +302,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private void ExecuteSearchByTypeCommand(object parameter)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 FilteredList = PropertyTypesList.Where(item => item.Type.Equals(SearchText, StringComparison.OrdinalIgnoreCase));                   
                 Application.Current.Dispatcher.InvokeAsync(() =>

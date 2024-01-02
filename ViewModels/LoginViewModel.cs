@@ -1,4 +1,5 @@
 ﻿using Community_House_Management.Commands;
+using Community_House_Management.Services;
 using Community_House_Management.Stores;
 using Community_House_Management.Views;
 using System;
@@ -71,18 +72,6 @@ namespace Community_House_Management.ViewModels
             }
         }
 
-        public string ErrorMessage
-        {
-            get
-            {
-                return _errorMessage;
-            }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
         
 
         public ICommand LoginCommand { get; }
@@ -90,8 +79,7 @@ namespace Community_House_Management.ViewModels
         public ICommand CloseLoginWindowCommand { get; }
         public LoginViewModel()
         {
-            LoginCommand = new RelayCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-            RecoverPasswordCommand = new RelayCommand(p => ExecuteRecoverPasswordCommand("", ""));
+            LoginCommand = new AsyncRelayCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
             CloseLoginWindowCommand = new RelayCommand(ExecuteCloseLoginWindowCommand);
             _navigationStore = new NavigationStore();
         }
@@ -99,7 +87,7 @@ namespace Community_House_Management.ViewModels
         private bool CanExecuteLoginCommand(object parameter)
         {
             bool validData;
-            if (string.IsNullOrWhiteSpace(UserName) || UserName.Length < 3 || Password == null || Password.Length < 3)
+            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
             {             
                 validData = false;
                 //Console.WriteLine(validData);
@@ -112,24 +100,29 @@ namespace Community_House_Management.ViewModels
             }
             return validData;
         }
-
-        private void ExecuteLoginCommand(object parameter)
+        private Service service = new Service();
+        private async Task ExecuteLoginCommand(object parameter)
         {
-            if(UserName == "admin" && Password == "password")
+            bool isValid = await service.CheckAccountAsync(UserName, Password);
+            if (isValid)
             {
-
-                Application.Current.MainWindow.DataContext = new MainViewModel(_navigationStore);
-
-                // Switch to the StartupViewModel
-                _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, true);
-
-                // Hide the login view
-                IsViewVisible = false;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Application.Current.MainWindow.DataContext = new MainViewModel(_navigationStore);
+                    _navigationStore.CurrentViewModel = new StartupViewModel(_navigationStore, true, new Models.AccountModel 
+                    { 
+                        Username = UserName, Password = Password
+                    });
+                    Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                    IsViewVisible = false;
+                });
             }
             else
             {
-                ErrorMessage = "Invalid Username or Password";
-                OnPropertyChanged(nameof(ErrorMessage));
+                MessageBox.Show("Tài khoản không hợp lệ!",
+                "Application Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
             }
             
         }
@@ -144,10 +137,6 @@ namespace Community_House_Management.ViewModels
                     break;
                 }
             }
-        }
-        private void ExecuteRecoverPasswordCommand(string username, string email)
-        {
-            throw new NotImplementedException();
         }
     }
 }
