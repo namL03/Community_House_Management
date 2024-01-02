@@ -264,7 +264,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 }
                 else
                 {
-                    MessageBox.Show("Nhân khẩu đã thuộc về một hộ gia đình khác", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Nhân khẩu đã thuộc về một hộ gia đình", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)

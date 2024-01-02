@@ -243,6 +243,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                         await LoadHousehold();
                         HeaderCitizenId = string.Empty;
                         MessageBox.Show("Thêm hộ gia đình mới thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _navigationStore.CurrentViewModel = new HouseholdDetailsViewModel(_navigationStore, HouseholdList.Last(), isLoggedIn);
                     }
                     else
                     {

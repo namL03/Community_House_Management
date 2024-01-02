@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -328,7 +329,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 await LoadEvents();
                 MessageBox.Show("Thêm sự kiện mới thành công", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 Name = string.Empty;
-
+                EventModel eventfound = Events.Last();
+                _navigationStore.CurrentViewModel = new EventDetailsViewModel(_navigationStore, eventfound, isLoggedIn);
             }
         }
         private bool CanExecuteAddEventCommand(object parameter)
