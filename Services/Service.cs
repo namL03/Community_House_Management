@@ -198,6 +198,7 @@ namespace Community_House_Management.Services
                 var allPeople = await _context.Persons
                     .Include(p => p.Household)
                     .ThenInclude(h => h.Header)
+                    .Include(p => p.Events)
                     .Select(p =>  new PersonModel
                     {
                         Id = p.Id,
@@ -211,7 +212,15 @@ namespace Community_House_Management.Services
                             CitizenId = p.Household.Header.CitizenId,
                             HeaderId = p.Household.HeaderId
                         },
-                        State = p.state
+                        State = p.state,
+                        Events = p.Events.Select(e => new EventModel
+                        {
+                            Id = e.Id,
+                            PersonId = e.PersonId,
+                            TimeEnd = e.timeEnd,
+                            TimeStart = e.timeStart,
+                            Name = e.Name
+                        }).ToList()
                     })
                     .ToListAsync();
                 return allPeople;

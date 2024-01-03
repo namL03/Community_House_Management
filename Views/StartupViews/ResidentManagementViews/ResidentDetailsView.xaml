@@ -9,22 +9,25 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="89"/>
+            <ColumnDefinition Width="105"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="55"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
-            <TextBlock FontSize="18" FontWeight="Bold">
-                <Run Text=" Số CCCD: "/>
+            <TextBlock FontSize="18" FontWeight="Bold" Margin="15 0 5 0">
+                <Run Text="Số CCCD: "/>
                 <Run Text="{Binding CitizenId}" Foreground="#F23E5C"/>
             </TextBlock>
         </Grid>
@@ -33,8 +36,8 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <StackPanel>
-                <TextBlock Text="Tên cư dân: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Địa chỉ: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Tên cư dân: " FontSize="16" Margin="15 5 5 5"/>
+                <TextBlock Text="Địa chỉ: " FontSize="16" Margin="15 5 5 5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
@@ -44,8 +47,128 @@
                 <!--<Button Background="White" BorderThickness="0" Content="Click here" Foreground="DarkGray" Margin="5" HorizontalAlignment="Left" FontSize="16" Command="{Binding DeletePersonCommand}"/>-->
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
             <Button Command="{Binding ToModifyPersonInformationViewCommand}" Content="Thay đổi thông tin" FontSize="16" Height="40" Width="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 10 40 0"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+               FontSize="16"
+               Margin="15 10 10 10"
+               FontStyle="Italic"
+               Text="Tổng số sự kiện mà cư dân chủ trì: "/>
+
+            <TextBlock Grid.Column="1"
+               FontSize="16"
+               Margin="5 10 10 10"
+               FontStyle="Italic"
+               Text="{Binding NumberOfEvent}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Tìm theo tên" FontStyle="Italic" FontSize="15" Margin="15 15 10 0"/>
+                <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
+                <Button Content="TÌM" Command="{Binding SearchByNameCommand}" Margin="15" MinWidth="50"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
+            <WrapPanel Orientation="Horizontal">
+                <Button Margin="15 0 0 0" Width="30" Height="30" Command="{Binding PreviousPageCommand}">
+                    <TextBlock Text="&lt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+                <ItemsControl ItemsSource="{Binding PageNumbers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="30" Height="30" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="LightGray" />
+                                            </Trigger>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <Binding Path="Content" RelativeSource="{RelativeSource Self}" />
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Background" Value="Yellow" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Content>
+                                    <TextBlock Text="{Binding}" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Width="30" Height="30" Command="{Binding NextPageCommand}">
+                    <TextBlock Text="&gt;" FontSize="15" FontWeight="Bold" />
+                </Button>
+            </WrapPanel>
+        </Grid>
+        <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="#3681D2">
+                <TextBlock Text="Tên sự kiện" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="1" Background="#3681D2">
+                <TextBlock Text="Thời gian bắt đầu" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="2" Background="#3681D2">
+                <TextBlock Text="Thời gian kết thúc" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2">
+            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding PagedEventsList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                    
+                                    <Grid Grid.Column="1">
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
+                                            <TextBlock Text="{Binding TimeStart}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                    <Grid Grid.Column="2">
+                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                            <TextBlock Text="{Binding TimeEnd}" FontSize="18" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

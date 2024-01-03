@@ -62,7 +62,5 @@ namespace Community_House_Management.Models
                 OnPropertyChanged(nameof(TimeEnd));
             }
         }
-
-
     }
 }
