@@ -83,6 +83,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 peopleList = value;
                 OnPropertyChanged(nameof(PeopleList));
                 OnPropertyChanged(nameof(NumberOfResident));
+                OnPropertyChanged(nameof(NumberOfResidentsWithHousehold));
+                OnPropertyChanged(nameof(NumberOfResidentsWithoutHousehold));
             }
         }
 
@@ -157,6 +159,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
         }
         public int NumberOfResident => peopleList.Count;
+
+        public int NumberOfResidentsWithHousehold => peopleList.Where(p => p.InAHouseHold == "Có").Count();
+        public int NumberOfResidentsWithoutHousehold => peopleList.Where(p => p.InAHouseHold == "Không").Count();
         public ICommand OpenAddResidentCommand { get; }
         public ICommand AddNewPersonCommand { get; }
         public ICommand NextPageCommand { get; }

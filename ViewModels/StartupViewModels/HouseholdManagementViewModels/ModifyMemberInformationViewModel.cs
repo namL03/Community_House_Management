@@ -188,8 +188,6 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             Person = await service.GetPersonByCitizenIdAsync(_personModel.CitizenId);
             RemoveMembersList.Add(Person.CitizenId);
-            if (Person.HeaderId == null) Console.WriteLine("null");
-            else Console.WriteLine(Person.HeaderId);
             Header = Person.Header;
             _ = LoadHousehold();
         }

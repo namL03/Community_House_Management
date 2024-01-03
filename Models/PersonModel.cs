@@ -41,7 +41,6 @@ namespace Community_House_Management.Models
                 OnPropertyChanged(nameof(Address));
             }
         }
-        public int? HeaderId { get; set; }
         private PersonModel? _header;
         public PersonModel? Header
         {
@@ -50,6 +49,7 @@ namespace Community_House_Management.Models
             {
                 _header = value;
                 OnPropertyChanged(nameof(Header));
+                OnPropertyChanged(nameof(InAHouseHold));
             }
         }
 
@@ -94,6 +94,14 @@ namespace Community_House_Management.Models
             set
             {
                 _events = value;
+            }
+        }
+        public string InAHouseHold
+        {
+            get
+            {
+                if (Header == null) return "Không";
+                else return "Có";
             }
         }
     }

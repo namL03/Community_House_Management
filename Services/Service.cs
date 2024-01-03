@@ -132,7 +132,6 @@ namespace Community_House_Management.Services
                             Name = p.Household.Header.Name,
                             Address = p.Household.Header.Address,
                             CitizenId = p.Household.Header.CitizenId,
-                            HeaderId = p.Household.HeaderId
                         },
                         State = p.state,
                         Events = p.Events.Select(e => new EventModel {
@@ -210,7 +209,6 @@ namespace Community_House_Management.Services
                             Name = p.Household.Header.Name,
                             Address = p.Household.Header.Address,
                             CitizenId = p.Household.Header.CitizenId,
-                            HeaderId = p.Household.HeaderId
                         },
                         State = p.state,
                         Events = p.Events.Select(e => new EventModel
