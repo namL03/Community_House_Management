@@ -21,16 +21,16 @@
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Enter current password" Margin="0 5 0 0"/>
+                <TextBlock Text="Mật khẩu cũ" Margin="0 5 0 0"/>
             </Grid>
             <Grid Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="New password" Margin="0 5 0 0"/>
+                <TextBlock Text="Mật khẩu mới" Margin="0 5 0 0"/>
             </Grid>
             <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Confirm new password" Margin="0 5 0 0"/>
+                <TextBlock Text="Nhập lại mật khẩu mới" Margin="0 5 0 0"/>
             </Grid>
             <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button Content="SAVE CHANGE" Width="140" Height="40" Background="#60FF10" Command="{Binding ChangePasswordCommand}"/>
+                <Button Content="Đổi mật khẩu" Width="140" Height="40" Background="#60FF10" Command="{Binding ChangePasswordCommand}"/>
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
@@ -54,7 +54,7 @@
                 </customcontrols:BindablePasswordBox>
             </Grid>
             <Grid Grid.Row="3">
-                <Button Margin="25 0 0 0" Width="80" HorizontalAlignment="Left" Height="40" Content="CANCEL" Background="#EE4436" Command="{Binding ToDefaultScreenViewCommand}"/>
+                <Button Margin="25 0 0 0" Width="80" HorizontalAlignment="Left" Height="40" Content="Hủy bỏ" Background="#EE4436" Command="{Binding ToDefaultScreenViewCommand}"/>
             </Grid>
         </Grid>
      </Grid>
