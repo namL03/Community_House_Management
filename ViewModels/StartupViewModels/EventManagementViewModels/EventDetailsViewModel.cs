@@ -157,6 +157,19 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 UpdatePagedPropertyTypesList();
             }
         }
+        private bool isConfirmPopupOpen;
+        public bool IsConfirmPopupOpen
+        {
+            get { return isConfirmPopupOpen; }
+            set
+            {
+                if(value != isConfirmPopupOpen)
+                {
+                    isConfirmPopupOpen = value;
+                    OnPropertyChanged(nameof(IsConfirmPopupOpen));
+                }
+            }
+        }
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
@@ -167,6 +180,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
+        public ICommand ShowConfirmPopupCommand { get; }
         public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
             this.isLoggedIn = isLoggedIn;
@@ -177,9 +191,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             ToAddFacilityToEventViewCommand = new RelayCommand(ExecuteToAddFacilityToEventViewCommand, CanExecuteToAddFacilityToEventViewCommand);
             ToEventManagementViewComamnd = new RelayCommand(ExecuteToEventManagementViewComamnd);
-            DeleteEventCommand = new AsyncRelayCommand(ExecuteDeleteEventCommand, CanExecuteDeleteEventCommand);
+            DeleteEventCommand = new AsyncRelayCommand(ExecuteDeleteEventCommand);
             ToRemoveFacilityFromEventViewCommand = new RelayCommand(ExecuteToRemoveFacilityFromEventViewCommand, CanExecuteToRemoveFacilityFromEventViewCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
+            ShowConfirmPopupCommand = new RelayCommand(ExecuteShowConfirmPopupCommand, CanExecuteShowConfirmPopupCommand);
             _ = LoadEvent();
         }
         private async Task LoadEvent()
@@ -226,10 +241,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                     MessageBoxImage.Error);
             }
         }
-        private bool CanExecuteDeleteEventCommand(object parameter)
-        {
-            return this.isLoggedIn;
-        }
+        
         int elementsPerPage = 5;
         private void ExecuteToRemoveFacilityFromEventViewCommand(object parameter)
         {
@@ -329,6 +341,14 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                     UpdatePageNumbers();
                 });
             }
+        }
+        private void ExecuteShowConfirmPopupCommand(object parameter)
+        {
+            IsConfirmPopupOpen = !IsConfirmPopupOpen;
+        }
+        private bool CanExecuteShowConfirmPopupCommand(object parameter)
+        {
+            return this.isLoggedIn;
         }
     }
 }

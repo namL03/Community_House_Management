@@ -145,9 +145,23 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 OnPropertyChanged(nameof(RemoveMembersList));
             }
         }
+        private bool isConfirmPopupOpen;
+        public bool IsConfirmPopupOpen
+        {
+            get { return isConfirmPopupOpen; }
+            set
+            {
+                if (value != isConfirmPopupOpen)
+                {
+                    isConfirmPopupOpen = value;
+                    OnPropertyChanged(nameof(IsConfirmPopupOpen));
+                }
+            }
+        }
         public ICommand ToHouseholdDetailsViewCommand { get; }
         public ICommand DeleteMemberFromHouseholdCommand { get; }
         public ICommand SaveChangeStateCommand { get; }
+        public ICommand ShowConfirmPopupCommand { get; }
         public ModifyMemberInformationViewModel(NavigationStore navigationStore, PersonModel personModel, bool isLoggedIn)
         {
             _navigationStore = navigationStore;
@@ -156,6 +170,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             ToHouseholdDetailsViewCommand = new RelayCommand(ExecuteToHouseholdDetailsViewCommand);
             DeleteMemberFromHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteMemberFromHouseholdCommand);
             SaveChangeStateCommand = new AsyncRelayCommand(ExecuteSaveChangeStateCommand);
+            ShowConfirmPopupCommand = new RelayCommand(ExecuteShowConfirmPopupCommand, CanExecuteShowConfirmPopupCommand);
             RemoveMembersList = new List<string>();
             _ = LoadPersonInformation();
             NewStateDisplayed = _personModel.StateDisplayed;
@@ -226,6 +241,14 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             {
                 //System.Windows.MessageBox.Show("Error saving changes. Please check your input.");
             }
+        }
+        private void ExecuteShowConfirmPopupCommand(object parameter)
+        {
+            IsConfirmPopupOpen = !IsConfirmPopupOpen;
+        }
+        private bool CanExecuteShowConfirmPopupCommand(object parameter)
+        {
+            return this.isLoggedIn;
         }
     }
 }

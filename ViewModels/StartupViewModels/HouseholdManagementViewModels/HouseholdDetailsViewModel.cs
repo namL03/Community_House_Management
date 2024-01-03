@@ -150,23 +150,38 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
                 OnPropertyChanged(nameof(IsStateListEnabled));
             }
         }
+        private bool isConfirmPopupOpen;
+        public bool IsConfirmPopupOpen
+        {
+            get { return isConfirmPopupOpen; }
+            set
+            {
+                if (value != isConfirmPopupOpen)
+                {
+                    isConfirmPopupOpen = value;
+                    OnPropertyChanged(nameof(IsConfirmPopupOpen));
+                }
+            }
+        }
         public ICommand DeleteHouseholdCommand { get; }
         public ICommand ToHouseholdManagementViewCommand { get; }
         public ICommand GetPersonByCitizenIdCommand { get; }
         public ICommand AddPersonToHouseholdCommand { get; }
         public ICommand ToModifyMemberInformationViewCommand { get; }
+        public ICommand ShowConfirmPopupCommand { get; }
         public HouseholdDetailsViewModel(NavigationStore navigationStore, HouseholdModel householdModel, bool isLoggedIn)
         {
             _navigationStore = navigationStore;
             this.isLoggedIn = isLoggedIn;
             _householdModel = householdModel;
             NewMembers = new List<PersonModel>();
-            DeleteHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteHouseholdCommand, CanExecuteDeleteHouseholdCommand);
+            DeleteHouseholdCommand = new AsyncRelayCommand(ExecuteDeleteHouseholdCommand);
             ToHouseholdManagementViewCommand = new RelayCommand(ExecuteToHouseholdManagementViewCommand);
             GetPersonByCitizenIdCommand = new AsyncRelayCommand(ExecuteGetPersonByCitizenIdCommand);
             AddPersonToHouseholdCommand = new AsyncRelayCommand(ExecuteAddPersonToHouseholdCommand, CanExecuteAddPersonToHouseholdCommand);
             //ToModifyMemberInformationViewCommand = new NavigateCommand<ModifyMemberInformationViewModel>(_navigationStore, typeof(ModifyMemberInformationViewModel), this.isLoggedIn);
             ToModifyMemberInformationViewCommand = new RelayCommand(ExecuteToModifyMemberInformationViewCommand, CanExecuteToModifyMemberInformationViewCommand);
+            ShowConfirmPopupCommand = new RelayCommand(ExecuteShowConfirmPopupCommand, CanExecuteShowConfirmPopupCommand);
             _ = LoadMembers();
             IsStateListEnabled = false;
             EnteredState = 1;
@@ -182,10 +197,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         {
             return IsLoggedIn;
         }
-        private bool CanExecuteDeleteHouseholdCommand(object parameter)
-        {
-            return IsLoggedIn;
-        }
+
         private async Task LoadMembers()
         {
             NewHousehold = await service.GetHouseholdAsync(_householdModel.Header.CitizenId);
@@ -275,6 +287,14 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
         private bool CanExecuteAddPersonToHouseholdCommand(object parameter )
         {
             return IsStateListEnabled && IsLoggedIn;
+        }
+        private void ExecuteShowConfirmPopupCommand(object parameter)
+        {
+            IsConfirmPopupOpen = !IsConfirmPopupOpen;
+        }
+        private bool CanExecuteShowConfirmPopupCommand(object parameter)
+        {
+            return this.isLoggedIn;
         }
     }
 }

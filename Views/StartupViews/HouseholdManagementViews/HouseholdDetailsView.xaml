@@ -32,7 +32,7 @@
                 </TextBlock>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="2">
-                <Button Width="100" Content="Back" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToHouseholdManagementViewCommand}"/>
+                <Button Width="100" Content="Trở về" FontSize="18" Background="White" HorizontalAlignment="Right" Command="{Binding ToHouseholdManagementViewCommand}"/>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
                 <StackPanel>
@@ -63,7 +63,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="18"/>
+                    <!--<ColumnDefinition Width="18"/>-->
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Background="#3681D2">
                     <TextBlock Text="Số CCCD" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -107,7 +107,7 @@
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="3">
-                                            <Border BorderThickness="1">
+                                            <Border BorderBrush="White">
                                                 <Button Command="{Binding DataContext.ToModifyMemberInformationViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White"/>
                                             </Border>
                                         </Grid>
@@ -118,8 +118,8 @@
                     </Border>
                 </ScrollViewer>
             </Grid>
-            <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2">
-                <Button Content="Xóa hộ gia đình" Command="{Binding DeleteHouseholdCommand}" FontSize="16" Width="150"/>
+            <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Margin ="5">
+                <Button Content="Xóa hộ gia đình" Command="{Binding ShowConfirmPopupCommand}" FontSize="16" Width="150"/>
             </Grid>
             <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
@@ -176,6 +176,18 @@
                     <Button Content="THÊM VÀO HỘ GIA ĐÌNH" Height="30" FontSize="16" Margin="20 5 5 5" Width="190" Command="{Binding AddPersonToHouseholdCommand}"/>
                 </Grid>
             </Grid>
+            <Popup IsOpen="{Binding IsConfirmPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Center" Width="200">
+                <Border BorderBrush="Black" BorderThickness="1" Background="White">
+                    <StackPanel>
+                        <TextBlock FontSize="16" Margin="5" Text="Bạn có chắc là muốn xóa hộ gia đình này?" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
+
+                        </TextBlock>
+                        <Button Content="YES" FontSize="16" HorizontalAlignment="Center" Command="{Binding DeleteHouseholdCommand}" Margin="5" Width="70"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Grid>
+        
     </ScrollViewer>
+    
 </UserControl>
