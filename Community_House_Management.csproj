@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\back_ground.jpg" />
+    <None Remove="Resources\Images\back_ground_3.jpg" />
     <None Remove="Resources\Images\category.png" />
     <None Remove="Resources\Images\menuicon.png" />
+    <None Remove="Resources\Images\pepe.jpg" />
     <None Remove="Resources\Images\plusicon.png" />
+    <None Remove="Resources\Images\ta_anh_son.jpg" />
     <None Remove="Resources\Images\usericon.png" />
   </ItemGroup>
 
@@ -24,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\back_ground.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\back_ground_3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\category.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
