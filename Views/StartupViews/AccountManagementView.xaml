@@ -31,6 +31,7 @@
             </Grid>
             <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Content="Đổi mật khẩu" Width="140" Height="40" Background="#60FF10" Command="{Binding ChangePasswordCommand}"/>
+                <Button Content="SAVE CHANGE" Width="140" Height="40" Background="#64BE22" Command="{Binding ChangePasswordCommand}"/>
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
