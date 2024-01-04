@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Logging;
 using System.DirectoryServices.ActiveDirectory;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Community_House_Management.Services
 {
@@ -30,32 +31,13 @@ namespace Community_House_Management.Services
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task AddPropertiesToEventAsync(int eventId, List<int> propertyIds)
-        {
-            foreach (var propertyId in  propertyIds)
-            {
-                using (var _context = new AppDbContext()) 
-                {
-                    Event eventchosen = await _context.Events
-                        .Include(e => e.EventProperties)
-                        .ThenInclude(ep => ep.Property)
-                        .SingleOrDefaultAsync(e => e.Id == propertyId);
-                    EventProperty eventProperty = new EventProperty
-                    {
-                        EventId = eventId,
-                        PropertyId = propertyId
-                    };
-                    eventchosen.EventProperties.Add(eventProperty);
-                    await _context.SaveChangesAsync();
-                }
-            }
-        }
         public async Task CreatePropertyAsync(PropertyModel property)
         {
             using (var _context = new AppDbContext())
             {
                 _context.Properties.Add(new Property
                 {
+                    State = 0,
                     Type = property.Type,
                 });
                 await _context.SaveChangesAsync();
@@ -66,6 +48,7 @@ namespace Community_House_Management.Services
             using (var _context = new AppDbContext ())
             {
                 var result = await _context.Properties
+                .Where(p => p.State == 0)
                 .GroupBy(p => p.Type)
                 .Select(g => new PropertyTypeModel
                 {
@@ -466,6 +449,48 @@ namespace Community_House_Management.Services
                 return households;
             }
         }
+        public async Task<List<EventModel>> RemovePropertyAsync(string type)
+        {
+            using (var _context = new AppDbContext())
+            {
+                var now = DateTime.Now;
+
+                var propertyWithLeastFutureEvents = await _context.Properties
+                    .Where(p => p.Type == type && p.State == 0)
+                    .Include(p => p.EventProperties)
+                    .ThenInclude(ep => ep.Event)
+                    .Select(p => new
+                    {
+                        Property = p,
+                        FutureEvents = p.EventProperties
+                            .Where(ep => ep.Event != null && ep.Event.timeEnd > now)
+                            .Select(ep => ep.Event)
+                            .ToList() 
+                    })
+                    .OrderBy(x => x.FutureEvents.Count)
+                    .ThenBy(x => x.Property.Id)
+                    .FirstOrDefaultAsync();
+
+                if (propertyWithLeastFutureEvents != null)
+                {
+                    if (propertyWithLeastFutureEvents.FutureEvents.Count == 0)
+                    {
+                        propertyWithLeastFutureEvents.Property.State = 1;
+                        await _context.SaveChangesAsync();
+                    }
+                    return propertyWithLeastFutureEvents.FutureEvents
+                        .Select(e => new EventModel
+                        {
+                            Id = e.Id,
+                            TimeStart = e.timeStart,
+                            TimeEnd = e.timeEnd,
+                            Name = e.Name,
+                        }).ToList();
+                }
+
+                return new List<EventModel>();
+            }
+        }
         public async Task<bool> AssignPropertyToEventAsync(int eventId, PropertyTypeModel propertyType)
         {
             using (var _context = new AppDbContext())
@@ -474,7 +499,7 @@ namespace Community_House_Management.Services
                     .SingleOrDefaultAsync(e => e.Id == eventId);
                 if (EventFound == null) return false;
                 var freeProperties = await _context.Properties
-                    .Where(p => p.Type == propertyType.Type)
+                    .Where(p => p.Type == propertyType.Type && p.State == 0)
                     .Include(p => p.EventProperties)
                     .ThenInclude(ep => ep.Event)
                     .Where(p => !p.EventProperties.Any(ep => ep.Event.timeEnd >= EventFound.timeStart && ep.Event.timeStart <= EventFound.timeEnd))
@@ -500,6 +525,7 @@ namespace Community_House_Management.Services
                     .SingleOrDefaultAsync(e => e.Id == eventId);
                 if (EventFound == null) return null;
                 var freeProperties = await _context.Properties
+                    .Where(p => p.State == 0)
                     .Include(p => p.EventProperties)
                     .ThenInclude(ep => ep.Event)
                     .Where(p => !p.EventProperties.Any(ep => ep.Event.timeEnd >= EventFound.timeStart && ep.Event.timeStart <= EventFound.timeEnd))
@@ -518,26 +544,33 @@ namespace Community_House_Management.Services
             using (var _context = new AppDbContext())
             {
                 var eventFound = await _context.Events
-                .Include(e => e.EventProperties)
-                .ThenInclude(ep => ep.Property)
-                .SingleOrDefaultAsync(e => e.Id == eventId);
+                    .Include(e => e.EventProperties)
+                    .ThenInclude(ep => ep.Property)
+                    .SingleOrDefaultAsync(e => e.Id == eventId);
 
                 if (eventFound == null)
                 {
                     return false;
                 }
-                var eventPropertiesToRemove = eventFound.EventProperties
-                    .Where(ep => ep.Property.Type == propertyType.Type)
-                    .ToList();
 
+                var eventPropertiesToRemove = eventFound.EventProperties
+                    .Where(ep => ep.Property.Type == propertyType.Type && ep.Property.State == 1)
+                    .ToList();
+                if (eventPropertiesToRemove.Count < propertyType.Count)
+                {
+                    eventPropertiesToRemove.AddRange(eventFound.EventProperties
+                        .Where(ep => ep.Property.Type == propertyType.Type && ep.Property.State != 1));
+                }
                 if (eventPropertiesToRemove.Count < propertyType.Count)
                 {
                     return false;
                 }
-                foreach(var eventPropertyToRemove in eventPropertiesToRemove.Take(propertyType.Count))
+
+                foreach (var eventPropertyToRemove in eventPropertiesToRemove.Take(propertyType.Count))
                 {
                     eventFound.EventProperties.Remove(eventPropertyToRemove);
                 }
+
                 await _context.SaveChangesAsync();
                 return true;
             }

@@ -18,7 +18,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -100,10 +100,10 @@
         </Grid>
         <Grid Grid.Row="5" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="1.3*"/>
+                <ColumnDefinition Width="0.7*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="120"/>
                 
                 <!--<ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>-->
@@ -118,10 +118,10 @@
                 <TextBlock Text="Time end" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>-->
             <Grid Grid.Column="1" Background="#3681D2">
-                <TextBlock Text="Số CCCD người chủ trì" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="CCCD người chủ trì" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="2" Background="#3681D2">
-                <TextBlock Text="Tên người chủ trì" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Thời gian diễn ra (mm/dd/yyyy)" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="3" Background="#3681D2">
                 <TextBlock Text="Chi tiết" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -134,9 +134,19 @@
                     <Run Text="{Binding NumberOfEvent}"/>
                 </TextBlock>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Tìm theo tên" FontStyle="Italic" FontSize="15" Margin="15 10 10 0"/>
+                    <TextBlock Text="Tổng số sự kiện tìm được:" FontStyle="Italic" FontSize="15" Margin="15 10 10 10"/>
+                    <TextBlock Text="{Binding NumberOfFoundEvents}" FontStyle="Italic" FontSize="15" Margin="0 10 10 10"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tìm theo tên" FontStyle="Italic" FontSize="15" Margin="15 10 10 10"/>
                     <TextBox Text="{Binding SearchText}" Padding="5 5 0 0" MinWidth="200" Height="30" TextWrapping="Wrap"/>
                     <Button Content="TÌM" Command="{Binding SearchByNameCommand}" Margin="8" MinWidth="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Diễn ra trong khoảng từ ngày" FontStyle="Italic" FontSize="15" Margin="15 10 10 10"/>
+                    <DatePicker Width="200" HorizontalAlignment="Left" Text="{Binding DateStartFilter, Mode=TwoWay}" Language="en-GB" Height="25" Margin="4"/>
+                    <TextBlock Text="đến hết ngày" FontStyle="Italic" FontSize="15" Margin="15 10 10 10"/>
+                    <DatePicker Width="200" HorizontalAlignment="Left" Text="{Binding DateEndFilter, Mode=TwoWay}" Language="en-GB" Height="25" Margin="4"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -191,10 +201,10 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="1.3*"/>
+                                        <ColumnDefinition Width="0.7*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="120"/>
                                         <!--<ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>-->
                                     </Grid.ColumnDefinitions>
@@ -229,7 +239,7 @@
                                     <Grid Grid.Column="2">
                                         <Border BorderBrush="Gray" BorderThickness="1">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
-                                            <TextBlock Text="{Binding Organizer.Name}" FontSize="18" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding DisplayedTime}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="3">

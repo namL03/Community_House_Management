@@ -51,6 +51,7 @@ namespace Community_House_Management.Models
             {
                 _timeStart = value;
                 OnPropertyChanged(nameof(TimeStart));
+                OnPropertyChanged(nameof(DisplayedTime));
             }
         }
         public DateTime TimeEnd
@@ -60,7 +61,13 @@ namespace Community_House_Management.Models
             {
                 _timeEnd = value;
                 OnPropertyChanged(nameof(TimeEnd));
+                OnPropertyChanged(nameof(DisplayedTime));
             }
+        }
+
+        public string DisplayedTime
+        {
+            get => $"{TimeStart} - {TimeEnd}";
         }
     }
 }

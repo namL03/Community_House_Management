@@ -178,6 +178,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
+        public ICommand RemovePropertyCommand { get; }
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         {
             Type = string.Empty;
@@ -189,6 +190,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             ChangePageCommand = new RelayCommand(ExecuteChangePageCommand);
             AddPropertyCommand = new AsyncRelayCommand(ExecuteAddPropertyCommand, CanExecuteAddPropertyCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
+            RemovePropertyCommand = new AsyncRelayCommand(ExecuteRemovePropertyCommand, CanExecuteRemovePropertyCommand);
             _ = LoadProperties();
         }
         private async Task LoadProperties()
@@ -206,11 +208,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private async Task ExecuteAddPropertyCommand(object parameter)
         {
+
             for(int i=0;i<Count;i++)
             {
                 PropertyModel propertyModel = new PropertyModel
                 {
-                    Type = this.Type
+                    Type = this.Type.TrimEnd()
                 };
                 await service.CreatePropertyAsync(propertyModel);
             }
@@ -323,6 +326,40 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                     UpdatePageNumbers();
                 });
             }
+        }
+
+        private async Task ExecuteRemovePropertyCommand(object parameter)
+        {
+            if (parameter is PropertyTypeModel propertyTypeModel)
+            {
+                var associatedEvents = await service.RemovePropertyAsync(propertyTypeModel.Type);
+                if (associatedEvents.Count == 0)
+                {
+                    MessageBox.Show($"Loại bỏ thành công 1 {propertyTypeModel.Type}", "Thành công",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    var info = new StringBuilder();
+                    foreach (EventModel associatedEvent in associatedEvents)
+                    {
+                        // Ensure that the date and time are formatted appropriately
+                        string formattedStartTime = associatedEvent.TimeStart.ToString(); // or another format string
+                        string formattedEndTime = associatedEvent.TimeEnd.ToString();
+
+                        info.AppendLine($"{associatedEvent.Name} diễn ra từ {formattedStartTime} đến {formattedEndTime}");
+                    }
+
+                    MessageBox.Show($"Không thể loại bỏ 1 {propertyTypeModel.Type} do đã cấp phát cho các sự kiện sau:\n" +
+                        info.ToString(), "Thất bại",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                await LoadProperties();
+            }
+        }
+        private bool CanExecuteRemovePropertyCommand(object parameter)
+        {
+            return isLoggedIn;
         }
     }
 }

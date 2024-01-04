@@ -10,6 +10,8 @@ namespace Community_House_Management.ModelsDb
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public ICollection<EventProperty>? EventProperties { get; set; }
+        public ICollection<EventProperty> EventProperties { get; set; } = new List<EventProperty>();
+
+        public int State { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Community_House_Management.ModelsDb
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<EventProperty>? EventProperties { get; set; }
+        public ICollection<EventProperty> EventProperties { get; set; } = new List<EventProperty>();
         public DateTime timeStart { get; set; }
         public DateTime timeEnd { get; set; }
         public int PersonId { get; set; }

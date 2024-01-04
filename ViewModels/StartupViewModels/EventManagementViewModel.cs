@@ -148,6 +148,34 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             }
         }
 
+        private DateTime dateStartFilter;
+        public DateTime DateStartFilter
+        {
+            get { return dateStartFilter; }
+            set
+            {
+                if (dateStartFilter != value)
+                {
+                    dateStartFilter = value;
+                    OnPropertyChanged(nameof(DateStartFilter));
+                }
+            }
+        }
+
+        private DateTime dateEndFilter;
+        public DateTime DateEndFilter
+        {
+            get { return dateEndFilter; }
+            set
+            {
+                if (dateEndFilter != value)
+                {
+                    dateEndFilter = value;
+                    Console.WriteLine(dateEndFilter.ToString());
+                    OnPropertyChanged(nameof(DateEndFilter));
+                }
+            }
+        }
         private Service services = new Service();
         private List<EventModel> events;
         public List<EventModel> Events
@@ -244,14 +272,15 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 return numberOfPropertyTypes;
             }
         }
-        private IEnumerable<EventModel> _filteredList;
-        public IEnumerable<EventModel> FilteredList
+        private IEnumerable<EventModel> _filteredList = new List<EventModel>();
+        public IEnumerable<EventModel> FilteredList 
         {
             get { return _filteredList; }
             set
             {
                 _filteredList = value;
                 OnPropertyChanged(nameof(FilteredList));
+                OnPropertyChanged(nameof(NumberOfFoundEvents));
             }
         }
         private string searchText;
@@ -269,6 +298,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 UpdatePagedEventsList();
             }
         }
+        public int NumberOfFoundEvents => FilteredList.Count();
         private int _eventId;
         public int EventId => _eventId;
         public ICommand OpenAddEventCommand { get; }
@@ -284,6 +314,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             this.isLoggedIn = isLoggedIn;
             dateStart = DateTime.Now;
             dateEnd = DateTime.Now;
+            DateEndFilter = DateTime.MaxValue;
+            DateStartFilter = DateTime.MinValue;
             Name = string.Empty;
             OpenAddEventCommand = new RelayCommand(ExecuteOpenAddEventCommand, CanExecuteOpenAddEventCommand);
             AddEventCommand = new AsyncRelayCommand(ExecuteAddEventCommand, CanExecuteAddEventCommand);
@@ -417,7 +449,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                FilteredList = Events.Where(item => item.Name.Equals(SearchText, StringComparison.OrdinalIgnoreCase));
+                FilteredList = Events.
+                    Where(item => item.Name.Equals(SearchText, StringComparison.OrdinalIgnoreCase) && item.TimeStart.Date >= DateStartFilter
+                    && item.TimeEnd.Date <= DateEndFilter)
+                    .OrderBy(item => item.TimeStart);
                 Console.WriteLine("filterdList count " + FilteredList.Count());
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
@@ -432,8 +467,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             {
                 Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    FilteredList = Events;
-                    PagedEventsList = new ObservableCollection<EventModel>(Events.Take(elementsPerPage));
+                    FilteredList = Events.Where(item => item.TimeStart.Date >= DateStartFilter
+                    && item.TimeEnd.Date <= DateEndFilter)
+                    .OrderBy(item => item.TimeStart);
+                    PagedEventsList = new ObservableCollection<EventModel>(FilteredList.Take(elementsPerPage));
                     UpdatePageNumbers();
                 });
             }

@@ -134,9 +134,9 @@
         <Grid Grid.Row="5" Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Button Background="#3681D2">
@@ -146,6 +146,11 @@
                 <Grid Grid.Column="1">
                     <Button Background="#3681D2">
                         <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Button Background="#3681D2">
+                        <TextBlock Text="Loại bỏ 1 đơn vị" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Button>
                 </Grid>
             </Grid>
@@ -159,6 +164,7 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
@@ -172,6 +178,10 @@
                                     <Border BorderBrush="Gray" BorderThickness="1">
                                         <TextBlock Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" FontSize="18" HorizontalAlignment="Center"/>
                                     </Border>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    
+                                    <Button Command="{Binding DataContext.RemovePropertyCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm để loại bỏ" Foreground="Gray" Background="White"/>
                                 </Grid>
                             </Grid>
                         </DataTemplate>
