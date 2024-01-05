@@ -329,7 +329,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private async Task LoadEvents()
         {
             Events = await services.GetEventsAsync();
-            FilteredList = Events;
+            FilteredList = Events.OrderBy(item => item.TimeStart);
             CurrentPage = 1;
             NumberOfEvent = Events.Count();
             OnPropertyChanged(nameof(NumberOfEvent));

@@ -226,7 +226,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private async Task LoadPeople()
         {
             PeopleList = await service.GetPeopleAsync();
-            FilteredList = PeopleList;
+            FilteredList = PeopleList.OrderBy(p => p.InAHouseHold);
             CurrentPage = 1;
             UpdatePagedEventsList();
             UpdatePageNumbers();
