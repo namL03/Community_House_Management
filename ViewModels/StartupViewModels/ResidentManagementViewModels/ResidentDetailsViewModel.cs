@@ -174,7 +174,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
         private void LoadEvents()
         {
             Events = _personModel != null ? _personModel.Events : new List<EventModel>();
-            FilteredList = Events;
+            FilteredList = Events.OrderBy(item => item.TimeStart);
             CurrentPage = 1;
             NumberOfEvent = Events.Count();
             OnPropertyChanged(nameof(NumberOfEvent));

@@ -210,7 +210,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
@@ -231,22 +231,22 @@
                                         </Border>
                                     </Grid>-->
                                     <Grid Grid.Column="1">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
                                             <TextBlock Text="{Binding Organizer.CitizenId}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
                                             <TextBlock Text="{Binding DisplayedTime}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="3">
-                                        <!--<Button Background="White" Command="{Binding ToEventDetailsViewCommand}">
-                                                <TextBlock Text="Click here" FontSize="15" HorizontalAlignment="Center"/>
-                                            </Button>-->
-                                        <Button Command="{Binding DataContext.ToEventDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White"/>
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
+                                            <Button Command="{Binding DataContext.ToEventDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White" BorderThickness="0"/>
+                                        </Border>
+                                        
                                     </Grid>
                                 </Grid>
                             </DataTemplate>

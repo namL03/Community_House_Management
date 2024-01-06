@@ -134,7 +134,7 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2">
-            <Border BorderBrush="Gray" Grid.ColumnSpan="2">
+            <Border BorderBrush="Black" Grid.ColumnSpan="2">
                 <StackPanel>
                     <ItemsControl ItemsSource="{Binding PagedEventsList}">
                         <ItemsControl.ItemTemplate>
@@ -147,19 +147,19 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     
                                     <Grid Grid.Column="1">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
                                             <TextBlock Text="{Binding TimeStart}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding TimeEnd}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
