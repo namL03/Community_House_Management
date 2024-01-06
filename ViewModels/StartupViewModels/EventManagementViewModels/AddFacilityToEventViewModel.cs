@@ -203,6 +203,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 OnPropertyChanged(nameof(BeAddedProperty));
             }
         }
+        private bool isSortByNameAscending = true;
+        private bool isSortByCountAscending = true;
+        public bool IsSortByCountAscending => isSortByCountAscending;
+        public bool IsSortByNameAscending => isSortByNameAscending;
         public ICommand NextPageCommand { get; }
         public ICommand PreviousPageCommand { get; }
         public ICommand ChangePageCommand { get; }
@@ -210,6 +214,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public ICommand OpenAddPropertyPopupCommand { get; }
         public ICommand ToEventDetailsViewCommand { get; }
         public ICommand AssignFacilityToEventCommand { get; }
+        public ICommand SortByPropertyNameCommand { get; }
+        public ICommand SortByPropertyCountCommand { get; }
         public AddFacilityToEventViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn)
         {
             _eventModel = eventModel;
@@ -222,6 +228,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             OpenAddPropertyPopupCommand = new RelayCommand(ExecuteOpenAddPropertyPopupCommand);
             ToEventDetailsViewCommand = new RelayCommand(ExecuteToEventDetailsViewCommand);
             AssignFacilityToEventCommand = new AsyncRelayCommand(ExecuteAssignFacilityToEventCommand, CanExecuteAssignFacilityToEventCommand);
+            SortByPropertyNameCommand = new RelayCommand(ExecuteSortByPropertyNameCommand);
+            SortByPropertyCountCommand = new RelayCommand(ExecuteSortByPropertyCountCommand);
             _ = LoadAvaiableProperties();
         }
         
@@ -373,6 +381,39 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         private bool CanExecuteAssignFacilityToEventCommand(object paramter)
         {
             return QuantityOfProperty > 0;
+        }
+        private void ExecuteSortByPropertyNameCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByNameAscending = !isSortByNameAscending;
+
+            if (isSortByNameAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+
+            UpdatePagedPropertyTypesList();
+        }
+
+        private void ExecuteSortByPropertyCountCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByCountAscending = !isSortByCountAscending;
+
+            if (isSortByCountAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Count);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Count);
+            }
+
+            UpdatePagedPropertyTypesList();
         }
     }
 }

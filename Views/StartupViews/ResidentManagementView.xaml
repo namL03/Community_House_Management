@@ -181,28 +181,28 @@
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid Grid.Column="0">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding CitizenId}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="1">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding Name}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding Address}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="3">
-                                        <Border BorderBrush="Gray" BorderThickness="1">
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
                                             <TextBlock Text="{Binding InAHouseHold}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="4">
-                                        <Border BorderBrush="Gray">
-                                            <Button Command="{Binding DataContext.ToResidentDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White"/>
+                                        <Border BorderBrush="Black" BorderThickness="0.5">
+                                            <Button Command="{Binding DataContext.ToResidentDetailsViewCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm vào đây" Foreground="Gray" Background="White" BorderThickness="0"/>
                                         </Border>
                                     </Grid>
                                 </Grid>

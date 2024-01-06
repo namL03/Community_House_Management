@@ -170,6 +170,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
                 }
             }
         }
+        private bool isSortByNameAscending = true;
+        private bool isSortByCountAscending = true;
+        public bool IsSortByCountAscending => isSortByCountAscending;
+        public bool IsSortByNameAscending => isSortByNameAscending;
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
@@ -181,6 +185,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
         public ICommand ShowConfirmPopupCommand { get; }
+        public ICommand SortByPropertyNameCommand { get; }
+        public ICommand SortByPropertyCountCommand { get; }
         public EventDetailsViewModel(NavigationStore navigationStore, EventModel eventModel, bool isLoggedIn) 
         {
             this.isLoggedIn = isLoggedIn;
@@ -195,6 +201,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             ToRemoveFacilityFromEventViewCommand = new RelayCommand(ExecuteToRemoveFacilityFromEventViewCommand, CanExecuteToRemoveFacilityFromEventViewCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             ShowConfirmPopupCommand = new RelayCommand(ExecuteShowConfirmPopupCommand, CanExecuteShowConfirmPopupCommand);
+            SortByPropertyNameCommand = new RelayCommand(ExecuteSortByPropertyNameCommand);
+            SortByPropertyCountCommand = new RelayCommand(ExecuteSortByPropertyCountCommand);
             _ = LoadEvent();
         }
         private async Task LoadEvent()
@@ -349,6 +357,39 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         private bool CanExecuteShowConfirmPopupCommand(object parameter)
         {
             return this.isLoggedIn;
+        }
+        private void ExecuteSortByPropertyNameCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByNameAscending = !isSortByNameAscending;
+
+            if (isSortByNameAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+
+            UpdatePagedPropertyTypesList();
+        }
+
+        private void ExecuteSortByPropertyCountCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByCountAscending = !isSortByCountAscending;
+
+            if (isSortByCountAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Count);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Count);
+            }
+
+            UpdatePagedPropertyTypesList();
         }
     }
 }
