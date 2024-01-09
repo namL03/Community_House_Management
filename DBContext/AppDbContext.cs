@@ -17,8 +17,8 @@ namespace Community_House_Management.DataAccess
         public DbSet<OfficialAccount> OfficialAccounts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string databaseFilePath = App.GetDatabaseFilePath();
-            optionsBuilder.UseSqlServer($"Server=(localdb)\\mssqllocaldb;AttachDbFilename={databaseFilePath};Database=CommunityHouse;Trusted_Connection=True;");
+            // Change the connection string to point to SQL Server Express
+            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=CommunityHouse;Trusted_Connection=True;TrustServerCertificate=True;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
