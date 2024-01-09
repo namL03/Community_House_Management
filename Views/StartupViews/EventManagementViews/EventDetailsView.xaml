@@ -121,10 +121,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#3681D2">
-                <TextBlock Text="Loại" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Button Background="#3681D2" Command="{Binding  SortByPropertyNameCommand}">
+                    <TextBlock Text="Loại" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Button>
             </Grid>
             <Grid Grid.Column="1" Background="#3681D2">
-                <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Button Background="#3681D2" Command="{Binding SortByPropertyCountCommand}">
+                    <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Button>
             </Grid>
            
         </Grid>
@@ -139,12 +143,12 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
-                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                    <Border BorderBrush="Black" BorderThickness="0.5">
                                         <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
                                     </Border>
                                 </Grid>
                                 <Grid Grid.Column="1" >
-                                    <Border BorderBrush="Gray" BorderThickness="1">
+                                    <Border BorderBrush="Black" BorderThickness="0.5">
                                         <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
                                     </Border>
                                 </Grid>

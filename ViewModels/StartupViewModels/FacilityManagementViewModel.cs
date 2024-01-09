@@ -172,6 +172,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels
                 OnPropertyChanged(nameof(NumberOfPropertyType));
             }
         }
+        private bool isSortByNameAscending = true;
+        private bool isSortByCountAscending = true;
+        public bool IsSortByCountAscending => isSortByCountAscending;
+        public bool IsSortByNameAscending => isSortByNameAscending;
         public ICommand OpenAddFacilityCommand { get; }
         public ICommand AddPropertyCommand { get; }
         public ICommand NextPageCommand { get; }
@@ -179,6 +183,9 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         public ICommand ChangePageCommand { get; }
         public ICommand SearchByTypeCommand { get; }
         public ICommand RemovePropertyCommand { get; }
+        public ICommand SortByPropertyNameCommand { get; }
+        public ICommand SortByPropertyCountCommand { get; }
+        
         public FacilityManagementViewModel(NavigationStore navigationStore, bool isLoggedIn) 
         {
             Type = string.Empty;
@@ -191,6 +198,8 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             AddPropertyCommand = new AsyncRelayCommand(ExecuteAddPropertyCommand, CanExecuteAddPropertyCommand);
             SearchByTypeCommand = new RelayCommand(ExecuteSearchByTypeCommand);
             RemovePropertyCommand = new AsyncRelayCommand(ExecuteRemovePropertyCommand, CanExecuteRemovePropertyCommand);
+            SortByPropertyNameCommand = new RelayCommand(ExecuteSortByPropertyNameCommand);
+            SortByPropertyCountCommand = new RelayCommand(ExecuteSortByPropertyCountCommand);
             _ = LoadProperties();
         }
         private async Task LoadProperties()
@@ -360,6 +369,39 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         private bool CanExecuteRemovePropertyCommand(object parameter)
         {
             return isLoggedIn;
+        }
+        private void ExecuteSortByPropertyNameCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByNameAscending = !isSortByNameAscending;
+
+            if (isSortByNameAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Type, StringComparer.OrdinalIgnoreCase);
+            }
+
+            UpdatePagedPropertyTypesList();
+        }
+
+        private void ExecuteSortByPropertyCountCommand(object parameter)
+        {
+            // Toggle sorting order
+            isSortByCountAscending = !isSortByCountAscending;
+
+            if (isSortByCountAscending)
+            {
+                FilteredList = FilteredList.OrderBy(item => item.Count);
+            }
+            else
+            {
+                FilteredList = FilteredList.OrderByDescending(item => item.Count);
+            }
+
+            UpdatePagedPropertyTypesList();
         }
     }
 }

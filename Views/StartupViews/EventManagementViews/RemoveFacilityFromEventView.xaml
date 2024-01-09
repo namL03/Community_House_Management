@@ -103,12 +103,12 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0">
-                            <Button Background="#3681D2">
+                            <Button Background="#3681D2" Command="{Binding  SortByPropertyNameCommand}">
                                 <TextBlock Text="Loại" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                         <Grid Grid.Column="1">
-                            <Button Background="#3681D2">
+                            <Button Background="#3681D2" Command="{Binding SortByPropertyCountCommand}">
                                 <TextBlock Text="Số lượng" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
@@ -134,18 +134,18 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Grid Grid.Column="0">
-                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
                                                 <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="1" >
-                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
                                                 <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="2">
-                                            <Border BorderBrush="Gray" BorderThickness="1">
-                                                <Button Background="White" Content="Bấm để thu hồi" Foreground="Gray" Command="{Binding DataContext.OpenRemovePropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
+                                                <Button Background="White" Content="Bấm để thu hồi" Foreground="Gray" Command="{Binding DataContext.OpenRemovePropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" BorderThickness="0"/>
                                             </Border>
                                         </Grid>
                                     </Grid>
@@ -158,7 +158,7 @@
             </Grid>
         </Grid>
         <Popup IsOpen="{Binding IsPropertyPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Center">
-            <Border BorderBrush="Black" BorderThickness="1" Background="White">
+            <Border BorderBrush="Black" BorderThickness="0.5" Background="White">
                 <StackPanel>
                     <TextBlock Margin="5">
                         <Run Text="CSVC muốn thu hồi: " FontSize="16"/>

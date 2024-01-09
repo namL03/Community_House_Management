@@ -139,18 +139,18 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Grid Grid.Column="0">
-                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
                                                 <TextBlock Text="{Binding Type}" FontSize="18" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="1" >
-                                            <Border BorderBrush="Gray" BorderThickness="1">
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
                                                 <TextBlock Text="{Binding Count}" FontSize="18" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
                                         <Grid Grid.Column="2">
-                                            <Border BorderBrush="Gray" BorderThickness="1">
-                                                <Button Background="White" Command="{Binding DataContext.OpenAddPropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm để cấp phát" Foreground="Gray"/>
+                                            <Border BorderBrush="Black" BorderThickness="0.5">
+                                                <Button Background="White" Command="{Binding DataContext.OpenAddPropertyPopupCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}" Content="Bấm để cấp phát" Foreground="Gray" BorderThickness="0"/>
                                             </Border>
                                         </Grid>
                                     </Grid>
@@ -163,7 +163,7 @@
             </Grid>
         </Grid>
         <Popup IsOpen="{Binding IsPropertyPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Center">
-            <Border BorderBrush="Black" BorderThickness="1" Background="White">
+            <Border BorderBrush="Black" BorderThickness="0.5" Background="White">
                 <StackPanel>
                     <TextBlock Margin="5">
                         <Run Text="CSVC muốn cấp: " FontSize="16"/>
