@@ -221,7 +221,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         }
         private bool CanExecuteAddNewPersonCommand(object parameter)
         {
-            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(CitizenId);
+            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(CitizenId) && CitizenId.Length <= 12;
         }
         private async Task LoadPeople()
         {
@@ -244,7 +244,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             if (IsLoggedIn == true) return true;
             else return false;
         }
-        int elementsPerPage = 5;
+        int elementsPerPage = 10;
         private void UpdatePagedEventsList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;

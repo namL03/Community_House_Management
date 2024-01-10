@@ -340,21 +340,27 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             OnPropertyChanged(nameof(CurrentPage));
         }
 
-        int elementsPerPage = 5;
+        int elementsPerPage = 10;
         private async Task ExecuteAddEventCommand(object parameter)
         {
             PersonModel creator = await services.GetPersonByCitizenIdAsync(OrganizerCitizenId);
-            if(creator == null)
+            DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
+            DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
+            if (creator == null)
             {
                 MessageBox.Show("Số CCCD không tồn tại", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else if (startDateWithTime >= endDateWithTime)
+            {
+                MessageBox.Show("Thời gian bắt đầu cần phải sớm hơn thời gian kết thúc", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
+            }    
             else
             {
                 EventModel eventcreated = new EventModel
                 {
                     Name = this.Name,
-                    TimeStart = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond),
-                    TimeEnd = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond),
+                    TimeStart = startDateWithTime,
+                    TimeEnd = endDateWithTime,
                     PersonId = creator.Id,
                 };
                 await services.CreateEventAsync(eventcreated);
@@ -369,7 +375,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         {
             DateTime startDateWithTime = new DateTime(DateStart.Year, DateStart.Month, DateStart.Day, StartHour, StartMinute, StartSecond);
             DateTime endDateWithTime = new DateTime(DateEnd.Year, DateEnd.Month, DateEnd.Day, EndHour, EndMinute, EndSecond);
-            return !string.IsNullOrWhiteSpace(Name) && startDateWithTime < endDateWithTime;
+            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(OrganizerCitizenId);
         }
         private void ExecuteOpenAddEventCommand(object parameter)
         {         

@@ -21,17 +21,25 @@
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Mật khẩu cũ" Margin="0 5 0 0"/>
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                    <TextBlock Text="Mật khẩu cũ"/>
+                    <TextBlock Text="*" Foreground="Red" FontWeight="Bold"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Mật khẩu mới" Margin="0 5 0 0"/>
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                    <TextBlock Text="Mật khẩu mới"/>
+                    <TextBlock Text="*" Foreground="Red" FontWeight="Bold"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBlock Text="Nhập lại mật khẩu mới" Margin="0 5 0 0"/>
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                    <TextBlock Text="Nhập lại mật khẩu mới"/>
+                    <TextBlock Text="*" Foreground="Red" FontWeight="Bold"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Content="Đổi mật khẩu" Width="140" Height="40" Background="#60FF10" Command="{Binding ChangePasswordCommand}"/>
-                <Button Content="SAVE CHANGE" Width="140" Height="40" Background="#64BE22" Command="{Binding ChangePasswordCommand}"/>
             </Grid>
         </Grid>
         <Grid Grid.Column="1">

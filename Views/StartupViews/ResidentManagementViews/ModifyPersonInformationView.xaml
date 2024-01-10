@@ -34,10 +34,18 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <StackPanel>
-                <TextBlock Text="Tên: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Số CCCD: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Địa chỉ: " FontSize="16" Margin="5"/>
-                <!--<TextBlock Text="State:" FontSize="16" Margin="5"/>-->
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Tên: " FontSize="16"/>
+                    <TextBlock Text="*" Foreground="Red" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Số CCCD: " FontSize="16"/>
+                    <TextBlock Text="*" Foreground="Red" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Địa chỉ: " FontSize="16"/>
+
+                </StackPanel>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">

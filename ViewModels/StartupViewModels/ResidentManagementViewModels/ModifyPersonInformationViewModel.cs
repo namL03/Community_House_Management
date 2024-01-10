@@ -180,7 +180,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.ResidentManage
         }
         private bool CanExecuteSaveChangeInformationCommand(object parameter)
         {
-            return !string.IsNullOrWhiteSpace(NewName) && !string.IsNullOrWhiteSpace(NewCitizenId);
+            return !string.IsNullOrWhiteSpace(NewName) && !string.IsNullOrWhiteSpace(NewCitizenId) && NewCitizenId.Length <= 12;
         }
 
         private void ExecuteToResidentDetailsViewCommand(object parameter)

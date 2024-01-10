@@ -62,7 +62,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="103"/>
+                    <ColumnDefinition Width="17"/>
                     <!--<ColumnDefinition Width="18"/>-->
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Background="#3681D2">
@@ -173,7 +174,7 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="3">
-                    <Button Content="THÊM VÀO HỘ GIA ĐÌNH" Height="30" FontSize="16" Margin="20 5 5 5" Width="190" Command="{Binding AddPersonToHouseholdCommand}"/>
+                    <Button Content="THÊM NHÂN KHẨU" Height="30" FontSize="16" Margin="20 5 5 5" Width="190" Command="{Binding AddPersonToHouseholdCommand}"/>
                 </Grid>
             </Grid>
             <Popup IsOpen="{Binding IsConfirmPopupOpen, Mode=TwoWay}" StaysOpen="False" Placement="Center" Width="200">
@@ -182,7 +183,7 @@
                         <TextBlock FontSize="16" Margin="5" Text="Bạn có chắc là muốn xóa hộ gia đình này?" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
 
                         </TextBlock>
-                        <Button Content="YES" FontSize="16" HorizontalAlignment="Center" Command="{Binding DeleteHouseholdCommand}" Margin="5" Width="70"/>
+                        <Button Content="CÓ" FontSize="16" HorizontalAlignment="Center" Command="{Binding DeleteHouseholdCommand}" Margin="5" Width="70"/>
                     </StackPanel>
                 </Border>
             </Popup>

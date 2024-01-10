@@ -334,12 +334,12 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
             }
             else
             {
-                MessageBox.Show("Số lượng không hợp lệ", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Không đủ CSVC để thu hồi", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private bool CanExecuteRemoveFacilityFromEventCommand(object parameter)
         {
-            return QuantityOfProperty > 0 && QuantityOfProperty <= SelectedProperty.Count;
+            return QuantityOfProperty > 0 && QuantityOfProperty < 1000 && QuantityOfProperty is int;
         }
         private void ExecuteSortByPropertyNameCommand(object parameter)
         {

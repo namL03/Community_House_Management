@@ -276,7 +276,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
             OnPropertyChanged(nameof(HouseholdList));
         }
         
-        int elementsPerPage = 5;
+        int elementsPerPage = 10;
         private void UpdatePagedHouseholdList()
         {
             int startIndex = (CurrentPage - 1) * elementsPerPage;

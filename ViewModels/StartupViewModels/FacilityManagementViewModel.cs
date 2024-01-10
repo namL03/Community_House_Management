@@ -234,7 +234,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels
         
         private bool CanExecuteAddPropertyCommand(object parameter)
         {
-            return Count != null && !string.IsNullOrWhiteSpace(Type) && Count > 0;
+            return Count != null && !string.IsNullOrWhiteSpace(Type) && Count > 0 && Count < 1000 && Count is int;
         }
         private void ExecuteOpenAddFacilityCommand(object parameter)
         {

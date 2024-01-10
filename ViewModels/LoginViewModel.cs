@@ -106,6 +106,10 @@ namespace Community_House_Management.ViewModels
             bool isValid = await service.CheckAccountAsync(UserName, Password);
             if (isValid)
             {
+                MessageBox.Show("Đăng nhập thành công",
+                "Thành công",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Application.Current.MainWindow.DataContext = new MainViewModel(_navigationStore);
@@ -120,7 +124,7 @@ namespace Community_House_Management.ViewModels
             else
             {
                 MessageBox.Show("Tài khoản không hợp lệ!",
-                "Application Error",
+                "Thất bại",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
             }

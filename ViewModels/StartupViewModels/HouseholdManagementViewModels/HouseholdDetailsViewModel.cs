@@ -242,7 +242,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.HouseholdManag
             if(PersonFound == null)
             {
                 IsStateListEnabled = false;
-                System.Windows.MessageBox.Show("Citizen ID not found!");
+                MessageBox.Show("Không tìm thấy nhân khẩu", "Thất bại", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

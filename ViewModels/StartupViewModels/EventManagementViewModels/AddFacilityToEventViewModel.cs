@@ -380,7 +380,7 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         }
         private bool CanExecuteAssignFacilityToEventCommand(object paramter)
         {
-            return QuantityOfProperty > 0;
+            return QuantityOfProperty > 0 && QuantityOfProperty < 1000 && QuantityOfProperty is int;
         }
         private void ExecuteSortByPropertyNameCommand(object parameter)
         {

@@ -167,7 +167,7 @@
                     <TextBlock FontSize="16" Margin="5" Text="Bạn có chắc là muốn xóa sự kiện này?" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
 
                     </TextBlock>
-                    <Button Content="YES" FontSize="16" HorizontalAlignment="Center" Command="{Binding DeleteEventCommand}" Margin="5" Width="70"/>
+                    <Button Content="CÓ" FontSize="16" HorizontalAlignment="Center" Command="{Binding DeleteEventCommand}" Margin="5" Width="70"/>
                 </StackPanel>
             </Border>
         </Popup>
