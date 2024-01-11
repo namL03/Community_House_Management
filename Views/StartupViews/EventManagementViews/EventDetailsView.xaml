@@ -38,16 +38,16 @@
             <StackPanel>
                 <TextBlock Text="Số CCCD người chủ trì: " FontSize="16" Margin="5"/>
                 <TextBlock Text="Tên người chủ trì: " FontSize="16" Margin="5"/>
-                <TextBlock Text="Thời gian bắt đầu (mm/dd/yyyy): " FontSize="16" Margin="5"/>
-                <TextBlock Text="Thời gian kết thúc (mm/dd/yyyy): " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian bắt đầu: " FontSize="16" Margin="5"/>
+                <TextBlock Text="Thời gian kết thúc: " FontSize="16" Margin="5"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="2">
             <StackPanel>
                 <TextBlock Text="{Binding OrganizerCitizenId}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
                 <TextBlock Text="{Binding OrganizerName}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
-                <TextBlock Text="{Binding EventStartTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
-                <TextBlock Text="{Binding EventEndTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
+                <TextBlock Text="{Binding DisplayedStartTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
+                <TextBlock Text="{Binding DisplayedEndTime}" FontSize="16" HorizontalAlignment="Left" Margin="5"/>
 
             </StackPanel>
         </Grid>

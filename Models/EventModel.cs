@@ -67,7 +67,15 @@ namespace Community_House_Management.Models
 
         public string DisplayedTime
         {
-            get => $"{TimeStart} - {TimeEnd}";
+            get => $"{TimeStart:dd/MM/yyyy HH:mm:ss} - {TimeEnd:dd/MM/yyyy HH:mm:ss}";
+        }
+        public string DisplayedTimeStart
+        {
+            get => $"{TimeStart:dd/MM/yyyy HH:mm:ss}";
+        }
+        public string DisplayedTimeEnd
+        {
+            get => $"{TimeEnd:dd/MM/yyyy HH:mm:ss}";
         }
     }
 }

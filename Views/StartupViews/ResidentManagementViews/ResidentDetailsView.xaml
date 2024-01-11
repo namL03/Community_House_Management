@@ -155,12 +155,12 @@
                                     <Grid Grid.Column="1">
                                         <Border BorderBrush="Black" BorderThickness="0.5">
                                             <!--<TextBlock Text="{Binding DateEnd}" FontSize="18" HorizontalAlignment="Center"/>-->
-                                            <TextBlock Text="{Binding TimeStart}" FontSize="18" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding DisplayedTimeStart}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Column="2">
                                         <Border BorderBrush="Black" BorderThickness="0.5">
-                                            <TextBlock Text="{Binding TimeEnd}" FontSize="18" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding DisplayedTimeEnd}" FontSize="18" HorizontalAlignment="Center"/>
                                         </Border>
                                     </Grid>
                                 </Grid>

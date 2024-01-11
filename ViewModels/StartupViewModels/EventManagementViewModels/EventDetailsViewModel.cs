@@ -176,6 +176,10 @@ namespace Community_House_Management.ViewModels.StartupViewModels.EventManagemen
         public bool IsSortByNameAscending => isSortByNameAscending;
         public DateTime EventStartTime => _eventModel?.TimeStart ?? DateTime.MinValue;
         public DateTime EventEndTime => _eventModel?.TimeEnd ?? DateTime.MinValue;
+
+        public string DisplayedStartTime => EventStartTime.ToString("dd/MM/yyyy HH:mm:ss");
+        public string DisplayedEndTime => EventEndTime.ToString("dd/MM/yyyy HH:mm:ss");
+
         public ICommand ToAddFacilityToEventViewCommand { get; set; }
         public ICommand ToRemoveFacilityFromEventViewCommand { get; set; }
         public ICommand ToEventManagementViewComamnd { get; }

@@ -140,7 +140,7 @@
                 <TextBlock Text="CCCD người chủ trì" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="2" Background="#3681D2">
-                <TextBlock Text="Thời gian diễn ra (mm/dd/yyyy)" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Thời gian diễn ra" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Grid.Column="3" Background="#3681D2">
                 <TextBlock Text="Chi tiết" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
